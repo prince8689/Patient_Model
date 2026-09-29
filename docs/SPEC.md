@@ -46,6 +46,19 @@ The system uses two primary synthetic datasets:
 - `meal_carbs_g` (float): Carbohydrates consumed (0 when no meal).
 - `activity_intensity` (int): Scale of 0-3.
 
+**`patient_sim_params.csv` (Hidden Simulation Parameters)**
+*Note: This file contains internal physiological parameters used strictly by the synthetic data generator. It must NOT be used as features for the ML model to prevent data leakage.*
+- `patient_id` (str): Matches `patients.csv`.
+- `archetype` (str): The patient's underlying condition profile (`well_controlled`, `moderate`, `poorly_controlled`).
+- `fasting_glucose_baseline` (float): Baseline glucose without meals.
+- `carb_sensitivity` (float): Spike in mg/dL per 10g of carbs.
+- `glucose_decay_rate` (float): Base decay rate per 5-minute interval.
+- `dawn_amplitude` (float): Intensity of the dawn phenomenon.
+- `exercise_sensitivity` (float): Glucose reduction per activity unit.
+- `meal_schedule_type` (str): Typical meal timing behavior.
+- `sleep_quality` (float): Sleep efficiency factor.
+- `sensor_noise_sd` (float): Standard deviation of CGM sensor noise.
+
 ## 5. Prediction Target
 The primary predictive target is `spike_next_2h`.
 - **Definition:** `spike_next_2h = 1` if the maximum `glucose_mgdl` in the next 120 minutes is `>=` current `glucose_mgdl` + 50 mg/dL, else `0`.
@@ -53,6 +66,14 @@ The primary predictive target is `spike_next_2h`.
 
 ## 6. Synthetic Data Realism Requirements
 To ensure the proof-of-concept is medically plausible, the synthetic data generator must adhere to the following rules:
+
+### Patient Generation Method
+EHR data generation employs a hidden "archetype" system (`well_controlled` 35%, `moderate` 40%, `poorly_controlled` 25%).
+- **Distributions**: Age, BMI, and HbA1c follow normal distributions with shifts based on archetype.
+- **Correlations**: Diabetes duration correlates positively with age. Insulin sensitivity negatively correlates with BMI, HbA1c, and duration.
+- **Probabilities**: Metformin usage is statically high (85%). Insulin usage probability scales logistically with HbA1c and duration. Hypertension probability scales with age and BMI.
+
+### Time-series Rules
 - **Meal-driven glucose curves:** Meals should induce a rapid glucose rise followed by an insulin-mediated decay.
 - **Dawn phenomenon:** Early morning (e.g., 4 AM - 8 AM) should exhibit a natural glucose elevation.
 - **Exercise effects:** Moderate to high activity intensity should generally lower glucose levels and elevate heart rate.
@@ -106,3 +127,5 @@ The simulator allows the provider to test hypothetical interventions:
 - **Sampling rate:** 5 minutes is strictly enforced with forward-filling for missingness during feature engineering.
 - **Missing values:** Small gaps (<30 mins) will be interpolated, larger gaps will trigger a "Data Quality Alert" in the Twin State.
 - **What-if execution:** The simulator assumes we know the user's intended near-future actions (e.g., they log an upcoming meal).
+- **Correlation Relaxations:** Minor negative correlations may sporadically appear in samples as small as `n=10`, though generator logic enforces the population trend.
+- **Duration Cap:** Diabetes duration is hard-capped to `Age - 25` to prevent physically impossible diagnostics (e.g. onset before birth).
