@@ -1,0 +1,56 @@
+# DiaTwin: Digital Twin for Type 2 Diabetes Management
+
+## Overview
+DiaTwin is a proof-of-concept Digital Twin tailored for Type 2 Diabetes patients. It fuses real-time wearable data with static Electronic Health Records (EHR) to predict adverse health events (glucose spikes) and allows healthcare providers to simulate personalized treatment protocols via a "what-if" engine.
+
+## Problem
+Reactive glucose monitoring limits the ability to prevent hyper/hypoglycemic events. Patients and providers often act only after critical thresholds are breached.
+
+## Approach
+By transitioning from reactive alerts to a predictive virtual replica, DiaTwin forecasts impending glucose spikes up to 2 hours in advance and provides actionable SHAP-based explanations for its predictions.
+
+## Architecture
+The system ingests EHR and wearable streams, engineers time-series features, and utilizes an XGBoost predictive model. A Twin State Engine manages the current context, and a What-if Simulator allows intervention testing—all visualized in a Streamlit dashboard.
+(See `docs/SPEC.md` for full architectural details.)
+
+## Key Features
+- Synthetic, realistic multi-modal medical data generation.
+- 2-hour predictive glucose spike forecasting.
+- Local SHAP explainability for clinical transparency.
+- Interactive What-if intervention simulator.
+- Streamlit-based Doctor Dashboard.
+
+## Project Structure
+- `app/`: Streamlit dashboard application.
+- `configs/`: Project configuration parameters.
+- `data/`: Raw and processed datasets.
+- `docs/`: System specifications and documentation.
+- `models/`: Serialized trained models.
+- `notebooks/`: Exploratory Data Analysis (EDA).
+- `reports/`: Evaluation metrics and figures.
+- `scripts/`: Utility scripts (e.g., environment verification).
+- `src/`: Core Python modules (data gen, features, models, twin, simulator).
+- `tests/`: Unit and integration tests.
+
+## Setup
+1. Clone the repository.
+2. Run `python -m venv .venv` to create a virtual environment.
+3. Activate the environment and run `pip install -r requirements.txt`.
+4. Run `python scripts/verify_setup.py` to ensure dependencies are installed.
+
+## Usage
+*To be added in later phases.*
+
+## Results
+*To be added post-training.*
+
+## Limitations
+This is an educational proof-of-concept built entirely on synthetic data. It is not clinically validated and should not be used as a medical diagnostic tool.
+
+## Future Work
+- Integration with physiological ODE models for more accurate simulations.
+- Support for Type 1 Diabetes (insulin dosing optimization).
+- Real-world clinical validation.
+
+## Disclaimer
+Not a medical device. For educational purposes (Happiest Health Digital Twin Challenge 2026).

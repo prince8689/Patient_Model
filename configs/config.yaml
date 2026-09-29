@@ -1,0 +1,13 @@
+random_seed: 42
+n_patients: 40
+days_per_patient: 21
+sampling_interval_minutes: 5
+spike_threshold_mgdl: 50
+prediction_horizon_minutes: 120
+lookback_window_minutes: 120
+glucose_target_range: [70, 180]
+paths:
+  data_raw: data/raw
+  data_processed: data/processed
+  models: models
+  reports: reports
