@@ -13,6 +13,19 @@ split:
   val: 0.15
   test: 0.15
 
+features:
+  lag_minutes: [5, 15, 30, 60, 120]
+  rolling_windows_minutes: [30, 60, 120]
+  meal_windows_minutes: [60, 120, 240]
+  activity_windows_minutes: [30, 60, 120]
+  max_minutes_since_meal: 360
+  max_minutes_since_activity: 720
+  personal_baseline_window_hours: 24
+  min_periods_fraction: 0.5
+  carb_absorption_peak_minutes: 50
+  carb_absorption_duration_minutes: 180
+  features_path: "data/processed/features.parquet"
+
 start_date: "2026-01-01"
 glucose_min: 40
 glucose_max: 400
