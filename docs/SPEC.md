@@ -129,3 +129,17 @@ The simulator allows the provider to test hypothetical interventions:
 - **What-if execution:** The simulator assumes we know the user's intended near-future actions (e.g., they log an upcoming meal).
 - **Correlation Relaxations:** Minor negative correlations may sporadically appear in samples as small as `n=10`, though generator logic enforces the population trend.
 - **Duration Cap:** Diabetes duration is hard-capped to `Age - 25` to prevent physically impossible diagnostics (e.g. onset before birth).
+
+## 14. Wearable Simulation Method
+- **Glucose Dynamics**: Discrete-time compartmental model with 5-minute steps. Gut compartments model meal absorption, mean-reverting toward a dawn-adjusted baseline.
+- **Behaviors**: Meals, sleep states, and step counts generated probabilistically based on patient archetype.
+- **Heart Rate**: Baseline adjusted by age/BMI, affected by activity intensity and sleep state.
+- **Missingness**: Random dropouts at 1.5% and structured multi-sample gaps (25% chance of one 30-90min gap daily).
+- **Day 3 Assumptions added**: Heart rate recovery modeled by fast moving average. Spike rate bounds (8-35%) verified using forward rolling 120-min max on interpolated data.
+
+## 14. Wearable Simulation Method
+- **Glucose Dynamics**: Discrete-time compartmental model with 5-minute steps. Gut compartments model meal absorption, mean-reverting toward a dawn-adjusted baseline.
+- **Behaviors**: Meals, sleep states, and step counts generated probabilistically based on patient archetype.
+- **Heart Rate**: Baseline adjusted by age/BMI, affected by activity intensity and sleep state.
+- **Missingness**: Random dropouts at 1.5% and structured multi-sample gaps (25% chance of one 30-90min gap daily).
+- **Day 3 Assumptions added**: Heart rate recovery modeled by fast moving average. Spike rate bounds (8-35%) verified using forward rolling 120-min max on interpolated data.

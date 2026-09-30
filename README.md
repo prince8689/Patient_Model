@@ -45,6 +45,12 @@ python scripts/generate_patients.py
 ```
 This generates `patients.csv` (EHR data) and `patient_sim_params.csv` (hidden simulation logic parameters) inside the `data/raw/` directory.
 
+## Data
+All data is synthetic. Generate EHR via python scripts/generate_patients.py and timeseries via python scripts/generate_wearable.py.
+
+## Data
+All data is synthetic. Generate EHR via `python scripts/generate_patients.py` and timeseries via `python scripts/generate_wearable.py`.
+
 ## Usage
 *To be added in later phases.*
 

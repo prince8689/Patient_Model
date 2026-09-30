@@ -6,6 +6,21 @@ spike_threshold_mgdl: 50
 prediction_horizon_minutes: 120
 lookback_window_minutes: 120
 glucose_target_range: [70, 180]
+
+start_date: "2026-01-01"
+glucose_min: 40
+glucose_max: 400
+missing_rate: 0.015
+gap_probability_per_day: 0.25
+meal_carbs_ranges:
+  breakfast: [30, 60]
+  lunch: [45, 85]
+  dinner: [45, 90]
+  snack: [10, 30]
+resting_hr_base: 65
+hr_bmi_effect: 0.5
+hr_age_effect: 0.1
+
 paths:
   data_raw: data/raw
   data_processed: data/processed
