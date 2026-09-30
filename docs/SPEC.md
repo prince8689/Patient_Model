@@ -137,13 +137,12 @@ The simulator allows the provider to test hypothetical interventions:
 - **Missingness**: Random dropouts at 1.5% and structured multi-sample gaps (25% chance of one 30-90min gap daily).
 - **Day 3 Assumptions added**: Heart rate recovery modeled by fast moving average. Spike rate bounds (8-35%) verified using forward rolling 120-min max on interpolated data.
 
-## 14. Wearable Simulation Method
-- **Glucose Dynamics**: Discrete-time compartmental model with 5-minute steps. Gut compartments model meal absorption, mean-reverting toward a dawn-adjusted baseline.
-- **Behaviors**: Meals, sleep states, and step counts generated probabilistically based on patient archetype.
-- **Heart Rate**: Baseline adjusted by age/BMI, affected by activity intensity and sleep state.
-- **Missingness**: Random dropouts at 1.5% and structured multi-sample gaps (25% chance of one 30-90min gap daily).
-- **Day 3 Assumptions added**: Heart rate recovery modeled by fast moving average. Spike rate bounds (8-35%) verified using forward rolling 120-min max on interpolated data.
-
 ## 15. Label and Split Definition
 - **Label**: `spike_next_2h` = 1 if max future 2h observed glucose >= current + 50mg/dL.
 - **Split Strategy**: Patient-wise to ensure 0 data leakage. 70/15/15 ratio stratified by HbA1c.
+
+## 16. Twin Engine Architecture (Day 8)
+- **Engine Definition**: A stream processor (`DiaTwin`) that handles sample-by-sample ingestion, filling up to 36 hours of historical state in a buffer.
+- **Explainability Fault Tolerance**: SHAP module may fail to load due to OS-level DLL constraints (e.g. AppLocker blocking `_reachability.pyd`). The Twin Engine handles this gracefully by returning empty driver lists instead of crashing.
+- **Security**: Strict SHA256 freezing of all model artifacts (`models/FROZEN.json`). Modifying configurations requires explicitly acknowledging the updated hash.
+- **Parity Guarantees**: The streaming engine mathematically equals the batch pipeline outputs with 1e-6 tolerance on features and 1e-5 on probability outputs.

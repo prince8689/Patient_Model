@@ -58,3 +58,19 @@ evaluation:
     high_min_precision: 0.7
   frozen_manifest_path: "models/FROZEN.json"
   test_done_path: "reports/TEST_EVAL_DONE.json"
+
+twin:
+  history_buffer_hours: 36
+  warmup_hours: 24
+  stale_data_minutes: 20
+  min_completeness_60m: 0.6
+  alert_cooldown_minutes: 60
+  risk_history_hours: 48
+  drivers_top_k: 3
+  demo_patient_split: "test"
+  state_dir: "data/twin_states"
+  trend_thresholds:
+    rising_fast: 2.0
+    rising: 1.0
+    falling: -1.0
+    falling_fast: -2.0

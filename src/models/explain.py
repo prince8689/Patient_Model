@@ -1,12 +1,22 @@
 import numpy as np
 import pandas as pd
-import shap
 from .explain_text import get_explanation_text
+
+def _get_shap():
+    try:
+        import shap
+        return shap
+    except Exception:
+        return None
 
 def explain_row(explainer, feature_row_df, feature_names, top_k=3):
     """
     Returns SHAP explanation for a single row.
     """
+    shap = _get_shap()
+    if shap is None or explainer is None:
+        return []
+        
     X = feature_row_df[feature_names]
     shap_vals = explainer.shap_values(X)[0] # raw margin
     
