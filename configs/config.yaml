@@ -74,3 +74,19 @@ twin:
     rising: 1.0
     falling: -1.0
     falling_fast: -2.0
+
+forecast:
+  horizons_minutes: [15, 30, 60, 90, 120]
+  quantiles: [0.1, 0.5, 0.9]
+  nominal_interval_coverage: 0.8
+  tuning_trials: 3
+  cv_folds: 3
+  xgb_early_stopping_rounds: 10
+  max_estimators: 100
+  models_dir: "models"
+  manifest_path: "models/FORECAST_FROZEN.json"
+  test_done_path: "reports/FORECAST_TEST_DONE.json"
+  hypo_threshold_mgdl: 70
+  hyper_threshold_mgdl: 180
+  spike_delta_mgdl: 50
+  allow_last_observation_anchor: false

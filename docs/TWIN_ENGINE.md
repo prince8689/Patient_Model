@@ -85,8 +85,32 @@ The engine outputs a fully serialized `TwinState` object on every step.
     "warnings": [],
     "confidence": "high"
   },
-  "forecast": null,
-  "forecast_status": "not_available",
+  "forecast": {
+    "status": "ok",
+    "horizons_minutes": [15, 30, 60, 90, 120],
+    "quantiles": {
+      "0.1": [140.0, 135.0, 120.0, 110.0, 100.0],
+      "0.5": [150.0, 155.0, 140.0, 130.0, 120.0],
+      "0.9": [160.0, 175.0, 160.0, 150.0, 140.0]
+    },
+    "trajectory_5min": {
+      "timestamp": ["2026-01-01T21:20:00", "2026-01-01T21:25:00"],
+      "median": [142.3, 145.0],
+      "lower": [142.3, 141.0],
+      "upper": [142.3, 149.0]
+    },
+    "predicted_peak": 155.0,
+    "predicted_peak_minutes": 30,
+    "predicted_min": 120.0,
+    "predicted_min_minutes": 120,
+    "hypo_risk_flag": false,
+    "hyper_risk_flag": false,
+    "time_above_180_expected_minutes": 0.0,
+    "agreement_with_risk_band": true,
+    "model_version": "v1",
+    "summary": "Glucose is expected to peak near 155 mg/dL in about 30 minutes (likely range 135 to 175)."
+  },
+  "forecast_status": "ok",
   "active_alert": {
     "timestamp": "2026-01-01T21:20:00",
     "band": "High",
@@ -114,4 +138,4 @@ The engine outputs a fully serialized `TwinState` object on every step.
 ## Known Limitations
 - The engine uses a 36-hour buffer. If a patient consumes a meal and then has no data or meals for over 36 hours, the system maintains the memory of that meal timestamp via explicit cumulative tracking, but it cannot replay the exact features natively if the buffer is cleared.
 - AppLocker / WDAC policies on certain Windows machines may block the `HDBSCAN` DLL required by the `shap` explainer library. If blocked, `drivers` will be returned as an empty list to prevent crashes.
-- The `forecast` field is a placeholder reserved for Day 9 logic.
+- Forecasting operates on the same feature vector built for the risk score classifier to save computation. Latency can slightly increase due to evaluating 15 XGBoost quantiles.

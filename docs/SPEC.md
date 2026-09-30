@@ -146,3 +146,8 @@ The simulator allows the provider to test hypothetical interventions:
 - **Explainability Fault Tolerance**: SHAP module may fail to load due to OS-level DLL constraints (e.g. AppLocker blocking `_reachability.pyd`). The Twin Engine handles this gracefully by returning empty driver lists instead of crashing.
 - **Security**: Strict SHA256 freezing of all model artifacts (`models/FROZEN.json`). Modifying configurations requires explicitly acknowledging the updated hash.
 - **Parity Guarantees**: The streaming engine mathematically equals the batch pipeline outputs with 1e-6 tolerance on features and 1e-5 on probability outputs.
+
+## 17. Forecasting Architecture (Day 9)
+- **Interpolation**: The forecast uses PCHIP interpolation to derive 5-min trajectories between discrete horizons (15, 30, 60, 90, 120m) ensuring monotonicity.
+- **Coverage**: Conformal Quantile Regression (CQR) is fit on the VAL set to strictly enforce nominal 80% coverage.
+- **Twin Fallback**: The engine supports `allow_last_observation_anchor` flag to allow using history if current glucose is missing but a recent one is available.

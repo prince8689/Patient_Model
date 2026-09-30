@@ -16,13 +16,14 @@ from src.models.explain import explain_row
 logger = logging.getLogger(__name__)
 
 class DiaTwin:
-    def __init__(self, profile: PatientProfile, pipeline, calibrator, thresholds: dict, config: dict, explainer=None):
+    def __init__(self, profile: PatientProfile, pipeline, calibrator, thresholds: dict, config: dict, explainer=None, forecast_artifacts=None):
         self.profile = profile
         self.pipeline = pipeline
         self.calibrator = calibrator
         self.thresholds = thresholds
         self.config = config
         self.explainer = explainer
+        self.forecast_artifacts = forecast_artifacts
         
         self.interval_m = config["sampling_interval_minutes"]
         self.history_buffer_m = config["twin"]["history_buffer_hours"] * 60
@@ -314,13 +315,100 @@ class DiaTwin:
             cutoff_risk = ts - pd.Timedelta(hours=self.config["twin"]["risk_history_hours"])
             self.risk_history = [r for r in self.risk_history if pd.to_datetime(r["timestamp"]) >= cutoff_risk]
 
+        from src.twin.state import ForecastResult
+        forecast_result = None
+        forecast_status = "not_available"
+        
+        if self.forecast_artifacts is not None:
+            xgb_forecaster, conf_calibrator, f_meta = self.forecast_artifacts
+            anchor_glu = last_feat["glu_current"]
+            
+            if pd.isna(anchor_glu):
+                if self.config["forecast"].get("allow_last_observation_anchor", False) and not pd.isna(self.last_obs_ts):
+                    mins_since = (ts - self.last_obs_ts).total_seconds() / 60.0
+                    if mins_since <= self.config["twin"]["stale_data_minutes"]:
+                        idx = -int(mins_since / self.interval_m) - 1
+                        if idx >= -len(self.buffer):
+                            anchor_glu = float(self.buffer[idx]["glucose_mgdl"])
+            
+            if pd.isna(anchor_glu):
+                forecast_status = "no_current_glucose"
+            elif dq_status == "warming_up":
+                forecast_status = "warming_up"
+            else:
+                forecast_status = "ok"
+                f_features = f_meta["features"]
+                X_f = self._last_feature_row[f_features]
+                raw_quantiles = xgb_forecaster.predict_quantiles(X_f)
+                cal_quantiles = conf_calibrator.apply(raw_quantiles)
+                
+                traj = xgb_forecaster.get_trajectory(np.array([anchor_glu]), cal_quantiles)
+                
+                horizons = f_meta["horizons"]
+                q_vals = f_meta["quantiles"]
+                
+                q_dict = {str(q): [] for q in q_vals}
+                for i, h in enumerate(horizons):
+                    for j, q in enumerate(q_vals):
+                        q_dict[str(q)].append(float(anchor_glu + cal_quantiles[0, i, j]))
+                        
+                traj_times = [ts + pd.Timedelta(minutes=m) for m in range(0, max(horizons) + self.interval_m, self.interval_m)]
+                traj_dict = {
+                    "timestamp": [t.isoformat() for t in traj_times],
+                    "median": [float(v) for v in traj[0, :, 1]],
+                    "lower": [float(v) for v in traj[0, :, 0]],
+                    "upper": [float(v) for v in traj[0, :, 2]]
+                }
+                
+                med_traj = traj[0, :, 1]
+                peak_idx = int(np.argmax(med_traj))
+                min_idx = int(np.argmin(med_traj))
+                
+                peak_val = float(med_traj[peak_idx])
+                peak_m = int(peak_idx * self.interval_m)
+                min_val = float(med_traj[min_idx])
+                min_m = int(min_idx * self.interval_m)
+                
+                hypo_risk = bool(np.any(traj[0, :, 0] < self.config["forecast"]["hypo_threshold_mgdl"]))
+                hyper_risk = bool(np.any(med_traj > self.config["forecast"]["hyper_threshold_mgdl"]))
+                above_180 = float(np.sum(med_traj > 180) * self.interval_m)
+                
+                from src.forecast.consistency import estimate_spike_probability
+                p_spike_f = estimate_spike_probability(cal_quantiles, q_vals, self.config["forecast"]["spike_delta_mgdl"])[0]
+                
+                agreement = True
+                if risk is not None:
+                    if risk.band in ["Medium", "High"] and p_spike_f < 0.1:
+                        agreement = False
+                    if risk.band == "Low" and p_spike_f > 0.3:
+                        agreement = False
+                        
+                summary = f"Glucose is expected to peak near {peak_val:.0f} mg/dL in about {peak_m} minutes (likely range {traj[0, peak_idx, 0]:.0f} to {traj[0, peak_idx, 2]:.0f})."
+                
+                forecast_result = ForecastResult(
+                    status="ok",
+                    horizons_minutes=horizons,
+                    quantiles=q_dict,
+                    trajectory_5min=traj_dict,
+                    predicted_peak=peak_val,
+                    predicted_peak_minutes=peak_m,
+                    predicted_min=min_val,
+                    predicted_min_minutes=min_m,
+                    hypo_risk_flag=hypo_risk,
+                    hyper_risk_flag=hyper_risk,
+                    time_above_180_expected_minutes=above_180,
+                    agreement_with_risk_band=agreement,
+                    model_version=f_meta.get("version", "v1"),
+                    summary=summary
+                )
+
         return TwinState(
             profile=self.profile,
             latest_measurement=meas,
             risk=risk,
             data_quality=dq,
-            forecast=None,
-            forecast_status="not_available",
+            forecast=forecast_result,
+            forecast_status=forecast_status,
             active_alert=alert,
             glucose_summary=g_sum,
             context=ctx,

@@ -43,6 +43,43 @@ def load_frozen_artifacts(config: dict):
         
     return pipeline, calibrator, thresholds, meta
 
+def load_forecast_artifacts(config: dict):
+    if "forecast" not in config or "manifest_path" not in config["forecast"]:
+        return None
+    manifest_path = Path(config["forecast"]["manifest_path"])
+    if not manifest_path.exists():
+        return None
+        
+    with open(manifest_path, "r") as f:
+        manifest = json.load(f)
+        
+    models_dir = Path(config["forecast"]["models_dir"])
+    files_to_hash = [
+        models_dir / "forecaster_v1.joblib",
+        models_dir / "forecaster_v1_meta.json",
+        models_dir / "forecast_conformal_v1.json",
+        Path("configs") / "config.yaml"
+    ]
+    for fp in files_to_hash:
+        if not fp.exists():
+            return None
+        actual_hash = get_file_sha256(fp)
+        expected = manifest["files"].get(fp.name)
+        if actual_hash != expected:
+            raise ValueError(f"FORECAST HASH MISMATCH! {fp} has been modified.\nExpected: {expected}\nActual: {actual_hash}")
+            
+    models = joblib.load(models_dir / "forecaster_v1.joblib")
+    with open(models_dir / "forecaster_v1_meta.json", "r") as f:
+        meta = json.load(f)
+    with open(models_dir / "forecast_conformal_v1.json", "r") as f:
+        calib = json.load(f)
+        
+    from src.forecast.conformal import ConformalCalibrator
+    calibrator = ConformalCalibrator(meta["horizons"], meta["quantiles"], config["forecast"]["nominal_interval_coverage"])
+    calibrator.q_hat = {int(k): v for k, v in calib["q_hat"].items()}
+    
+    return models["xgb"], calibrator, meta
+
 class TwinRegistry:
     def __init__(self, config: dict):
         self.config = config
@@ -50,6 +87,7 @@ class TwinRegistry:
         
         # Load artifacts once
         self.pipeline, self.calibrator, self.thresholds, self.meta = load_frozen_artifacts(config)
+        self.forecast_artifacts = load_forecast_artifacts(config)
         
         # Try to load explainer
         try:
@@ -72,7 +110,8 @@ class TwinRegistry:
             calibrator=self.calibrator,
             thresholds=self.thresholds,
             config=self.config,
-            explainer=self.explainer
+            explainer=self.explainer,
+            forecast_artifacts=self.forecast_artifacts
         )
         self.twins[patient_id] = twin
         return twin

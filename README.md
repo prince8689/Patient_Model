@@ -17,6 +17,8 @@ The system ingests EHR and wearable streams, engineers time-series features, and
 - Synthetic, realistic multi-modal medical data generation.
 - 2-hour predictive glucose spike forecasting.
 - Local SHAP explainability for clinical transparency.
+- Probabilistic glucose trajectory forecasting via Conformal Quantile Regression.
+- Twin State Engine with history buffering and artifact verification.
 - Interactive What-if intervention simulator.
 - Streamlit-based Doctor Dashboard.
 

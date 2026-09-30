@@ -116,12 +116,36 @@ class TwinContext:
         return cls(**data)
 
 @dataclass
+class ForecastResult:
+    status: str
+    horizons_minutes: List[int]
+    quantiles: Dict[str, List[float]]
+    trajectory_5min: Dict[str, List[float]]
+    predicted_peak: float
+    predicted_peak_minutes: int
+    predicted_min: float
+    predicted_min_minutes: int
+    hypo_risk_flag: bool
+    hyper_risk_flag: bool
+    time_above_180_expected_minutes: float
+    agreement_with_risk_band: bool
+    model_version: str
+    summary: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "ForecastResult":
+        return cls(**data)
+
+@dataclass
 class TwinState:
     profile: PatientProfile
     latest_measurement: Measurement
     risk: Optional[RiskAssessment]
     data_quality: DataQuality
-    forecast: Optional[Any]
+    forecast: Optional[ForecastResult]
     forecast_status: str
     active_alert: Optional[AlertEvent]
     glucose_summary: GlucoseSummary
@@ -135,6 +159,8 @@ class TwinState:
             d["risk"] = None
         if self.active_alert is None:
             d["active_alert"] = None
+        if self.forecast is None:
+            d["forecast"] = None
         return d
 
     @classmethod
@@ -145,6 +171,8 @@ class TwinState:
         if d.get("risk"):
             d["risk"] = RiskAssessment.from_dict(d["risk"])
         d["data_quality"] = DataQuality.from_dict(d["data_quality"])
+        if d.get("forecast"):
+            d["forecast"] = ForecastResult.from_dict(d["forecast"])
         if d.get("active_alert"):
             d["active_alert"] = AlertEvent.from_dict(d["active_alert"])
         d["glucose_summary"] = GlucoseSummary.from_dict(d["glucose_summary"])
