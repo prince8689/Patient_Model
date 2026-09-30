@@ -45,3 +45,16 @@ paths:
   data_processed: data/processed
   models: models
   reports: reports
+
+evaluation:
+  calibration_method_candidates: ["isotonic", "sigmoid"]
+  n_bootstrap: 500
+  alert_cooldown_minutes: 60
+  lead_time_bins_minutes: [0, 15, 30, 60, 90, 120]
+  shap_background_size: 500
+  shap_sample_size: 3000
+  risk_band_policy:
+    low_max_percentile_precision: 0.5
+    high_min_precision: 0.7
+  frozen_manifest_path: "models/FROZEN.json"
+  test_done_path: "reports/TEST_EVAL_DONE.json"
