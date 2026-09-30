@@ -90,3 +90,41 @@ forecast:
   hyper_threshold_mgdl: 180
   spike_delta_mgdl: 50
   allow_last_observation_anchor: false
+
+whatif:
+  horizon_minutes: 180
+  ensemble_size: 50
+  param_window_days: 7
+  min_meal_episodes: 3
+  min_exercise_episodes: 1
+  observer_gain: 0.3
+  prior_strength: 1.0
+  interval_inflation: 15.0
+  quantiles: [0.1, 0.5, 0.9]
+  hypo_threshold_mgdl: 70
+  hyper_threshold_mgdl: 180
+  improvement_margin_mgdl: 10
+  refit_every_hours: 6
+  decision_moment_cap_per_patient: 60
+  manifest_path: "models/WHATIF_FROZEN.json"
+  test_done_path: "reports/WHATIF_TEST_DONE.json"
+  prior_path: "models/whatif_prior_v1.json"
+  scenarios:
+    walk_10min_after_meal:
+      start_after_meal_min: 15
+      duration: 10
+      intensity: 1
+    walk_30min_moderate:
+      start_after_meal_min: 15
+      duration: 30
+      intensity: 2
+    meal_earlier_30min:
+      shift: -30
+    meal_later_30min:
+      shift: 30
+    reduce_carbs_30pct:
+      factor: 0.7
+    split_meal_60min:
+      first_fraction: 0.5
+      gap: 60
+

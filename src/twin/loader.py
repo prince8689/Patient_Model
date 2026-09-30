@@ -80,6 +80,33 @@ def load_forecast_artifacts(config: dict):
     
     return models["xgb"], calibrator, meta
 
+def load_whatif_artifacts(config: dict):
+    if "whatif" not in config or "manifest_path" not in config["whatif"]:
+        return None
+    manifest_path = Path(config["whatif"]["manifest_path"])
+    if not manifest_path.exists():
+        return None
+        
+    with open(manifest_path, "r") as f:
+        manifest = json.load(f)
+        
+    prior_path = Path(config["whatif"]["prior_path"])
+    if not prior_path.exists():
+        return None
+        
+    actual_hash = get_file_sha256(prior_path)
+    if actual_hash != manifest.get("whatif_prior_hash"):
+        raise ValueError(f"WHATIF HASH MISMATCH! {prior_path} has been modified.\nExpected: {manifest.get('whatif_prior_hash')}\nActual: {actual_hash}")
+        
+    config_hash = get_file_sha256(Path("configs/config.yaml"))
+    if config_hash != manifest.get("config_hash"):
+        raise ValueError(f"WHATIF HASH MISMATCH! config.yaml has been modified.\nExpected: {manifest.get('config_hash')}\nActual: {config_hash}")
+        
+    with open(prior_path, "r") as f:
+        prior_data = json.load(f)
+        
+    return prior_data
+
 class TwinRegistry:
     def __init__(self, config: dict):
         self.config = config
@@ -88,6 +115,7 @@ class TwinRegistry:
         # Load artifacts once
         self.pipeline, self.calibrator, self.thresholds, self.meta = load_frozen_artifacts(config)
         self.forecast_artifacts = load_forecast_artifacts(config)
+        self.whatif_artifacts = load_whatif_artifacts(config)
         
         # Try to load explainer
         try:
@@ -111,7 +139,8 @@ class TwinRegistry:
             thresholds=self.thresholds,
             config=self.config,
             explainer=self.explainer,
-            forecast_artifacts=self.forecast_artifacts
+            forecast_artifacts=self.forecast_artifacts,
+            whatif_artifacts=self.whatif_artifacts
         )
         self.twins[patient_id] = twin
         return twin

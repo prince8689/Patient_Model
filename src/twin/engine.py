@@ -16,7 +16,7 @@ from src.models.explain import explain_row
 logger = logging.getLogger(__name__)
 
 class DiaTwin:
-    def __init__(self, profile: PatientProfile, pipeline, calibrator, thresholds: dict, config: dict, explainer=None, forecast_artifacts=None):
+    def __init__(self, profile: PatientProfile, pipeline, calibrator, thresholds: dict, config: dict, explainer=None, forecast_artifacts=None, whatif_artifacts=None):
         self.profile = profile
         self.pipeline = pipeline
         self.calibrator = calibrator
@@ -24,6 +24,7 @@ class DiaTwin:
         self.config = config
         self.explainer = explainer
         self.forecast_artifacts = forecast_artifacts
+        self.whatif_artifacts = whatif_artifacts
         
         self.interval_m = config["sampling_interval_minutes"]
         self.history_buffer_m = config["twin"]["history_buffer_hours"] * 60
@@ -433,6 +434,38 @@ class DiaTwin:
         if not self.buffer:
             raise ValueError("No state available, buffer empty.")
         return self._generate_state([])
+
+    def run_whatif(self, request):
+        if self.whatif_artifacts is None:
+            raise ValueError("What-If artifacts not loaded. Cannot run what-if scenarios.")
+            
+        from src.simulator.whatif import run_whatif as sim_run_whatif
+        
+        prior_data = self.whatif_artifacts
+        prof_dict = self.profile.to_dict()
+        
+        features = prior_data["features"]
+        X = np.array([prof_dict.get(f, 0.0) for f in features])
+        coef = np.array(prior_data["coef"])
+        intercept = np.array(prior_data["intercept"])
+        mean_est = X @ coef.T + intercept
+        
+        prior = {
+            "mean": dict(zip(prior_data["param_names"], mean_est)),
+            "cov": np.array(prior_data["cov"])
+        }
+        
+        df_buf = pd.DataFrame(self.buffer)
+        
+        # pass latest forecast median to whatif as context if available
+        forecast_ctx = None
+        state = self.get_state()
+        if state.forecast and state.forecast.status == "ok":
+            forecast_ctx = {
+                "forecast_median": state.forecast.trajectory_5min["median"]
+            }
+            
+        return sim_run_whatif(df_buf, prof_dict, request, prior, self.config, forecast_context=forecast_ctx)
 
     def get_drivers(self, top_k: int = 3) -> List[Dict[str, Any]]:
         if not hasattr(self, "_last_feature_row") or self.explainer is None:
