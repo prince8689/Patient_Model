@@ -1,4 +1,9 @@
 import numpy as np
+from sklearn.calibration import calibration_curve
+
+def expected_calibration_error(y_true, y_prob, n_bins=10):
+    prob_true, prob_pred = calibration_curve(y_true, y_prob, n_bins=n_bins, strategy='quantile')
+    return float(np.mean(np.abs(prob_true - prob_pred)))
 
 def apply_calibration(prob, calibrator):
     """Applies a trained calibrator to raw probabilities. Returns probabilities bounded in [0, 1]."""
