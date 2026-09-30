@@ -143,3 +143,7 @@ The simulator allows the provider to test hypothetical interventions:
 - **Heart Rate**: Baseline adjusted by age/BMI, affected by activity intensity and sleep state.
 - **Missingness**: Random dropouts at 1.5% and structured multi-sample gaps (25% chance of one 30-90min gap daily).
 - **Day 3 Assumptions added**: Heart rate recovery modeled by fast moving average. Spike rate bounds (8-35%) verified using forward rolling 120-min max on interpolated data.
+
+## 15. Label and Split Definition
+- **Label**: `spike_next_2h` = 1 if max future 2h observed glucose >= current + 50mg/dL.
+- **Split Strategy**: Patient-wise to ensure 0 data leakage. 70/15/15 ratio stratified by HbA1c.

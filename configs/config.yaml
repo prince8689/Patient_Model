@@ -7,6 +7,12 @@ prediction_horizon_minutes: 120
 lookback_window_minutes: 120
 glucose_target_range: [70, 180]
 
+label_min_future_coverage: 0.8
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+
 start_date: "2026-01-01"
 glucose_min: 40
 glucose_max: 400

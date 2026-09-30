@@ -1,0 +1,35 @@
+{
+  "rows": 241920,
+  "patients": 40,
+  "date_range": [
+    "2026-01-01 00:00:00",
+    "2026-01-21 23:55:00"
+  ],
+  "missing_pct": {
+    "patient_id": 0.0,
+    "timestamp": 0.0,
+    "glucose_mgdl": 2.5715112433862433,
+    "heart_rate": 0.0,
+    "steps": 0.0,
+    "sleep_state": 0.0,
+    "meal_carbs_g": 0.0,
+    "activity_intensity": 0.0
+  },
+  "glucose": {
+    "mean": 219.31607049669282,
+    "sd": 71.90349654986122,
+    "min": 40.0,
+    "max": 400.0,
+    "pct_below_70": 0.8901183288855702,
+    "pct_70_180": 30.471066911611842,
+    "pct_above_180": 68.63881475950258
+  },
+  "class_balance_overall_pct": 14.008353087255898,
+  "class_balance_splits_pct": {
+    "train": 13.7967695005036,
+    "val": 14.241565799639455,
+    "test": 14.757562599507889
+  },
+  "duplicate_timestamps": 0,
+  "max_glucose_gap_mins": 90
+}
