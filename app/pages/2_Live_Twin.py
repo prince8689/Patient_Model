@@ -154,3 +154,6 @@ with col_side:
         st.write("No recent alerts.")
         
 st.download_button("Download Twin State (JSON)", data=export_state_json(pid, current), file_name=f"twin_{pid}.json")
+
+if st.button("Try a what-if at this moment"):
+    st.switch_page("pages/3_What_If_Simulator.py")

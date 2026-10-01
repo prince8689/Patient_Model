@@ -136,7 +136,25 @@ app:
   forecast_hours: 2
   risk_history_hours: 48
   default_moment_strategy: "most_interesting"
-  use_demo_bundle: false
+  use_demo_bundle: true
+  whatif_default_carbs_g: 60
+  whatif_default_meal_offset_min: 20
+  whatif_carbs_range: [10, 150]
+  whatif_offset_range_min: [0, 120]
+  activity_duration_range_min: [5, 60]
+  activity_intensity_options: [1, 2]
+  whatif_presets:
+    - name: "Typical breakfast 50 g in 15 min"
+      plan: {meal: {carbs: 50, offset_min: 15}}
+      scenarios: ["baseline"]
+    - name: "Large dinner 90 g in 30 min"
+      plan: {meal: {carbs: 90, offset_min: 30}}
+      scenarios: ["baseline", "walk_10min_after_meal"]
+    - name: "No meal, walk now"
+      plan: {meal: null}
+      scenarios: ["baseline", "walk_30min_moderate"]
+  result_cache_seconds: 3600
+  ranking_min_confidence: "medium"
   palette:
     low: "#2ecc71"
     medium: "#f1c40f"
@@ -147,4 +165,13 @@ app:
     meal: "#9b59b6"
     activity: "#e67e22"
     actual_overlay: "#95a5a6"
+  scenario_colors:
+    baseline: "#34495e"
+    walk_10min_after_meal: "#1abc9c"
+    walk_30min_moderate: "#16a085"
+    meal_earlier_30min: "#2980b9"
+    meal_later_30min: "#8e44ad"
+    reduce_carbs_30pct: "#c0392b"
+    split_meal_60min: "#d35400"
+    custom: "#f39c12"
   disclaimer: "Educational prototype with synthetic data. Not a medical device. Not for clinical decisions."

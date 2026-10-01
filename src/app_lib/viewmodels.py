@@ -134,8 +134,8 @@ def twin_view(patient_id: str, as_of: pd.Timestamp, include_actual_overlay: bool
             view["drivers"].append({
                 "name": desc,
                 "raw_name": name,
-                "value": d["value"],
-                "contribution": d["contribution"]
+                "value": d.get("feature_value", 0.0),
+                "contribution": d.get("shap_value", 0.0)
             })
             
     view["alerts_48h"] = []
