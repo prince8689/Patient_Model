@@ -111,10 +111,11 @@ The simulator allows the provider to test hypothetical interventions:
 - **Estimation mechanism:** The model is re-run with the altered future features to generate a new simulated glucose trajectory and a revised `spike_next_2h` probability.
 
 ## 11. Dashboard Views (Streamlit)
+*Status: Day 11 complete (Patient List, Live Twin).*
 - **Patient List:** A triage view sorting patients by current risk score.
 - **Live Twin:** The main detailed view for a single patient showing real-time charts and current Twin State.
-- **What-if Simulator:** Interactive form to select interventions and overlay the simulated outcome on the current trajectory.
-- **Model Insights:** Global SHAP importance, evaluation metrics, and feature distributions.
+- **What-if Simulator:** Placeholder (Day 12).
+- **Model Insights:** Placeholder (Day 13).
 - **About:** Overview of the methodology and project details.
 
 ## 12. Ethics and Limitations

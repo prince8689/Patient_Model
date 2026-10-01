@@ -6,7 +6,7 @@
     "models/xgb_v1_meta.json": "1132f458058f21603a2107f1dd87a4590a2096b177cb92e2aa676415d815f5ff",
     "models/calibrator_v1.joblib": "e323a71c9078ba5e936c40bd640ce169a318caea83b6b03187a3effbf3dd9f04",
     "models/thresholds_v1.json": "18ba254a1454b300eeaf3f88c7774aa351d94d7b689d413e1edcb366d632c754",
-    "configs/config.yaml": "875b4ce941a4bb67b893436235e0847c798f178943cb5693e25266bcb682225b",
+    "configs/config.yaml": "8329f2d4308792e66903bd99f4d3fb419508c18f39c74e9accd1f89575131937",
     "src/features/registry.py": "4dbff058943ae4e502072a9039efbaf7aa402457b99e4861e8118f69623dab11"
   },
   "features": [

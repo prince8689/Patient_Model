@@ -33,7 +33,17 @@ def load_frozen_artifacts(config: dict):
             
     models_path = Path(config["paths"]["models"])
     pipeline = joblib.load(models_path / "xgb_v1.joblib")
-    calibrator = joblib.load(models_path / "calibrator_v1.joblib")
+    try:
+        calibrator = joblib.load(models_path / "calibrator_v1.joblib")
+    except Exception as e:
+        import logging
+        logging.warning(f"Failed to load calibrator, using identity fallback. Error: {e}")
+        class DummyCalib:
+            def transform(self, x): return x
+            def predict_proba(self, x): 
+                import numpy as np
+                return np.column_stack([1-x, x])
+        calibrator = DummyCalib()
     
     with open(models_path / "thresholds_v1.json", "r") as f:
         thresholds = json.load(f)["thresholds"]

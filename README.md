@@ -51,7 +51,16 @@ python scripts/build_features.py
 This generates `patients.csv` (EHR data) and `patient_sim_params.csv` (hidden simulation logic parameters) inside the `data/raw/` directory, and constructs features in `data/processed/`.
 
 ## Usage
-*To be added in later phases.*
+The prototype dashboard (built with Streamlit) provides a clinician-facing view of the Twin State and forecast:
+
+```bash
+streamlit run app/main.py
+```
+
+Features included:
+- **Patient List**: Triage patients by risk band.
+- **Live Twin**: Detailed state, forecasts, SHAP drivers, and historical alerts.
+- **Demo Mode**: The dashboard can run from a precomputed bundle (`use_demo_bundle: true` in `config.yaml`).
 
 ## Results
 *To be added post-training.*

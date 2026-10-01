@@ -128,3 +128,23 @@ whatif:
       first_fraction: 0.5
       gap: 60
 
+app:
+  title: "DiaTwin"
+  subtitle: "Type 2 Diabetes Digital Twin - Happiest Health Digital Twin Challenge 2026 (prototype)"
+  demo_patient_ids: null
+  default_history_hours: 6
+  forecast_hours: 2
+  risk_history_hours: 48
+  default_moment_strategy: "most_interesting"
+  use_demo_bundle: false
+  palette:
+    low: "#2ecc71"
+    medium: "#f1c40f"
+    high: "#e74c3c"
+    glucose: "#3498db"
+    forecast_band: "rgba(52, 152, 219, 0.2)"
+    target_range: "rgba(189, 195, 199, 0.3)"
+    meal: "#9b59b6"
+    activity: "#e67e22"
+    actual_overlay: "#95a5a6"
+  disclaimer: "Educational prototype with synthetic data. Not a medical device. Not for clinical decisions."
