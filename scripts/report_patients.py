@@ -25,7 +25,7 @@ def main():
     sim_params_df = pd.read_csv(sim_params_path)
     merged_df = patients_df.merge(sim_params_df, on="patient_id")
     
-    # Plot 1: day2_hba1c_by_archetype.png (boxplot)
+    # Plot 1: hba1c_by_archetype.png (boxplot)
     plt.figure(figsize=(8, 6))
     archetypes = ["well_controlled", "moderate", "poorly_controlled"]
     data = [merged_df[merged_df["archetype"] == a]["hba1c"] for a in archetypes]
@@ -35,10 +35,10 @@ def main():
     plt.xlabel("Archetype")
     plt.ylabel("HbA1c (%)")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day2_hba1c_by_archetype.png", dpi=150)
+    plt.savefig(fig_dir / "hba1c_by_archetype.png", dpi=150)
     plt.close()
     
-    # Plot 2: day2_age_bmi_hba1c.png (histograms, 3 panels)
+    # Plot 2: age_bmi_hba1c.png (histograms, 3 panels)
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
     axes[0].hist(patients_df["age"], bins=10, edgecolor='black', color='skyblue')
     axes[0].set_title("Age Distribution")
@@ -56,10 +56,10 @@ def main():
     axes[2].set_ylabel("Count")
     
     plt.tight_layout()
-    plt.savefig(fig_dir / "day2_age_bmi_hba1c.png", dpi=150)
+    plt.savefig(fig_dir / "age_bmi_hba1c.png", dpi=150)
     plt.close()
     
-    # Plot 3: day2_correlation_heatmap.png
+    # Plot 3: cohort_correlation_heatmap.png
     num_cols = ["age", "bmi", "hba1c", "diabetes_duration_years", "baseline_insulin_sensitivity"]
     corr = patients_df[num_cols].corr()
     
@@ -79,7 +79,7 @@ def main():
             
     plt.title("Correlation Heatmap of Key Clinical Variables", pad=20)
     plt.tight_layout()
-    plt.savefig(fig_dir / "day2_correlation_heatmap.png", dpi=150)
+    plt.savefig(fig_dir / "cohort_correlation_heatmap.png", dpi=150)
     plt.close()
     
     print("Figures saved in reports/figures/")

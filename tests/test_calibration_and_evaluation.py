@@ -7,7 +7,7 @@ from src.models.explain import explain_row
 
 def test_calibrator_fitting_data():
     # Verify that the test or val sets are not used to fit the calibrator.
-    # In calibrate_day7.py, we only fit on OOF train. We can simulate this check.
+    # In calibrate_model.py, we only fit on OOF train. We can simulate this check.
     df = pd.DataFrame({"patient_id": [1, 1, 2, 2], "split": ["train", "val", "train", "test"], "valid": [1, 1, 1, 1]})
     train_mask = (df["split"] == "train") & (df["valid"] == 1)
     assert sum(train_mask) == 2

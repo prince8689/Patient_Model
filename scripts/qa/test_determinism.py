@@ -136,8 +136,11 @@ def test_twin_replay_determinism():
     # Snapshot / restore
     snap = t2.snapshot()
     registry3 = TwinRegistry(config)
+    from src.twin.loader import load_frozen_artifacts
+    artifacts = load_frozen_artifacts(config)
+    
     t3 = registry3.register("P001")
-    t3.restore(snap)
+    t3.restore(snap, pipeline=artifacts["pipeline"], calibrator=artifacts["calibrator"], thresholds=artifacts["thresholds"], config=config)
     state3 = t3.get_state()
     
     # Remove things that aren't strictly restorable (if any)

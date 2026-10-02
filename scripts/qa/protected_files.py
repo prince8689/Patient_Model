@@ -103,6 +103,9 @@ def verify_manifests():
             else:
                 if path_str.endswith("config.yaml"):
                     try:
+                        import sys
+                        if str(root) not in sys.path:
+                            sys.path.insert(0, str(root))
                         from scripts.qa.config_audit import audit_config
                         audit_config()
                         manifest_res[path_str] = "match"

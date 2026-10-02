@@ -60,7 +60,7 @@ def main():
     plt.xticks(rotation=45)
     plt.legend()
     plt.tight_layout()
-    plt.savefig(fig_dir / "day9_demo_live_forecast.png", dpi=150)
+    plt.savefig(fig_dir / "demo_live_forecast.png", dpi=150)
     plt.close()
     
     print("Demo figure saved.")

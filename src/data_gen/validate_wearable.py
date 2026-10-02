@@ -74,7 +74,7 @@ def validate_wearable(wearable_df: pd.DataFrame, patients_df: pd.DataFrame, sim_
     if valid_ex.any():
         mean_pre = pre_ex[valid_ex].mean()
         mean_post = post_ex[valid_ex].mean()
-        # For a truly robust physiological check, we add a small buffer or just check >
+        # For a truly strict physiological check, we add a small buffer or just check >
         # Actually just check mean_post < mean_pre
         if mean_post >= mean_pre:
             raise ValueError(f"Post-exercise glucose ({mean_post:.1f}) not lower than pre-exercise ({mean_pre:.1f})")

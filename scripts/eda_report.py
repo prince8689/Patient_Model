@@ -24,7 +24,7 @@ def main():
     merged = labels.merge(wearable, on=["patient_id", "timestamp"]).merge(splits, on="patient_id").merge(sim_params[["patient_id", "archetype"]], on="patient_id")
     valid_df = merged[merged["valid"] == 1].copy()
     
-    # 1. day4_label_rate_by_hour.png
+    # 1. label_rate_by_hour.png
     valid_df["hour"] = valid_df["timestamp"].dt.hour
     hourly_rate = valid_df.groupby("hour")["spike_next_2h"].mean()
     plt.figure(figsize=(8, 5))
@@ -33,10 +33,10 @@ def main():
     plt.ylabel("Spike Probability")
     plt.xlabel("Hour of Day")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day4_label_rate_by_hour.png", dpi=150)
+    plt.savefig(fig_dir / "label_rate_by_hour.png", dpi=150)
     plt.close()
     
-    # 2. day4_label_rate_per_patient.png
+    # 2. label_rate_per_patient.png
     pat_rates = valid_df.groupby(["patient_id", "split"])["spike_next_2h"].mean().reset_index()
     pat_rates = pat_rates.sort_values("spike_next_2h")
     colors = {"train": "blue", "val": "orange", "test": "green"}
@@ -49,10 +49,10 @@ def main():
     handles = [plt.Rectangle((0,0),1,1, color=colors[s]) for s in colors]
     plt.legend(handles, colors.keys())
     plt.tight_layout()
-    plt.savefig(fig_dir / "day4_label_rate_per_patient.png", dpi=150)
+    plt.savefig(fig_dir / "label_rate_per_patient.png", dpi=150)
     plt.close()
     
-    # 3. day4_glucose_distribution_by_split.png
+    # 3. glucose_distribution_by_split.png
     plt.figure(figsize=(8, 5))
     for s in ["train", "val", "test"]:
         merged[merged["split"] == s]["glucose_mgdl"].plot(kind="kde", label=s)
@@ -61,10 +61,10 @@ def main():
     plt.xlim(40, 400)
     plt.legend()
     plt.tight_layout()
-    plt.savefig(fig_dir / "day4_glucose_distribution_by_split.png", dpi=150)
+    plt.savefig(fig_dir / "glucose_distribution_by_split.png", dpi=150)
     plt.close()
     
-    # 4. day4_missingness_patterns.png
+    # 4. missingness_patterns.png
     merged["is_missing"] = merged["glucose_mgdl"].isna()
     miss_by_hour = merged.groupby(merged["timestamp"].dt.hour)["is_missing"].mean()
     
@@ -84,10 +84,10 @@ def main():
     plt.title("Distribution of Gap Lengths (minutes)")
     plt.xlabel("Gap Length (min)")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day4_missingness_patterns.png", dpi=150)
+    plt.savefig(fig_dir / "missingness_patterns.png", dpi=150)
     plt.close()
     
-    # 5. day4_spike_examples.png
+    # 5. spike_examples.png
     plt.figure(figsize=(15, 10))
     pos_samples = valid_df[valid_df["spike_next_2h"] == 1].sample(3, random_state=42)
     neg_samples = valid_df[valid_df["spike_next_2h"] == 0].sample(3, random_state=42)
@@ -108,10 +108,10 @@ def main():
         if i == 0: plt.legend()
         
     plt.tight_layout()
-    plt.savefig(fig_dir / "day4_spike_examples.png", dpi=150)
+    plt.savefig(fig_dir / "spike_examples.png", dpi=150)
     plt.close()
     
-    # 6. day4_meal_vs_spike.png
+    # 6. meal_vs_spike.png
     meal_times = merged[merged["meal_carbs_g"] > 0][["patient_id", "timestamp"]].copy()
     meal_times["last_meal"] = meal_times["timestamp"]
     merged_sorted = merged.sort_values("timestamp")
@@ -129,17 +129,17 @@ def main():
     plt.xlabel("Minutes Since Last Meal (30 min bins)")
     plt.ylabel("Spike Rate")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day4_meal_vs_spike.png", dpi=150)
+    plt.savefig(fig_dir / "meal_vs_spike.png", dpi=150)
     plt.close()
     
-    # 7. day4_archetype_spike_rate.png
+    # 7. archetype_spike_rate.png
     arch_spike = valid_df.groupby("archetype")["spike_next_2h"].mean()
     plt.figure(figsize=(6, 5))
     arch_spike.plot(kind="bar", color="teal")
     plt.title("Spike Rate by Archetype\n(FOR ANALYSIS ONLY - Archetype is hidden from models)")
     plt.ylabel("Spike Rate")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day4_archetype_spike_rate.png", dpi=150)
+    plt.savefig(fig_dir / "archetype_spike_rate.png", dpi=150)
     plt.close()
 
 if __name__ == "__main__":

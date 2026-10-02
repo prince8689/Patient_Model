@@ -178,7 +178,7 @@ def main():
     plt.xlabel("Horizon (minutes)")
     plt.ylabel("MAE (mg/dL)")
     plt.legend()
-    plt.savefig(fig_dir / "day9_val_mae_by_horizon.png", dpi=150)
+    plt.savefig(fig_dir / "val_mae_by_horizon.png", dpi=150)
     plt.close()
     
     # 2. Plot Coverage
@@ -190,7 +190,7 @@ def main():
     plt.xlabel("Horizon (minutes)")
     plt.ylabel("Coverage")
     plt.legend()
-    plt.savefig(fig_dir / "day9_val_coverage_by_horizon.png", dpi=150)
+    plt.savefig(fig_dir / "val_coverage_by_horizon.png", dpi=150)
     plt.close()
     
     # 3. Pred vs Actual 60m
@@ -205,7 +205,7 @@ def main():
     plt.xlabel("Actual 60m Future (mg/dL)")
     plt.ylabel("Predicted 60m Future (mg/dL)")
     plt.title("60-min Forecast Pred vs Actual (VAL)")
-    plt.savefig(fig_dir / "day9_val_pred_vs_actual_60m.png", dpi=150)
+    plt.savefig(fig_dir / "val_pred_vs_actual_60m.png", dpi=150)
     plt.close()
     
     # 4. Example forecasts
@@ -235,7 +235,7 @@ def main():
         plt.title(f"Patient {pat}")
         plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig(fig_dir / "day9_val_example_forecasts.png", dpi=150)
+    plt.savefig(fig_dir / "val_example_forecasts.png", dpi=150)
     plt.close()
     
 if __name__ == "__main__":

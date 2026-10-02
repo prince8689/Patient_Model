@@ -20,7 +20,7 @@ def main():
     
     merged = wearable_df.merge(sim_params_df[["patient_id", "archetype"]], on="patient_id")
     
-    # 1. day3_sample_patient_3days.png
+    # 1. sample_patient_3days.png
     plt.figure(figsize=(15, 10))
     archetypes = ["well_controlled", "moderate", "poorly_controlled"]
     for i, arch in enumerate(archetypes):
@@ -42,10 +42,10 @@ def main():
             plt.xlabel("Time (5-min intervals)")
             
     plt.tight_layout()
-    plt.savefig(fig_dir / "day3_sample_patient_3days.png", dpi=150)
+    plt.savefig(fig_dir / "sample_patient_3days.png", dpi=150)
     plt.close()
     
-    # 2. day3_mean_daily_glucose_profile.png
+    # 2. mean_daily_glucose_profile.png
     merged["hour"] = (merged.groupby("patient_id").cumcount() % 288) / 12.0
     hourly_mean = merged.groupby(["archetype", "hour"])["glucose_mgdl"].mean().reset_index()
     
@@ -60,10 +60,10 @@ def main():
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig(fig_dir / "day3_mean_daily_glucose_profile.png", dpi=150)
+    plt.savefig(fig_dir / "mean_daily_glucose_profile.png", dpi=150)
     plt.close()
     
-    # 3. day3_time_in_range_by_archetype.png
+    # 3. time_in_range_by_archetype.png
     def calc_tir(x):
         below = (x < 70).mean() * 100
         in_range = x.between(70, 180).mean() * 100
@@ -78,10 +78,10 @@ def main():
     plt.xticks(rotation=0)
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
     plt.tight_layout()
-    plt.savefig(fig_dir / "day3_time_in_range_by_archetype.png", dpi=150)
+    plt.savefig(fig_dir / "time_in_range_by_archetype.png", dpi=150)
     plt.close()
     
-    # 4. day3_hr_by_sleep_state.png
+    # 4. hr_by_sleep_state.png
     plt.figure(figsize=(8, 6))
     sleep_states = ["awake", "light", "deep", "rem"]
     data = [merged[merged["sleep_state"] == s]["heart_rate"].dropna() for s in sleep_states]
@@ -90,7 +90,7 @@ def main():
     plt.title("Heart Rate by Sleep State")
     plt.ylabel("Heart Rate (bpm)")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day3_hr_by_sleep_state.png", dpi=150)
+    plt.savefig(fig_dir / "hr_by_sleep_state.png", dpi=150)
     plt.close()
     
     print("Wearable figures saved in reports/figures/")

@@ -20,4 +20,10 @@ def load_config(config_path: str = "configs/config.yaml") -> dict:
     with open(config_file, "r") as f:
         config = yaml.safe_load(f)
         
+    import os
+    if os.environ.get("DIATWIN_DEMO_BUNDLE") == "1":
+        if "app" not in config:
+            config["app"] = {}
+        config["app"]["use_demo_bundle"] = True
+        
     return config

@@ -3,7 +3,7 @@
 To ensure strict compliance with a "Frozen-before-test" protocol and prevent data leakage, DiaTwin employs an end-to-end integrity verification system.
 
 ## 1. Frozen Manifests
-The model artifacts, critical thresholds, and core pipeline components are cryptographically hashed using SHA256 during the `freeze` phase of the project (Day 7, Day 9, Day 10). These hashes are stored in JSON manifests:
+The model artifacts, critical thresholds, and core pipeline components are cryptographically hashed using SHA256 during the `freeze` phase of the project. These hashes are stored in JSON manifests:
 - `models/FROZEN.json` (Risk Pipeline)
 - `models/FORECAST_FROZEN.json` (Forecasting Module)
 - `models/WHATIF_FROZEN.json` (What-if Simulation Engine)

@@ -79,7 +79,7 @@ def main():
 - **Median Lead Time**: TBD
 
 ## Subgroup Performance
-(Generated via scripts/error_analysis_day7.py)
+(Generated via scripts/error_analysis.py)
 
 ## Limitations
 - Built entirely on synthetic data.

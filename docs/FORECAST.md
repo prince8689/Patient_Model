@@ -1,7 +1,7 @@
-# Forecast Module (Day 9)
+# Forecast Module
 
 ## Architecture
-The DiaTwin forecast module predicts patient glucose trajectories for the next 120 minutes in 5-minute intervals. It is designed to provide robust, probabilistic forecasts of future states using Conformal Quantile Regression (CQR).
+The DiaTwin forecast module predicts patient glucose trajectories for the next 120 minutes in 5-minute intervals. It is designed to provide , probabilistic forecasts of future states using Conformal Quantile Regression (CQR).
 
 ### 1. Baselines
 We evaluate against three baselines to justify the complexity of learning models:
@@ -21,7 +21,7 @@ To achieve the nominal 80% coverage interval, we calibrate the outputs on the `v
 The model outputs discrete horizons (15, 30, 60, 90, 120m). We use monotone Piecewise Cubic Hermite Interpolating Polynomial (PCHIP) interpolation to infer the trajectory at 5-minute increments between horizons, preserving monotonicity and preventing artificial spikes.
 
 ### 5. Spike Consistency
-The twin engine verifies that the forecast trajectory is probabilistically consistent with the frozen Day 7 classification model. Discrepancies are flagged in the forecast result object.
+The twin engine verifies that the forecast trajectory is probabilistically consistent with the frozen classification model. Discrepancies are flagged in the forecast result object.
 
 ## Evaluation
 Test evaluation is guarded by a freeze step (`models/FORECAST_FROZEN.json`). Metrics include MAE, RMSE, Coverage (Calibrated and Uncalibrated), and Clarke Error Grid.

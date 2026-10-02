@@ -90,7 +90,7 @@ def main():
     plt.title("Average Missing Percentage by Feature Group")
     plt.ylabel("Missing %")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day5_feature_missingness.png", dpi=150)
+    plt.savefig(fig_dir / "feature_missingness.png", dpi=150)
     plt.close()
     
     top_df = auc_df.head(15)
@@ -100,7 +100,7 @@ def main():
     plt.xlabel("ROC-AUC")
     plt.xlim(0.5, 1.0)
     plt.tight_layout()
-    plt.savefig(fig_dir / "day5_top_feature_auc.png", dpi=150)
+    plt.savefig(fig_dir / "top_feature_auc.png", dpi=150)
     plt.close()
     
     top_30_feats = auc_df.head(30)["feature"].tolist()
@@ -109,7 +109,7 @@ def main():
     sns.heatmap(top_corr, cmap="coolwarm", center=0, vmin=-1, vmax=1)
     plt.title("Correlation Heatmap (Top 30 Features)")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day5_feature_correlation_heatmap.png", dpi=150)
+    plt.savefig(fig_dir / "feature_correlation_heatmap.png", dpi=150)
     plt.close()
     
     key_feats = ["glu_delta_30m", "meal_cob_estimate", "meal_min_since_last", "glu_current", "act_steps_last_60m", "hr_vs_personal_baseline"]
@@ -121,7 +121,7 @@ def main():
         sns.violinplot(data=train_df, x="spike_next_2h", y=f, palette="Set2")
         plt.title(f)
     plt.tight_layout()
-    plt.savefig(fig_dir / "day5_feature_distributions_by_label.png", dpi=150)
+    plt.savefig(fig_dir / "feature_distributions_by_label.png", dpi=150)
     plt.close()
 
 if __name__ == "__main__":

@@ -3,23 +3,23 @@
 ## Page Map
 1. **Patient List**: Overview of the demo patient cohort. Filterable by risk band and data status.
 2. **Live Twin**: The core view of a patient's digital twin state at a specific point in time (the "as-of" time), showing KPIs, forecast, top drivers, alerts, and context.
-3. **What-if Simulator**: Placeholder for Day 12.
-4. **Model Insights**: Placeholder for Day 13.
+3. **What-if Simulator**: Placeholder for What-if Simulator.
+4. **Model Insights**: Placeholder for Model Insights.
 5. **About**: Project information and disclaimers.
 
 ## Data Flow Diagram
 ```mermaid
 graph TD
-    A[Frozen Artifacts / config] --> B(Twin Engine & Timeline generation)
-    D[Raw Data] --> B
-    B --> C[(Timeline Parquet Cache)]
-    B --> F(Dynamic State Evaluation)
-    
-    C --> V(View-Models)
-    F --> V
-    
-    V --> S1[Patient List View]
-    V --> S2[Live Twin View]
+ A[Frozen Artifacts / config] --> B(Twin Engine & Timeline generation)
+ D[Raw Data] --> B
+ B --> C[(Timeline Parquet Cache)]
+ B --> F(Dynamic State Evaluation)
+ 
+ C --> V(View-Models)
+ F --> V
+ 
+ V --> S1[Patient List View]
+ V --> S2[Live Twin View]
 ```
 
 ## Panels & Provenance

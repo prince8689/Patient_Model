@@ -130,7 +130,7 @@ def main():
     plt.legend()
     
     plt.tight_layout()
-    plt.savefig(fig_dir / "day7_calibration_val_before_after.png", dpi=150)
+    plt.savefig(fig_dir / "calibration_val_before_after.png", dpi=150)
     
 if __name__ == "__main__":
     main()

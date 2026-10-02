@@ -37,9 +37,9 @@ def main():
         ("labels_and_splits", "scripts/build_labels_and_splits.py", []),
         ("features", "scripts/build_features.py", []),
         ("leakage_check", "scripts/leakage_smoke_test.py", []),
-        ("train_day6", "scripts/train_day6.py", []),
-        ("calibrate_day7", "scripts/calibrate_day7.py", []),
-        ("finalize_thresholds", "scripts/finalize_thresholds_day7.py", []),
+        ("train_model", "scripts/train_model.py", []),
+        ("calibrate_model", "scripts/calibrate_model.py", []),
+        ("finalize_thresholds", "scripts/finalize_thresholds.py", []),
         ("freeze_model", "scripts/freeze_model.py", []),
     ]
     
@@ -55,8 +55,8 @@ def main():
         stages.append(("final_test_eval", "scripts/final_test_eval.py", ["--allow_test"]))
         
     stages.extend([
-        ("shap_day7", "scripts/shap_day7.py", []),
-        ("clinical_utility", "scripts/clinical_utility_day7.py", []),
+        ("shap_analysis", "scripts/shap_analysis.py", []),
+        ("clinical_utility", "scripts/evaluate_clinical_utility.py", []),
         ("build_forecast_targets", "scripts/build_forecast_targets.py", []),
         ("train_forecast", "scripts/train_forecast.py", []),
         ("freeze_forecast", "scripts/freeze_forecast.py", []),

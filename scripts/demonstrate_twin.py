@@ -56,7 +56,7 @@ def main():
         
     ax2.legend(loc="upper right")
     plt.tight_layout()
-    plt.savefig(fig_dir / "day8_twin_timeline_example.png", dpi=150)
+    plt.savefig(fig_dir / "twin_timeline_example.png", dpi=150)
     plt.close()
     
     # 2. State Snapshot
@@ -87,7 +87,7 @@ def main():
         text += f"\n*** ALERT: {state.active_alert.message} ***\n"
         
     ax.text(0.05, 0.95, text, va='top', family='monospace', size=10)
-    plt.savefig(fig_dir / "day8_twin_state_snapshot.png", dpi=150)
+    plt.savefig(fig_dir / "twin_state_snapshot.png", dpi=150)
     plt.close()
     
     # 3. Fault recovery
@@ -129,7 +129,7 @@ def main():
             last_status = s
             
     plt.tight_layout()
-    plt.savefig(fig_dir / "day8_fault_recovery.png", dpi=150)
+    plt.savefig(fig_dir / "fault_recovery.png", dpi=150)
     plt.close()
     
     # 4. Latency
@@ -154,7 +154,7 @@ def main():
     plt.title("Ingest Latency per Sample (ms)")
     plt.xlabel("Latency (ms)")
     plt.legend()
-    plt.savefig(fig_dir / "day8_latency.png", dpi=150)
+    plt.savefig(fig_dir / "latency.png", dpi=150)
     plt.close()
     
     med_all = np.median(latencies)

@@ -107,7 +107,7 @@ def challenge_mapping():
         {"Requirement": "Integrate real-time wearable data with EHR", "Implementation": "Feature engineering pipeline", "Notes": "Fuses static profile with time-series"},
         {"Requirement": "Predict adverse health events", "Implementation": "Risk module (XGBoost)", "Notes": "Predicts spikes in next 2 hours"},
         {"Requirement": "Personalize treatment protocols", "Implementation": "What-if Simulator", "Notes": "Treatment personalization is limited to lifestyle scenarios: meals and activity; no medication changes"},
-        {"Requirement": "GitHub repository with documentation", "Implementation": "docs/ folder", "Notes": "Comprehensive docs included"},
+        {"Requirement": "GitHub repository with documentation", "Implementation": "docs/ folder", "Notes": "Docs included"},
         {"Requirement": "Working prototype demo", "Implementation": "Streamlit App", "Notes": "Demo bundle mode enabled"}
     ]
 

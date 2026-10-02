@@ -90,7 +90,7 @@ def main():
         plt.bar(x, y, color="orange")
         plt.title("Effect of Sensor Missingness on ROC-AUC")
         plt.ylim(0.5, 1.0)
-        plt.savefig(fig_dir / "day7_missing_data_effect.png", dpi=150)
+        plt.savefig(fig_dir / "missing_data_effect.png", dpi=150)
         plt.close()
 
 if __name__ == "__main__":

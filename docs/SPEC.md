@@ -13,13 +13,13 @@ The architecture comprises six key layers: Data Layer, Feature Engineering, Pred
 
 ```mermaid
 flowchart TD
-    A[Data Layer (EHR & Wearables)] --> B[Feature Engineering]
-    B --> C[Prediction Model (XGBoost)]
-    B --> D[Twin State Engine]
-    C --> D
-    D --> E[What-if Simulator]
-    D --> F[Streamlit Dashboard]
-    E --> F
+ A[Data Layer (EHR & Wearables)] --> B[Feature Engineering]
+ B --> C[Prediction Model (XGBoost)]
+ B --> D[Twin State Engine]
+ C --> D
+ D --> E[What-if Simulator]
+ D --> F[Streamlit Dashboard]
+ E --> F
 ```
 
 ## 4. Data Schema
@@ -111,11 +111,11 @@ The simulator allows the provider to test hypothetical interventions:
 - **Estimation mechanism:** The model is re-run with the altered future features to generate a new simulated glucose trajectory and a revised `spike_next_2h` probability.
 
 ## 11. Dashboard Views (Streamlit)
-*Status: Day 11 complete (Patient List, Live Twin).*
+*Status: complete (Patient List, Live Twin).*
 - **Patient List:** A triage view sorting patients by current risk score.
 - **Live Twin:** The main detailed view for a single patient showing real-time charts and current Twin State.
-- **What-if Simulator:** Placeholder (Day 12).
-- **Model Insights:** Placeholder (Day 13).
+- **What-if Simulator:** Placeholder .
+- **Model Insights:** Placeholder .
 - **About:** Overview of the methodology and project details.
 
 ## 12. Ethics and Limitations
@@ -136,22 +136,22 @@ The simulator allows the provider to test hypothetical interventions:
 - **Behaviors**: Meals, sleep states, and step counts generated probabilistically based on patient archetype.
 - **Heart Rate**: Baseline adjusted by age/BMI, affected by activity intensity and sleep state.
 - **Missingness**: Random dropouts at 1.5% and structured multi-sample gaps (25% chance of one 30-90min gap daily).
-- **Day 3 Assumptions added**: Heart rate recovery modeled by fast moving average. Spike rate bounds (8-35%) verified using forward rolling 120-min max on interpolated data.
+- ** Assumptions added**: Heart rate recovery modeled by fast moving average. Spike rate bounds (8-35%) verified using forward rolling 120-min max on interpolated data.
 
 ## 15. Label and Split Definition
 - **Label**: `spike_next_2h` = 1 if max future 2h observed glucose >= current + 50mg/dL.
 - **Split Strategy**: Patient-wise to ensure 0 data leakage. 70/15/15 ratio stratified by HbA1c.
 
-## 16. Twin Engine Architecture (Day 8)
+## 16. Twin Engine Architecture 
 - **Engine Definition**: A stream processor (`DiaTwin`) that handles sample-by-sample ingestion, filling up to 36 hours of historical state in a buffer.
 - **Explainability Fault Tolerance**: SHAP module may fail to load due to OS-level DLL constraints (e.g. AppLocker blocking `_reachability.pyd`). The Twin Engine handles this gracefully by returning empty driver lists instead of crashing.
 - **Security**: Strict SHA256 freezing of all model artifacts (`models/FROZEN.json`). Modifying configurations requires explicitly acknowledging the updated hash.
 - **Parity Guarantees**: The streaming engine mathematically equals the batch pipeline outputs with 1e-6 tolerance on features and 1e-5 on probability outputs.
 
-## 17. Forecasting Architecture (Day 9)
+## 17. Forecasting Architecture 
 - **Interpolation**: The forecast uses PCHIP interpolation to derive 5-min trajectories between discrete horizons (15, 30, 60, 90, 120m) ensuring monotonicity.
 - **Coverage**: Conformal Quantile Regression (CQR) is fit on the VAL set to strictly enforce nominal 80% coverage.
 - **Twin Fallback**: The engine supports `allow_last_observation_anchor` flag to allow using history if current glucose is missing but a recent one is available.
 
-## 18. Dashboard and Insights (Day 13)
+## 18. Dashboard and Insights 
 - **Configuration Hashing**: Adding UI configurations to `configs/config.yaml` changed its file hash. To preserve functionality in the frozen artifact loader, `models/FROZEN.json`, `models/FORECAST_FROZEN.json`, and `models/WHATIF_FROZEN.json` were manually updated with the new hash. This was an explicit decision to satisfy the "keep existing keys and add config additions" constraint without breaking `src.twin.loader`.

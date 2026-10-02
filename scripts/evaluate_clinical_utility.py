@@ -121,7 +121,7 @@ def main():
     plt.title("Clinical Utility: Recall vs Alert Burden")
     plt.legend()
     plt.grid(True)
-    plt.savefig(fig_dir / "day7_event_recall_vs_alert_burden.png", dpi=150)
+    plt.savefig(fig_dir / "event_recall_vs_alert_burden.png", dpi=150)
     plt.close()
     
     plt.figure(figsize=(8, 5))
@@ -130,7 +130,7 @@ def main():
     plt.title(f"Lead Time Histogram (t_med)\nMedian: {med_lt:.0f} mins")
     plt.xlabel("Lead Time (Minutes)")
     plt.ylabel("Events Caught")
-    plt.savefig(fig_dir / "day7_lead_time_hist.png", dpi=150)
+    plt.savefig(fig_dir / "lead_time_hist.png", dpi=150)
     plt.close()
 
 if __name__ == "__main__":

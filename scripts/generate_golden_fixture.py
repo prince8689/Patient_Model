@@ -45,9 +45,9 @@ def main():
     
     golden_dir = Path("tests/golden")
     golden_dir.mkdir(parents=True, exist_ok=True)
-    df.to_parquet(golden_dir / "day3_glucose_fixture.parquet")
+    df.to_parquet(golden_dir / "glucose_fixture.parquet")
     
-    sha = hashlib.sha256(open(golden_dir / "day3_glucose_fixture.parquet", "rb").read()).hexdigest()
+    sha = hashlib.sha256(open(golden_dir / "glucose_fixture.parquet", "rb").read()).hexdigest()
     print(f"Golden fixture created. SHA256: {sha}")
     
     with open(golden_dir / "fixture_hash.txt", "w") as f:
