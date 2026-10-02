@@ -88,8 +88,13 @@ def main():
             })
             
     metrics_df = pd.DataFrame(metrics)
+    summary = metrics_df.groupby("scenario")[["peak_err", "peak_covered"]].mean()
     print("VAL RESULTS:")
-    print(metrics_df.groupby("scenario")[["peak_err", "peak_covered"]].mean())
+    print(summary)
+    
+    out_dict = summary.to_dict(orient="index")
+    with open(config["paths"]["reports"] + "/metrics_whatif_val.json", "w") as f:
+        json.dump(out_dict, f, indent=2)
     
 if __name__ == "__main__":
     main()

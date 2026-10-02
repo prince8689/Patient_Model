@@ -27,6 +27,8 @@ We evaluate the simulator's accuracy using an Oracle: since we know the true hid
 - `peak_err`: The mean absolute error between the simulator's median estimated peak glucose and the Oracle's true peak.
 - `peak_covered`: The percentage of time the Oracle's true peak change falls within the simulator's [p10, p90] uncertainty interval.
 
+For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios. The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover.
+
 ## Usage
 
 ```python

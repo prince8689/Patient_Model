@@ -8,19 +8,28 @@ DiaTwin is an in-silico physiological simulator that models patient-specific glu
 **Demo Video**: [VIDEO URL]
 
 ## Overview
-DiaTwin continuously reconstructs a patient's metabolic state by fusing static Electronic Health Record (EHR) profiles with real-time wearable sensor streams (CGM, heart rate, sleep, activity). The engine employs a rigorously calibrated risk model to predict imminent hyperglycemic and hypoglycemic spikes up to two hours in advance. It features a What-if Simulator that allows researchers to explore the counterfactual impact of lifestyle interventions such as exercise intensity and meal timing. A clinician-facing dashboard provides an intuitive interface to monitor the live twin state, review forecast trajectories, and visualize the probabilistic effects of different scenarios. The entire architecture relies on an integrity-verified "frozen" model pipeline to ensure strict separation between retrospective training and prospective simulation.
+DiaTwin models patient-specific glucose dynamics using a digital twin framework. It fuses static Electronic Health Record (EHR) profiles with real-time wearable sensor streams (CGM, heart rate, sleep, activity). The engine employs a calibrated risk model to predict hyperglycemic spikes. It features a What-if Simulator to explore the counterfactual impact of lifestyle interventions. A clinician-facing dashboard provides an interface to monitor the twin state, review forecast trajectories, and visualize the probabilistic effects of different scenarios. The architecture relies on an integrity-verified "frozen" model pipeline to ensure separation between retrospective training and prospective simulation.
 
 ## Results at a Glance
 
-These metrics reflect the in-silico test evaluation on 6 synthetic patients (40 total cohort) over their final 7 days of observation.
+These metrics reflect the in-silico evaluation on synthetic patients. Test metrics use 6 test patients (34545 rows).
 
-| Metric | Value | 95% CI | n |
+| Metric | Value | 95% CI | Source |
 | :--- | :--- | :--- | :--- |
-| **Risk Model AUC** | 0.941 | [0.932 - 0.949] | 2280 |
-| **Calibration Error (ECE)** | 0.021 | [0.015 - 0.028] | 2280 |
-| **Forecast RMSE (60 min)** | 14.5 mg/dL | [13.2 - 15.8] | 2150 |
-| **Forecast Coverage (80% target)** | 81.2% | [79.5 - 82.9] | 2150 |
-| **What-if Directional Accuracy** | 92.4% | - | 120 |
+| **Risk Model AUC (Test)** | 0.925 | [0.907 - 0.944] | `reports/metrics_test_day7.json` |
+| **Risk Model PR-AUC (Test)** | 0.682 | [0.565 - 0.797] | `reports/metrics_test_day7.json` |
+| **Calibration Error ECE (Test)** | 0.0275 | - | `reports/metrics_test_day7.json` |
+| **Risk Prevalence (Test)** | 0.148 | - | `reports/metrics_test_day7.json` |
+| **Forecast RMSE 60m (Validation)** | 18.41 mg/dL | - | `reports/metrics_forecast_val.json` |
+| **Forecast Coverage 60m (Validation)** | 80.0% | - | `reports/metrics_forecast_val.json` |
+
+For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios. The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover.
+
+## Claims
+- The model targets Type 2 diabetes only.
+- The label is a glucose rise of 50 mg/dL or more within 2 hours. It is not a hypoglycemia predictor.
+- The synthetic population has a mean glucose of about 219 mg/dL with about 68.6% of readings above 180 (from `docs/data_quality.json`).
+- The medium risk band raises about 9.55 alerts per patient per day at a precision of about 0.41 (from test metrics).
 
 ## Architecture & Dashboards
 
@@ -29,9 +38,6 @@ These metrics reflect the in-silico test evaluation on 6 synthetic patients (40 
 
 ![Live Twin Dashboard](docs/images/demo_live_forecast.png)
 *The Live Twin view displaying the real-time forecast and calibrated uncertainty bands.*
-
-![What-if Simulator](docs/images/val_example_forecasts.png)
-*Forecast trajectories under different simulated interventions.*
 
 ## Quick Start
 

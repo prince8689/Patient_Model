@@ -167,6 +167,15 @@ def main():
     print("\nVAL Metrics:")
     print(mdf.to_string())
     
+    out_dict = {}
+    for h in horizons:
+        row = mdf[mdf['horizon'] == h].iloc[0]
+        out_dict[f"{h}m"] = row.to_dict()
+    out_dict["train_mae_60m"] = train_mae_60
+    
+    with open(config["paths"]["reports"] + "/metrics_forecast_val.json", "w") as f:
+        json.dump(out_dict, f, indent=2)
+        
     print(f"\nTRAIN MAE 60m: {train_mae_60:.2f} | VAL MAE 60m: {mdf[mdf['horizon']==60]['mae_xgb'].iloc[0]:.2f}")
     
     # 1. Plot MAE

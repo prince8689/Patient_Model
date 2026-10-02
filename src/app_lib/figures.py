@@ -11,8 +11,8 @@ def glucose_forecast_figure(view: dict) -> go.Figure:
     fig = go.Figure()
     palette = _get_palette()
     
-    past_times = pd.to_datetime(view["glucose_history"]["timestamp"])
-    past_glu = view["glucose_history"]["glucose"]
+    past_times = pd.Series(pd.to_datetime(view["glucose_history"]["timestamp"]))
+    past_glu = pd.Series(view["glucose_history"]["glucose"])
     now = past_times.iloc[-1] if not past_times.empty else None
     
     # Target range
@@ -168,9 +168,9 @@ def whatif_fan_figure(vm: dict) -> go.Figure:
     scen_colors = get_config()["app"]["scenario_colors"]
     
     past_glu = vm["history_window"]["glucose"]
-    past_times = pd.to_datetime([s["timestamp"] for s in past_glu])
+    past_times = pd.Series(pd.to_datetime([s["timestamp"] for s in past_glu]))
     past_vals = [s["glucose_mgdl"] for s in past_glu]
-    now = past_times.iloc[-1] if len(past_times) > 0 else None
+    now = past_times.iloc[-1] if not past_times.empty else None
     
     # Target range
     if now is not None:

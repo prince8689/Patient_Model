@@ -1,13 +1,16 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-# Data files
-*.csv filter=lfs diff=lfs merge=lfs -text
-*.parquet filter=lfs diff=lfs merge=lfs -text
+# Protected frozen files to prevent hash mismatch on checkout
+models/*.json -text
+configs/config.yaml -text
+src/features/registry.py -text
 
-# Models
-*.joblib filter=lfs diff=lfs merge=lfs -text
-*.pkl filter=lfs diff=lfs merge=lfs -text
+# Data files (binary)
+*.csv -text
+*.parquet -text
+*.joblib -text
+*.pkl -text
 
 # Exclude coverage cache from git
 .coverage linguist-generated=true

@@ -31,6 +31,16 @@ if not config["app"].get("use_demo_bundle"):
             v = list(h.values())[0][:8]
             st.sidebar.caption(f"Model version: {v}")
 
+# Navigation
+pgs = [
+    st.Page("pages/1_Patient_List.py", title="Patient List", icon="👥"),
+    st.Page("pages/2_Live_Twin.py", title="Live Twin", icon="❤️"),
+    st.Page("pages/3_What_If_Simulator.py", title="What-if Simulator", icon="⚡"),
+    st.Page("pages/4_Model_Insights.py", title="Model Insights", icon="🔍"),
+    st.Page("pages/5_About.py", title="About", icon="ℹ️")
+]
+pg = st.navigation(pgs)
+
 with st.sidebar.expander("Guided Demo Steps"):
     page_map = {
         "Patient List": "pages/1_Patient_List.py",
@@ -45,13 +55,4 @@ with st.sidebar.expander("Guided Demo Steps"):
         if step['page'] in page_map:
             st.page_link(page_map[step['page']], label=f"Go to {step['page']}")
 
-# Navigation
-pgs = [
-    st.Page("pages/1_Patient_List.py", title="Patient List", icon="👥"),
-    st.Page("pages/2_Live_Twin.py", title="Live Twin", icon="❤️"),
-    st.Page("pages/3_What_If_Simulator.py", title="What-if Simulator", icon="⚡"),
-    st.Page("pages/4_Model_Insights.py", title="Model Insights", icon="🔍"),
-    st.Page("pages/5_About.py", title="About", icon="ℹ️")
-]
-pg = st.navigation(pgs)
 pg.run()

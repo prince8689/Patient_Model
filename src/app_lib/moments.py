@@ -4,6 +4,17 @@ from src.app_lib.data_access import get_config, get_patient_timeline
 
 
 def available_moments(patient_id: str) -> list[pd.Timestamp]:
+    config = get_config()
+    if config["app"].get("use_demo_bundle"):
+        import glob
+        from pathlib import Path
+        files = glob.glob(f"demo_bundle/states/{patient_id}_*.json")
+        moms = []
+        for f in files:
+            ts_str = Path(f).stem.split('_', 1)[1]
+            moms.append(pd.to_datetime(ts_str, format="%Y%m%d_%H%M"))
+        return sorted(moms)
+
     timeline = get_patient_timeline(patient_id)
     # Filter out warm-up
     timeline["timestamp"] = pd.to_datetime(timeline["timestamp"])

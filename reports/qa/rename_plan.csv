@@ -1,3 +1,53 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3c7bad7baaf82f3512bca74cfa6a0e21a580cba0e413b7cf2fb59fd73c195c21
-size 5851
+old_path,proposed_new_path,protected,referenced_by_protected,decision,reason
+reports/figures/day2_age_bmi_hba1c.png,reports/figures/age_bmi_hba1c.png,no,no,rename,Safe to rename
+reports/figures/day2_correlation_heatmap.png,reports/figures/cohort_correlation_heatmap.png,no,no,rename,Safe to rename
+reports/figures/day2_hba1c_by_archetype.png,reports/figures/hba1c_by_archetype.png,no,no,rename,Safe to rename
+reports/figures/day3_hr_by_sleep_state.png,reports/figures/hr_by_sleep_state.png,no,no,rename,Safe to rename
+reports/figures/day3_mean_daily_glucose_profile.png,reports/figures/mean_daily_glucose_profile.png,no,no,rename,Safe to rename
+reports/figures/day3_sample_patient_3days.png,reports/figures/sample_patient_3days.png,no,no,rename,Safe to rename
+reports/figures/day3_time_in_range_by_archetype.png,reports/figures/time_in_range_by_archetype.png,no,no,rename,Safe to rename
+reports/figures/day4_archetype_spike_rate.png,reports/figures/archetype_spike_rate.png,no,no,rename,Safe to rename
+reports/figures/day4_glucose_distribution_by_split.png,reports/figures/glucose_distribution_by_split.png,no,no,rename,Safe to rename
+reports/figures/day4_label_rate_by_hour.png,reports/figures/label_rate_by_hour.png,no,no,rename,Safe to rename
+reports/figures/day4_label_rate_per_patient.png,reports/figures/label_rate_per_patient.png,no,no,rename,Safe to rename
+reports/figures/day4_meal_vs_spike.png,reports/figures/meal_vs_spike.png,no,no,rename,Safe to rename
+reports/figures/day4_missingness_patterns.png,reports/figures/missingness_patterns.png,no,no,rename,Safe to rename
+reports/figures/day4_spike_examples.png,reports/figures/spike_examples.png,no,no,rename,Safe to rename
+reports/figures/day5_feature_correlation_heatmap.png,reports/figures/feature_correlation_heatmap.png,no,no,rename,Safe to rename
+reports/figures/day5_feature_distributions_by_label.png,reports/figures/feature_distributions_by_label.png,no,no,rename,Safe to rename
+reports/figures/day5_feature_missingness.png,reports/figures/feature_missingness.png,no,no,rename,Safe to rename
+reports/figures/day5_top_feature_auc.png,reports/figures/top_feature_auc.png,no,no,rename,Safe to rename
+reports/figures/day7_calibration_val_before_after.png,reports/figures/calibration_val_before_after.png,no,no,rename,Safe to rename
+reports/figures/day7_event_recall_vs_alert_burden.png,reports/figures/event_recall_vs_alert_burden.png,no,no,rename,Safe to rename
+reports/figures/day7_lead_time_hist.png,reports/figures/lead_time_hist.png,no,no,rename,Safe to rename
+reports/figures/day7_missing_data_effect.png,reports/figures/missing_data_effect.png,no,no,rename,Safe to rename
+reports/figures/day7_test_calibration.png,reports/figures/test_calibration.png,no,no,rename,Safe to rename
+reports/figures/day7_test_confusion_matrices.png,reports/figures/test_confusion_matrices.png,no,no,rename,Safe to rename
+reports/figures/day7_test_per_patient_auc.png,reports/figures/test_per_patient_auc.png,no,no,rename,Safe to rename
+reports/figures/day7_test_roc_pr.png,reports/figures/test_roc_pr.png,no,no,rename,Safe to rename
+reports/figures/day7_val_vs_test_metrics.png,reports/figures/val_vs_test_metrics.png,no,no,rename,Safe to rename
+reports/figures/day8_fault_recovery.png,reports/figures/fault_recovery.png,no,no,rename,Safe to rename
+reports/figures/day8_latency.png,reports/figures/latency.png,no,no,rename,Safe to rename
+reports/figures/day8_twin_state_snapshot.png,reports/figures/twin_state_snapshot.png,no,no,rename,Safe to rename
+reports/figures/day8_twin_timeline_example.png,reports/figures/twin_timeline_example.png,no,no,rename,Safe to rename
+reports/figures/day9_demo_live_forecast.png,reports/figures/demo_live_forecast.png,no,no,rename,Safe to rename
+reports/figures/day9_val_coverage_by_horizon.png,reports/figures/val_coverage_by_horizon.png,no,no,rename,Safe to rename
+reports/figures/day9_val_example_forecasts.png,reports/figures/val_example_forecasts.png,no,no,rename,Safe to rename
+reports/figures/day9_val_mae_by_horizon.png,reports/figures/val_mae_by_horizon.png,no,no,rename,Safe to rename
+reports/figures/day9_val_pred_vs_actual_60m.png,reports/figures/val_pred_vs_actual_60m.png,no,no,rename,Safe to rename
+scripts/calibrate_day7.py,scripts/calibrate_model.py,no,no,rename,Safe to rename
+scripts/clinical_utility_day7.py,scripts/evaluate_clinical_utility.py,no,no,rename,Safe to rename
+scripts/demonstrate_day8.py,scripts/demonstrate_twin.py,no,no,rename,Safe to rename
+scripts/demonstrate_day9.py,scripts/demonstrate_forecast.py,no,no,rename,Safe to rename
+scripts/error_analysis_day7.py,scripts/error_analysis.py,no,no,rename,Safe to rename
+scripts/finalize_day4.py,scripts/finalize_labels.py,no,no,rename,Safe to rename
+scripts/finalize_thresholds_day7.py,scripts/finalize_thresholds.py,no,no,rename,Safe to rename
+scripts/shap_day7.py,scripts/shap_analysis.py,no,no,rename,Safe to rename
+scripts/train_day6.py,scripts/train_model.py,no,no,rename,Safe to rename
+tests/test_day7.py,tests/test_calibration_and_evaluation.py,no,no,rename,Safe to rename
+tests/test_golden_day3.py,tests/test_golden_fixture.py,no,no,rename,Safe to rename
+tests/golden/day3_glucose_fixture.parquet,tests/golden/glucose_fixture.parquet,no,no,rename,Safe to rename
+models/thresholds_v1.json,models/thresholds_v1.json,yes,no,keep,Protected file (referenced in integrity manifest or metrics JSON)
+reports/metrics_test_day7.json,reports/metrics_test_day7.json,yes,no,keep,Protected file (referenced in integrity manifest or metrics JSON)
+reports/oof_train_day7.parquet,reports/oof_train_day7.parquet,yes,no,keep,Protected file (referenced in integrity manifest or metrics JSON)
+reports/test_predictions_day7.parquet,reports/test_predictions_day7.parquet,yes,no,keep,Protected file (referenced in integrity manifest or metrics JSON)

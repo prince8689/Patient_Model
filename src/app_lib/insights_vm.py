@@ -120,5 +120,6 @@ def limitations_list():
         "No real-world validation",
         "No regulatory clearance",
         "Unannounced meals",
-        "No insulin/medication modelling"
+        "No insulin/medication modelling",
+        "For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios. The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover."
     ]
