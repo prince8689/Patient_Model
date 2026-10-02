@@ -15,3 +15,4 @@
 - `TWIN_ENGINE.md`: Architecture of the digital twin state machine, event timeline, and replay mechanism.
 - `WHATIF.md`: Describes the counterfactual simulation engine, its design, and validation metrics.
 - `submission_summary.md`: The plain-language text prepared for the final competition submission form.
+- `demo/`: Contains the demo script, fallback instructions, and video metrics guidelines.
