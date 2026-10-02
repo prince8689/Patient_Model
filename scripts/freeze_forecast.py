@@ -1,9 +1,9 @@
 import hashlib
 import json
-import os
 import subprocess
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+
 
 def get_file_hash(path):
     h = hashlib.sha256()

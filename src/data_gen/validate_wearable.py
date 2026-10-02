@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np
+
 
 def validate_wearable(wearable_df: pd.DataFrame, patients_df: pd.DataFrame, sim_params_df: pd.DataFrame) -> dict:
     req_cols = ["patient_id", "timestamp", "glucose_mgdl", "heart_rate", "steps", "sleep_state", "meal_carbs_g", "activity_intensity"]

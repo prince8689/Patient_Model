@@ -1,13 +1,15 @@
 import json
-from pathlib import Path
-from typing import List, Tuple, Dict, Any, Optional
 from datetime import datetime
+from pathlib import Path
+from typing import Any
+
 import streamlit as st
 
-from src.simulator.scenarios import WhatIfRequest, PlannedMeal, PlannedActivity
 from src.app_lib.data_access import get_config, get_registry
+from src.simulator.scenarios import PlannedActivity, PlannedMeal, WhatIfRequest
 
-def available_scenarios() -> List[Dict[str, Any]]:
+
+def available_scenarios() -> list[dict[str, Any]]:
     config = get_config()
     scenarios = config.get("whatif", {}).get("scenarios", {})
     
@@ -29,12 +31,12 @@ def available_scenarios() -> List[Dict[str, Any]]:
         })
     return res
 
-def build_request(plan_meals: List[dict], selected_scenarios: List[str], custom_params: dict) -> Tuple[Optional[WhatIfRequest], List[str]]:
+def build_request(plan_meals: list[dict], selected_scenarios: list[str], custom_params: dict) -> tuple[WhatIfRequest | None, list[str]]:
     errors = []
     
     # Check for forbidden keywords
     forbidden = ["insulin", "medication", "dose", "drug", "metformin"]
-    for k in custom_params.keys():
+    for k in custom_params:
         if any(f in k.lower() for f in forbidden):
             errors.append(f"Invalid parameter '{k}': Insulin and medication dosing scenarios are strictly prohibited.")
             
@@ -76,7 +78,7 @@ def build_request(plan_meals: List[dict], selected_scenarios: List[str], custom_
     return req, []
 
 @st.cache_data(ttl=3600, show_spinner=False)
-def run_whatif_view(patient_id: str, as_of: datetime, req_dict: dict) -> Dict[str, Any]:
+def run_whatif_view(patient_id: str, as_of: datetime, req_dict: dict) -> dict[str, Any]:
     import time
     t0 = time.time()
     
@@ -94,7 +96,6 @@ def run_whatif_view(patient_id: str, as_of: datetime, req_dict: dict) -> Dict[st
         req.baseline_activities.append(PlannedActivity(a["start_offset_min"], a["duration_min"], a["intensity"]))
         
     # We must ingest data exactly up to as_of (NO FUTURE PEEKING)
-    import pandas as pd
     from src.app_lib.data_access import get_patient_wearable
     wearable = get_patient_wearable(patient_id)
     wearable = wearable[wearable["timestamp"] <= as_of]
@@ -133,16 +134,12 @@ def run_whatif_view(patient_id: str, as_of: datetime, req_dict: dict) -> Dict[st
     # Filter ranking based on confidence
     config = get_config()
     min_conf = config["app"].get("ranking_min_confidence", "medium")
-    if min_conf == "high" and report.confidence_level != "High":
-        res["ranking"] = []
-    elif min_conf == "medium" and report.confidence_level not in ["High", "Medium"]:
+    if min_conf == "high" and report.confidence_level != "High" or min_conf == "medium" and report.confidence_level not in ["High", "Medium"]:
         res["ranking"] = []
         
     return res
 
-def validation_summary() -> Optional[Dict[str, Any]]:
-    import json
-    from pathlib import Path
+def validation_summary() -> dict[str, Any] | None:
     
     val_path = Path("reports/metrics_whatif_val.json")
     test_path = Path("reports/metrics_whatif_test_day10.json")
@@ -163,5 +160,4 @@ def validation_summary() -> Optional[Dict[str, Any]]:
     return metrics
 
 def export_whatif_json(report_dict: dict) -> str:
-    import json
     return json.dumps(report_dict, indent=2)

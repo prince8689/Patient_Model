@@ -1,11 +1,13 @@
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
-from src.data_gen.wearable import generate_wearable
 from src.data_gen.validate_wearable import validate_wearable
+from src.data_gen.wearable import generate_wearable
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()

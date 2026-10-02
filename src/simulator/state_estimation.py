@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
+
 from src.data_gen.glucose_dynamics import GlucoseState
+
 
 def reconstruct_state(history_df: pd.DataFrame, params: dict, config: dict) -> GlucoseState:
     """

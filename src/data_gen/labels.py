@@ -1,5 +1,6 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 
 def make_labels(wearable_df: pd.DataFrame, config: dict) -> pd.DataFrame:
     """

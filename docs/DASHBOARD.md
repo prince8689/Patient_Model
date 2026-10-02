@@ -56,6 +56,20 @@ python scripts/build_demo_bundle.py
 ```
 This generates a static precomputed snapshot of timelines and states for demo patients (useful for headless demo instances). Toggle `use_demo_bundle: true` in `config.yaml` to switch to demo mode.
 
+## Insights Bundle Building (Model Insights page)
+```bash
+python scripts/build_insights_bundle.py
+```
+This script acts as a compiler, reading existing static reports (JSON, CSV, Parquet) and producing `reports/insights_bundle.json`.
+**Display-only rule:** The `Model Insights` and `About` pages *never* load models, *never* run evaluations, and *never* see raw patient data. They simply read `insights_bundle.json` through `src/app_lib/insights_vm.py` and display the stored results.
+
+## Model Insights Page
+Displays exactly what is stored in the bundle across multiple tabs (Risk Model, Calibration, Explainability, etc.). Integrity panel automatically verifies file hashes and `freeze_before_test` git commit lineage.
+
+## About Page
+Displays project context, challenge mapping, glossary, and guided demo steps. Configuration options like team members and contact email can be set in `config.yaml`.
+
 ## Known Limitations
 - Static charts lack full interactivity beyond standard Plotly zooming.
 - UI does not auto-refresh dynamically in a real-time setting.
+- The Model Insights page cannot fill in metrics if the source report files were not generated during earlier evaluation steps.

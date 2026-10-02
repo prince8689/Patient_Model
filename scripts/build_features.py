@@ -1,11 +1,13 @@
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
 from src.features.engineering import build_features
-from src.features.registry import get_feature_names, assert_no_forbidden
+from src.features.registry import assert_no_forbidden, get_feature_names
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()
@@ -45,7 +47,7 @@ def main():
     final_df.to_parquet(out_path, index=False)
     
     n_feats = len(get_feature_names())
-    print(f"\nFeature build complete.")
+    print("\nFeature build complete.")
     print(f"Features generated: {n_feats}")
     print(f"Total rows: {len(final_df)}")
     print(f"Size in memory: {final_df.memory_usage(deep=True).sum() / 1e6:.1f} MB")

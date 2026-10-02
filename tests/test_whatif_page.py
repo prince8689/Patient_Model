@@ -1,9 +1,10 @@
-import pytest
-from src.app_lib.whatif_vm import build_request, run_whatif_view, available_scenarios
-from datetime import datetime
-import pandas as pd
 from pathlib import Path
-import json
+
+import pandas as pd
+import pytest
+
+from src.app_lib.whatif_vm import build_request, run_whatif_view
+
 
 def test_build_request_rejects_forbidden():
     meals = [{"offset_min": 0, "carbs_g": 50}]
@@ -88,7 +89,7 @@ def test_run_whatif_view_no_future_peeking(monkeypatch):
             self.last_ts = s["timestamp"]
             return {}
         def what_if(self, req):
-            from src.simulator.whatif import WhatIfReport, ScenarioResult
+            from src.simulator.whatif import ScenarioResult, WhatIfReport
             return WhatIfReport(
                 timestamp=str(self.last_ts),
                 confidence_level="High",

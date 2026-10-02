@@ -1,15 +1,16 @@
-import sys
 import json
+import sys
 from pathlib import Path
-import pandas as pd
-import numpy as np
+
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 from sklearn.metrics import roc_auc_score
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
 from src.features.registry import FEATURE_REGISTRY
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()

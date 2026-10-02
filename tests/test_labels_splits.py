@@ -1,8 +1,10 @@
-import pytest
-import pandas as pd
 import numpy as np
+import pandas as pd
+import pytest
+
 from src.data_gen.labels import make_labels
-from src.data_gen.splits import make_patient_splits, assert_no_patient_overlap
+from src.data_gen.splits import assert_no_patient_overlap, make_patient_splits
+
 
 def test_make_labels():
     config = {

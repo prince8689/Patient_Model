@@ -1,14 +1,19 @@
-import sys
 import json
-import joblib
+import sys
 from pathlib import Path
+
+import joblib
 import pandas as pd
-import numpy as np
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
-from src.forecast.baselines import PersistenceForecaster, LinearExtrapolationForecaster, RidgeForecaster
+from src.forecast.baselines import (
+    LinearExtrapolationForecaster,
+    PersistenceForecaster,
+    RidgeForecaster,
+)
 from src.forecast.model import GlucoseForecaster
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()

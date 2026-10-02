@@ -1,11 +1,13 @@
 import sys
 from pathlib import Path
+
 import pandas as pd
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
 from src.data_gen.labels import make_labels
-from src.data_gen.splits import make_patient_splits, assert_no_patient_overlap
+from src.data_gen.splits import assert_no_patient_overlap, make_patient_splits
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()

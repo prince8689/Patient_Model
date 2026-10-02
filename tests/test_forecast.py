@@ -1,15 +1,15 @@
-import pytest
+import sys
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
-import sys
-from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from src.forecast.targets import make_forecast_targets
-from src.forecast.model import GlucoseForecaster
-from src.forecast.conformal import ConformalCalibrator
 from src.forecast.consistency import estimate_spike_probability
+from src.forecast.model import GlucoseForecaster
+from src.forecast.targets import make_forecast_targets
+
 
 def test_targets_logic():
     df = pd.DataFrame({

@@ -1,11 +1,27 @@
-import streamlit as st
-import pandas as pd
-import json
-from app.components import disclaimer_banner, render_band_badge, render_status_badge, kpi_card
-from src.app_lib.viewmodels import twin_view, export_state_json
-from src.app_lib.moments import available_moments, default_moment, step_time, next_alert, previous_meal
-from src.app_lib.figures import glucose_forecast_figure, risk_strip_figure
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import time
+
+import pandas as pd
+import streamlit as st
+
+from app.components import (
+    disclaimer_banner,
+    kpi_card,
+    render_band_badge,
+    render_status_badge,
+)
+from src.app_lib.figures import glucose_forecast_figure, risk_strip_figure
+from src.app_lib.moments import (
+    available_moments,
+    default_moment,
+    next_alert,
+    previous_meal,
+    step_time,
+)
+from src.app_lib.viewmodels import export_state_json, twin_view
 
 st.set_page_config(layout="wide")
 disclaimer_banner()
@@ -73,7 +89,6 @@ st.sidebar.markdown("---")
 overlay = st.sidebar.checkbox("Show actual future glucose (evaluation only)")
 
 # Load view
-import time
 start_t = time.time()
 view = twin_view(pid, current, include_actual_overlay=overlay)
 render_t = time.time() - start_t
@@ -137,6 +152,7 @@ with col_side:
             icon = "🔼" if d["contribution"] > 0 else "🔽"
             st.markdown(f"{icon} **{d['name']}**: {d['value']:.1f}")
             st.progress(min(abs(d["contribution"]), 1.0))
+        st.page_link("pages/4_Model_Insights.py", label="Learn more about drivers", icon="🔍")
     else:
         st.write("No drivers available.")
         

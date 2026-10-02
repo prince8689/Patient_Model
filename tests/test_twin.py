@@ -1,13 +1,14 @@
-import pytest
-import pandas as pd
-import numpy as np
 import copy
 from pathlib import Path
 
-from src.utils.config import load_config
-from src.twin.loader import TwinRegistry
-from src.twin.state import TwinState
+import numpy as np
+import pandas as pd
+import pytest
+
 from src.twin.engine import DiaTwin
+from src.twin.loader import TwinRegistry
+from src.utils.config import load_config
+
 
 @pytest.fixture(scope="module")
 def config():
@@ -115,8 +116,9 @@ def test_gap_fill(config, sample_patient):
     assert twin.buffer[1]["sleep_state"] == "unknown"
 
 def test_frozen_hash_mismatch(config, tmp_path):
-    from src.twin.loader import load_frozen_artifacts
     import json
+
+    from src.twin.loader import load_frozen_artifacts
     
     # Create a corrupted frozen.json
     frozen_path = Path(config["evaluation"]["frozen_manifest_path"])

@@ -1,13 +1,15 @@
 import sys
 from pathlib import Path
-import pandas as pd
+
 import numpy as np
-from sklearn.metrics import roc_auc_score
+import pandas as pd
 import xgboost as xgb
+from sklearn.metrics import roc_auc_score
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
 from src.features.registry import FEATURE_REGISTRY
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()
@@ -36,7 +38,7 @@ def main():
     val_preds = model.predict_proba(X_val)[:, 1]
     val_auc = roc_auc_score(y_val, val_preds)
     
-    print(f"\n--- REAL LABELS SMOKE TEST ---")
+    print("\n--- REAL LABELS SMOKE TEST ---")
     print(f"Val ROC-AUC: {val_auc:.4f}")
     if val_auc > 0.98:
         print(">> WARNING: Val AUC > 0.98. Suspicious leakage! Investigate.")

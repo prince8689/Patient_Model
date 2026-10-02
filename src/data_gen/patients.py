@@ -1,8 +1,9 @@
+
 import numpy as np
 import pandas as pd
-from typing import Tuple
 
-def generate_patients(n_patients: int, seed: int) -> Tuple[pd.DataFrame, pd.DataFrame]:
+
+def generate_patients(n_patients: int, seed: int) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Generates synthetic patient profiles and hidden simulation parameters.
     

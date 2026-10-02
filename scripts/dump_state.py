@@ -1,9 +1,13 @@
-import sys, json
+import json
+import sys
 from pathlib import Path
+
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
-from src.twin.timeline import build_timeline, get_state_at
 import dataclasses
+
+from src.twin.timeline import build_timeline, get_state_at
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()

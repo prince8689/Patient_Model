@@ -1,5 +1,6 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 
 def make_patient_splits(patients_df: pd.DataFrame, config: dict) -> pd.DataFrame:
     rng = np.random.default_rng(config["random_seed"])

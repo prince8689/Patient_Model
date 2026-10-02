@@ -1,9 +1,9 @@
 import numpy as np
-import pandas as pd
-from sklearn.linear_model import Ridge
-from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
+from sklearn.linear_model import Ridge
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+
 
 class PersistenceForecaster:
     def __init__(self, horizons, quantiles):

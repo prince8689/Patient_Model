@@ -1,5 +1,5 @@
 import pandas as pd
-import numpy as np
+
 
 def make_forecast_targets(wearable_df: pd.DataFrame, config: dict) -> pd.DataFrame:
     """

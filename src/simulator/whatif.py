@@ -1,18 +1,20 @@
 from dataclasses import dataclass, field
+
 import numpy as np
 import pandas as pd
-from typing import Optional, List, Dict
-from src.simulator.state_estimation import reconstruct_state
-from src.simulator.personalization import estimate_parameters, ParameterPosterior
-from src.simulator.scenarios import validate_request, apply_scenario, WhatIfRequest
+
 from src.data_gen.glucose_dynamics import simulate_from_state
+from src.simulator.personalization import ParameterPosterior, estimate_parameters
+from src.simulator.scenarios import WhatIfRequest, apply_scenario, validate_request
+from src.simulator.state_estimation import reconstruct_state
+
 
 @dataclass
 class ScenarioResult:
     name: str
-    median_trajectory: List[float]
-    p10_trajectory: List[float]
-    p90_trajectory: List[float]
+    median_trajectory: list[float]
+    p10_trajectory: list[float]
+    p90_trajectory: list[float]
     
     peak_median: float
     peak_p10: float
@@ -48,11 +50,11 @@ class ScenarioResult:
 class WhatIfReport:
     timestamp: str
     confidence_level: str
-    confidence_reasons: List[str]
+    confidence_reasons: list[str]
     baseline: ScenarioResult
-    scenarios: List[ScenarioResult]
-    forecast_agreement_note: Optional[str] = None
-    ranking: List[str] = field(default_factory=list)
+    scenarios: list[ScenarioResult]
+    forecast_agreement_note: str | None = None
+    ranking: list[str] = field(default_factory=list)
 
 def _build_inputs(meals, activities, n_steps, config):
     meal_carbs = np.zeros(n_steps)
@@ -98,8 +100,8 @@ def run_whatif(
     request: WhatIfRequest,
     prior: dict,
     config: dict,
-    forecast_context: Optional[dict] = None,
-    cached_posterior: Optional[ParameterPosterior] = None
+    forecast_context: dict | None = None,
+    cached_posterior: ParameterPosterior | None = None
 ) -> WhatIfReport:
     validate_request(request, config)
     

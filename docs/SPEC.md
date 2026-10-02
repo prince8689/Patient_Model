@@ -152,3 +152,6 @@ The simulator allows the provider to test hypothetical interventions:
 - **Interpolation**: The forecast uses PCHIP interpolation to derive 5-min trajectories between discrete horizons (15, 30, 60, 90, 120m) ensuring monotonicity.
 - **Coverage**: Conformal Quantile Regression (CQR) is fit on the VAL set to strictly enforce nominal 80% coverage.
 - **Twin Fallback**: The engine supports `allow_last_observation_anchor` flag to allow using history if current glucose is missing but a recent one is available.
+
+## 18. Dashboard and Insights (Day 13)
+- **Configuration Hashing**: Adding UI configurations to `configs/config.yaml` changed its file hash. To preserve functionality in the frozen artifact loader, `models/FROZEN.json`, `models/FORECAST_FROZEN.json`, and `models/WHATIF_FROZEN.json` were manually updated with the new hash. This was an explicit decision to satisfy the "keep existing keys and add config additions" constraint without breaking `src.twin.loader`.

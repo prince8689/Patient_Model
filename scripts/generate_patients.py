@@ -4,9 +4,10 @@ from pathlib import Path
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from src.utils.config import load_config
 from src.data_gen.patients import generate_patients
 from src.data_gen.validate_patients import validate_patients
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()

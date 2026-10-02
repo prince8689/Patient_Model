@@ -1,6 +1,8 @@
-import plotly.graph_objects as go
 import pandas as pd
+import plotly.graph_objects as go
+
 from src.app_lib.data_access import get_config
+
 
 def _get_palette():
     return get_config()["app"]["palette"]

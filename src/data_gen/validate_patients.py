@@ -1,5 +1,6 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
+
 
 def validate_patients(patients_df: pd.DataFrame, sim_params_df: pd.DataFrame) -> dict:
     """

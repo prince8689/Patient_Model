@@ -1,8 +1,10 @@
-import pytest
 import pandas as pd
+import pytest
+
 from src.data_gen.patients import generate_patients
 from src.data_gen.validate_patients import validate_patients
 from src.utils.config import load_config
+
 
 def test_generate_patients_schema():
     patients_df, sim_params_df = generate_patients(10, seed=42)

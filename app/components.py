@@ -1,5 +1,7 @@
 import streamlit as st
+
 from src.app_lib.data_access import get_config
+
 
 def disclaimer_banner():
     config = get_config()
@@ -19,12 +21,12 @@ def kpi_card(title: str, value: str, subvalue: str = None):
         
 def render_status_badge(status: str) -> str:
     if status == "ok":
-        return f'<span style="background-color: #2ecc71; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">Data OK</span>'
+        return '<span style="background-color: #2ecc71; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">Data OK</span>'
     elif status == "warming_up":
-        return f'<span style="background-color: #f39c12; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">Warming Up</span>'
+        return '<span style="background-color: #f39c12; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">Warming Up</span>'
     elif status == "stale":
-        return f'<span style="background-color: #e74c3c; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">Stale Data</span>'
+        return '<span style="background-color: #e74c3c; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">Stale Data</span>'
     elif status == "no_glucose":
-        return f'<span style="background-color: #f1c40f; color: black; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">No Current Glucose</span>'
+        return '<span style="background-color: #f1c40f; color: black; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">No Current Glucose</span>'
     else:
         return f'<span style="background-color: #95a5a6; color: white; padding: 2px 8px; border-radius: 12px; font-weight: bold; font-size: 0.8em;">{status}</span>'

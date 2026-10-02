@@ -1,11 +1,11 @@
+
 import numpy as np
 import pandas as pd
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
 import xgboost as xgb
-from sklearn.model_selection import GroupKFold
 from scipy.interpolate import pchip_interpolate
-from typing import Dict
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import GroupKFold
+
 
 class GlucoseForecaster:
     def __init__(self, config: dict):
@@ -72,11 +72,9 @@ class GlucoseForecaster:
         X_imp = pd.DataFrame(self.imputer.fit_transform(X), columns=X.columns, index=X.index)
         
         # 2. Tune on 60m median
-        print("Tuning hyperparameters on 60m median...")
         y_60 = y_dict[60]
         mask = ~y_60.isna()
         best_params = self._get_hyperparams(X_imp[mask], y_60[mask], groups[mask])
-        print(f"Best params: {best_params}")
         
         # 3. Fit all models
         for h in self.horizons:
@@ -86,7 +84,6 @@ class GlucoseForecaster:
             y_curr = y_h[mask]
             
             for q in self.quantiles:
-                print(f"Fitting horizon {h}m, quantile {q}...")
                 params = best_params.copy()
                 params["quantile_alpha"] = q
                 model = xgb.XGBRegressor(**params)
@@ -106,7 +103,6 @@ class GlucoseForecaster:
         out_sorted = np.sort(out, axis=2)
         crossing_mask = (out != out_sorted)
         crossing_rate = crossing_mask.any(axis=2).mean()
-        # print(f"Quantile crossing rate fixed: {crossing_rate:.2%}")
         return out_sorted
 
     def get_trajectory(self, current_glucose: np.ndarray, quantiles_delta: np.ndarray) -> np.ndarray:

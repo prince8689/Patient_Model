@@ -1,20 +1,21 @@
-import sys
 import json
-import joblib
+import sys
 from pathlib import Path
-import pandas as pd
-import numpy as np
+
+import joblib
 import matplotlib.pyplot as plt
-from sklearn.model_selection import GroupKFold
+import numpy as np
+import pandas as pd
+import xgboost as xgb
+from sklearn.calibration import calibration_curve
 from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import brier_score_loss, log_loss
-from sklearn.calibration import calibration_curve
-import xgboost as xgb
+from sklearn.model_selection import GroupKFold
 
 sys.path.append(str(Path(__file__).parent.parent))
 from src.utils.config import load_config
-from src.features.registry import FEATURE_REGISTRY
+
 
 def expected_calibration_error(y_true, y_prob, n_bins=10):
     prob_true, prob_pred = calibration_curve(y_true, y_prob, n_bins=n_bins, strategy='quantile')

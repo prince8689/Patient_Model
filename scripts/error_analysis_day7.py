@@ -1,13 +1,14 @@
-import sys
 import json
+import sys
 from pathlib import Path
-import pandas as pd
-import numpy as np
+
 import matplotlib.pyplot as plt
-from sklearn.metrics import roc_auc_score, recall_score
+import pandas as pd
+from sklearn.metrics import recall_score, roc_auc_score
 
 sys.path.append(str(Path(__file__).parent.parent))
 from src.utils.config import load_config
+
 
 def evaluate_subgroup(df, group_name):
     n_rows = len(df)

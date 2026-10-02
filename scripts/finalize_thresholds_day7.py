@@ -1,15 +1,16 @@
-import sys
 import json
-import joblib
+import sys
 from pathlib import Path
-import pandas as pd
+
+import joblib
 import numpy as np
-from sklearn.metrics import precision_recall_curve, f1_score
+import pandas as pd
+from sklearn.metrics import precision_recall_curve
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
-from src.features.registry import FEATURE_REGISTRY
 from src.models.calibration import apply_calibration
+from src.utils.config import load_config
+
 
 def get_threshold_for_precision(y_true, y_prob, target_precision):
     precisions, recalls, thresholds = precision_recall_curve(y_true, y_prob)

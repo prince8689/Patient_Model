@@ -1,11 +1,12 @@
 import sys
 from pathlib import Path
+
 import pandas as pd
-import numpy as np
 from sklearn.metrics import roc_auc_score
 
 sys.path.append(str(Path(__file__).parent.parent))
 from src.utils.config import load_config
+
 
 def main():
     config = load_config()

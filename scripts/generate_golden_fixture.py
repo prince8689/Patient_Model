@@ -1,11 +1,13 @@
+import hashlib
 import sys
 from pathlib import Path
+
 import numpy as np
-import hashlib
 import pandas as pd
 
 sys.path.append(str(Path(__file__).parent.parent))
 from src.data_gen.glucose_dynamics import simulate_glucose
+
 
 def main():
     rng = np.random.default_rng(42)

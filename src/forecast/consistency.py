@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def estimate_spike_probability(quantiles_delta, quantiles=[0.1, 0.5, 0.9], threshold=50):
     """
     Estimates the probability of a spike (delta >= 50) from the forecast quantiles.

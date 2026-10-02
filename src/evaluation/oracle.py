@@ -1,9 +1,11 @@
+
 import numpy as np
 import pandas as pd
-from typing import List, Optional
-from src.data_gen.glucose_dynamics import simulate_from_state, GlucoseState
-from src.simulator.whatif import _build_inputs, _calc_metrics, WhatIfRequest
+
+from src.data_gen.glucose_dynamics import GlucoseState, simulate_from_state
 from src.simulator.scenarios import apply_scenario
+from src.simulator.whatif import WhatIfRequest, _build_inputs, _calc_metrics
+
 
 def reproduce_true_counterfactual(
     patient_id: str,

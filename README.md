@@ -62,8 +62,15 @@ Features included:
 - **Live Twin**: Detailed state, forecasts, SHAP drivers, and historical alerts.
 - **Demo Mode**: The dashboard can run from a precomputed bundle (`use_demo_bundle: true` in `config.yaml`).
 
-## Results
-*To be added post-training.*
+## Results at a glance
+- **Classifier ROC-AUC (Test)**: 0.925 [0.907, 0.944] (N=6 test patients)
+- **Classifier PR-AUC (Test)**: 0.682 [0.565, 0.797] (N=6 test patients)
+- *(Note: In this synthetic setting, other final evaluation results such as forecast metrics were not comprehensively collected in the test output bundle.)*
+
+### Screenshots
+- Model Insights: ![Model Insights Headline](docs/screenshots/day13_insights_headline.png)
+- About Page: ![About Top](docs/screenshots/day13_about_top.png)
+*(Screenshots will be generated via a separate tool or manually by users.)*
 
 ## Limitations
 This is an educational proof-of-concept built entirely on synthetic data. It is not clinically validated and should not be used as a medical diagnostic tool.

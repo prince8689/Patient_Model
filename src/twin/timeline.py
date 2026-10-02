@@ -1,11 +1,13 @@
-import pandas as pd
 from pathlib import Path
-from src.twin.loader import load_frozen_artifacts
-from src.features.engineering import build_features_for_patient
-from src.utils.config import load_config
-from src.twin.state import TwinState
+
 import numpy as np
-import logging
+import pandas as pd
+
+from src.features.engineering import build_features_for_patient
+from src.twin.loader import load_frozen_artifacts
+from src.twin.state import TwinState
+from src.utils.config import load_config
+
 
 def generate_timeline_for_patient(patient_id: str, config: dict, registry) -> pd.DataFrame:
     pipeline, calibrator, thresholds, meta = load_frozen_artifacts(config)
@@ -65,9 +67,7 @@ def generate_timeline_for_patient(patient_id: str, config: dict, registry) -> pd
         band = row["risk_band"]
         if row["data_status"] == "ok" and band in ["Medium", "High"]:
             mins = (row["timestamp"] - last_alert).total_seconds() / 60.0
-            if mins >= cooldown:
-                fire = True
-            elif band == "High" and last_band == "Medium":
+            if mins >= cooldown or band == "High" and last_band == "Medium":
                 fire = True
                 
         if fire:

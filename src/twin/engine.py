@@ -1,17 +1,22 @@
-import json
 import logging
-from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Any
+
 import numpy as np
 import pandas as pd
-from datetime import datetime, timezone
 
-from .state import (
-    PatientProfile, Measurement, RiskAssessment, DataQuality, 
-    AlertEvent, TwinState, GlucoseSummary, TwinContext
-)
 from src.features.engineering import build_features_for_patient
 from src.models.explain import explain_row
+
+from .state import (
+    AlertEvent,
+    DataQuality,
+    GlucoseSummary,
+    Measurement,
+    PatientProfile,
+    RiskAssessment,
+    TwinContext,
+    TwinState,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -31,19 +36,19 @@ class DiaTwin:
         self.warmup_m = config["twin"]["warmup_hours"] * 60
         
         # Buffer
-        self.buffer: List[Dict[str, Any]] = []
-        self.last_timestamp: Optional[pd.Timestamp] = None
+        self.buffer: list[dict[str, Any]] = []
+        self.last_timestamp: pd.Timestamp | None = None
         
         # Cumulative state
-        self.last_meal_ts: Optional[pd.Timestamp] = None
+        self.last_meal_ts: pd.Timestamp | None = None
         self.last_meal_carbs: float = 0.0
-        self.last_act_ts: Optional[pd.Timestamp] = None
-        self.last_wake_ts: Optional[pd.Timestamp] = None
-        self.last_obs_ts: Optional[pd.Timestamp] = None
+        self.last_act_ts: pd.Timestamp | None = None
+        self.last_wake_ts: pd.Timestamp | None = None
+        self.last_obs_ts: pd.Timestamp | None = None
         
         # History
-        self.alert_history: List[AlertEvent] = []
-        self.risk_history: List[Dict[str, Any]] = []
+        self.alert_history: list[AlertEvent] = []
+        self.risk_history: list[dict[str, Any]] = []
         
         # Precompute profile series for feature building
         self.profile_series = pd.Series(self.profile.to_dict())
@@ -91,7 +96,7 @@ class DiaTwin:
     def ingest(self, sample: dict) -> TwinState:
         try:
             row = self._validate_sample(sample)
-        except Exception as e:
+        except Exception:
             # Fatal error only on forbidden keys, else we would just warn, but parsing might fail
             raise
             
@@ -167,7 +172,7 @@ class DiaTwin:
             mins = (ts - self.last_obs_ts).total_seconds() / 60.0
             last_feat["miss_min_since_last_obs"] = min(mins, 120.0)
 
-    def _generate_state(self, warnings: List[str]) -> TwinState:
+    def _generate_state(self, warnings: list[str]) -> TwinState:
         if len(self.buffer) == 0:
             raise ValueError("Buffer is empty.")
             
@@ -467,7 +472,7 @@ class DiaTwin:
             
         return sim_run_whatif(df_buf, prof_dict, request, prior, self.config, forecast_context=forecast_ctx)
 
-    def get_drivers(self, top_k: int = 3) -> List[Dict[str, Any]]:
+    def get_drivers(self, top_k: int = 3) -> list[dict[str, Any]]:
         if not hasattr(self, "_last_feature_row") or self.explainer is None:
             return []
         features_list = self.pipeline.feature_names_in_

@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional
+
 
 @dataclass
 class PlannedMeal:
@@ -21,9 +21,9 @@ class ScenarioSpec:
 
 @dataclass
 class WhatIfRequest:
-    planned_meals: List[PlannedMeal] = field(default_factory=list)
-    baseline_activities: List[PlannedActivity] = field(default_factory=list)
-    scenario_names: List[str] = field(default_factory=list)
+    planned_meals: list[PlannedMeal] = field(default_factory=list)
+    baseline_activities: list[PlannedActivity] = field(default_factory=list)
+    scenario_names: list[str] = field(default_factory=list)
     horizon: int = 180
 
 def validate_request(request: WhatIfRequest, config: dict):
@@ -44,7 +44,7 @@ def validate_request(request: WhatIfRequest, config: dict):
         if s not in valid_scenarios:
             raise ValueError(f"Scenario {s} not permitted. Allowed: {list(valid_scenarios)}. Insulin and medication dosing scenarios are STRICTLY PROHIBITED.")
 
-def apply_scenario(request: WhatIfRequest, scenario_name: str, config: dict) -> tuple[List[PlannedMeal], List[PlannedActivity]]:
+def apply_scenario(request: WhatIfRequest, scenario_name: str, config: dict) -> tuple[list[PlannedMeal], list[PlannedActivity]]:
     spec = config["whatif"]["scenarios"][scenario_name]
     
     meals = [PlannedMeal(m.time_offset_min, m.carbs_g) for m in request.planned_meals]

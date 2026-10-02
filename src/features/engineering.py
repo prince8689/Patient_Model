@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
-from .registry import get_feature_names, assert_no_forbidden
+
+from .registry import assert_no_forbidden, get_feature_names
+
 
 def compute_cob_estimate(meal_carbs_series: pd.Series, peak_steps: int, duration_steps: int) -> pd.Series:
     """
@@ -126,7 +128,7 @@ def build_features_for_patient(wearable_patient_df: pd.DataFrame, patient_row: p
         w_steps = int(w_m / interval) + 1
         out[f"hr_roll_mean_{w_m}m"] = hr.rolling(w_steps, min_periods=1).mean()
         if w_m == 30:
-            out[f"hr_roll_std_30m"] = hr.rolling(w_steps, min_periods=1).std()
+            out["hr_roll_std_30m"] = hr.rolling(w_steps, min_periods=1).std()
             
     out["hr_delta_30m"] = hr - hr.shift(int(30/interval))
     

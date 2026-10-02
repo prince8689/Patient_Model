@@ -1,5 +1,7 @@
 import pandas as pd
-from src.app_lib.data_access import get_patient_timeline, get_config
+
+from src.app_lib.data_access import get_config, get_patient_timeline
+
 
 def available_moments(patient_id: str) -> list[pd.Timestamp]:
     timeline = get_patient_timeline(patient_id)

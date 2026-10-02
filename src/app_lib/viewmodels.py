@@ -1,10 +1,19 @@
 import json
-import pandas as pd
-import numpy as np
 
-from src.app_lib.data_access import get_demo_patients, get_patients_df, get_patient_timeline, get_patient_wearable, get_registry, get_config
+import numpy as np
+import pandas as pd
+
+from src.app_lib.data_access import (
+    get_config,
+    get_demo_patients,
+    get_patient_timeline,
+    get_patient_wearable,
+    get_patients_df,
+    get_registry,
+)
 from src.app_lib.moments import default_moment
 from src.twin.state import TwinState
+
 
 def patient_overview(as_of: pd.Timestamp = None) -> pd.DataFrame:
     pids = get_demo_patients()

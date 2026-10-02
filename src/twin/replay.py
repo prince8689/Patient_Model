@@ -1,6 +1,7 @@
+from collections.abc import Generator
+
 import pandas as pd
-from typing import Generator
-from src.twin.loader import TwinRegistry
+
 
 class StreamReplayer:
     def __init__(self, raw_path: str, patient_id: str, start_time: str = None, end_time: str = None):

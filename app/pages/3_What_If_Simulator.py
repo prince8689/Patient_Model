@@ -1,12 +1,29 @@
-import streamlit as st
-import pandas as pd
-from datetime import datetime
+import os
+import sys
 
-from app.components import disclaimer_banner, render_band_badge, render_status_badge, kpi_card
-from src.app_lib.viewmodels import twin_view
-from src.app_lib.whatif_vm import available_scenarios, build_request, run_whatif_view, validation_summary, export_whatif_json
-from src.app_lib.figures import whatif_fan_figure, whatif_effects_figure, p_improvement_figure
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+import streamlit as st
+
+from app.components import (
+    disclaimer_banner,
+    render_band_badge,
+    render_status_badge,
+)
 from src.app_lib.data_access import get_config
+from src.app_lib.figures import (
+    p_improvement_figure,
+    whatif_effects_figure,
+    whatif_fan_figure,
+)
+from src.app_lib.viewmodels import twin_view
+from src.app_lib.whatif_vm import (
+    available_scenarios,
+    build_request,
+    export_whatif_json,
+    run_whatif_view,
+    validation_summary,
+)
 
 st.set_page_config(layout="wide")
 disclaimer_banner()
@@ -44,7 +61,7 @@ with col_ctx:
 
 is_stale_or_warming = view["data_quality"]["status"] in ["stale", "warming_up"]
 if is_stale_or_warming:
-    st.warning(f"Data Stale/Warming Up: Twin engine has suspended confident predictions. Proceed with caution.")
+    st.warning("Data Stale/Warming Up: Twin engine has suspended confident predictions. Proceed with caution.")
 
 st.markdown("---")
 
@@ -192,6 +209,7 @@ with col_results:
                 st.json(val)
             else:
                 st.write("Validation reports not found.")
+            st.page_link("pages/4_Model_Insights.py", label="View full validation report", icon="🔍")
                 
         st.download_button("Download what-if report (JSON)", data=export_whatif_json(res), file_name=f"whatif_{pid}.json")
 

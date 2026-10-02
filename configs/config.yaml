@@ -175,3 +175,72 @@ app:
     split_meal_60min: "#d35400"
     custom: "#f39c12"
   disclaimer: "Educational prototype with synthetic data. Not a medical device. Not for clinical decisions."
+  insights_bundle_path: "reports/insights_bundle.json"
+  team_name: null
+  team_members: []
+  repo_url: null
+  contact_email: null
+  demo_video_url: null
+  challenge_name: "Happiest Health Digital Twin Challenge 2026"
+  guided_demo_steps:
+    - step: 1
+      page: "Patient List"
+      patient_rule: "View the overall cohort summary"
+      look_at: "Overall metrics and search/filter for patients with different risk bands"
+    - step: 2
+      page: "Live Twin"
+      patient_rule: "Select P007 (or any default demo patient)"
+      look_at: "Glucose forecast chart with uncertainty bands and active alerts"
+    - step: 3
+      page: "Live Twin"
+      patient_rule: "Stay on the same patient"
+      look_at: "Top risk drivers and data quality/completeness badges"
+    - step: 4
+      page: "What-if Simulator"
+      patient_rule: "Click 'Try a what-if at this moment' from Live Twin"
+      look_at: "Compare 'Baseline' with 'Walk 30min' and 'Reduce carbs' scenarios"
+    - step: 5
+      page: "Model Insights"
+      patient_rule: "No specific patient required"
+      look_at: "Global SHAP feature importance, and performance on the test set"
+  section_order:
+    - "Risk model"
+    - "Calibration and bands"
+    - "Why the model predicts"
+    - "Does fusion help?"
+    - "Clinical usefulness"
+    - "Forecast"
+    - "What-if validation"
+    - "Where it struggles"
+    - "Integrity and reproducibility"
+  glossary:
+    - term: "digital twin"
+      definition: "A virtual representation of a patient's state, continually updated with new data."
+    - term: "EHR"
+      definition: "Electronic Health Record, containing static or slowly changing clinical history."
+    - term: "wearable"
+      definition: "Devices like smartwatches or fitness trackers that continuously monitor metrics like heart rate or steps."
+    - term: "CGM"
+      definition: "Continuous Glucose Monitor, a device that records blood glucose levels frequently."
+    - term: "HbA1c"
+      definition: "A measure of average blood sugar levels over the past 2-3 months."
+    - term: "time in range"
+      definition: "The percentage of time a patient's glucose levels remain within a target range (typically 70-180 mg/dL)."
+    - term: "calibration"
+      definition: "Adjusting model probabilities so they align with actual observed frequencies of an event."
+    - term: "ROC-AUC"
+      definition: "Area Under the Receiver Operating Characteristic curve; measures ability to rank risks correctly."
+    - term: "PR-AUC"
+      definition: "Area Under the Precision-Recall curve; especially useful for imbalanced datasets."
+    - term: "SHAP"
+      definition: "SHapley Additive exPlanations; a method to explain individual predictions by attributing credit to features."
+    - term: "conformal prediction"
+      definition: "A statistical method that provides reliable confidence intervals around predictions."
+    - term: "what-if simulation"
+      definition: "Forecasting outcomes under hypothetical interventions (e.g., changing meal timing or exercising)."
+    - term: "carbs on board"
+      definition: "An estimate of the remaining active carbohydrates from recent meals."
+    - term: "patient-wise split"
+      definition: "Splitting data so that all records from a given patient appear in only one split (train, val, or test)."
+    - term: "synthetic data"
+      definition: "Artificially generated data that mimics real-world properties without exposing actual patient records."

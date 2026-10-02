@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class ConformalCalibrator:
     def __init__(self, horizons, quantiles, target_coverage):
         self.horizons = horizons

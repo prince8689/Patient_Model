@@ -1,13 +1,14 @@
-import sys
 import argparse
-from pathlib import Path
 import json
+import sys
 import time
+from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
 from src.twin.loader import TwinRegistry
 from src.twin.replay import StreamReplayer
+from src.utils.config import load_config
+
 
 def main():
     parser = argparse.ArgumentParser()

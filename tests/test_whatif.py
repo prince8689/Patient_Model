@@ -1,9 +1,16 @@
-import pytest
-import pandas as pd
 import numpy as np
-from src.utils.config import load_config
-from src.simulator.scenarios import WhatIfRequest, PlannedMeal, PlannedActivity, validate_request, apply_scenario
+import pandas as pd
+import pytest
+
+from src.simulator.scenarios import (
+    PlannedMeal,
+    WhatIfRequest,
+    apply_scenario,
+    validate_request,
+)
 from src.simulator.whatif import run_whatif
+from src.utils.config import load_config
+
 
 def test_whatif_validation():
     config = load_config()

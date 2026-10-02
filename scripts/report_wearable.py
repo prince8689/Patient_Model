@@ -1,11 +1,12 @@
 import sys
 from pathlib import Path
-import pandas as pd
+
 import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd
 
 sys.path.append(str(Path(__file__).parent.parent))
 from src.utils.config import load_config
+
 
 def main():
     config = load_config()
@@ -27,7 +28,7 @@ def main():
         p_data = wearable_df[wearable_df["patient_id"] == pid].iloc[:288*3]
         
         plt.subplot(3, 1, i+1)
-        plt.plot(range(len(p_data)), p_data["glucose_mgdl"], label=f"Glucose", color="blue")
+        plt.plot(range(len(p_data)), p_data["glucose_mgdl"], label="Glucose", color="blue")
         plt.axhspan(70, 180, color='green', alpha=0.2, label="Target Range")
         
         meals = p_data[p_data["meal_carbs_g"] > 0]

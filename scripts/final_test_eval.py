@@ -1,23 +1,34 @@
-import sys
-import os
-import json
-import joblib
-import hashlib
 import argparse
+import hashlib
+import json
+import os
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
-import pandas as pd
-import numpy as np
+
+import joblib
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import seaborn as sns
-from sklearn.metrics import roc_auc_score, average_precision_score, brier_score_loss, log_loss, confusion_matrix, precision_score, recall_score, f1_score
-from sklearn.linear_model import LogisticRegression
 from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import (
+    average_precision_score,
+    brier_score_loss,
+    confusion_matrix,
+    f1_score,
+    log_loss,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
 from sklearn.preprocessing import StandardScaler
 
 sys.path.append(str(Path(__file__).parent.parent))
+from src.models.calibration import apply_calibration, expected_calibration_error
 from src.utils.config import load_config
-from src.models.calibration import expected_calibration_error, apply_calibration
+
 
 def get_file_sha256(filepath):
     sha256 = hashlib.sha256()
@@ -223,7 +234,7 @@ def main():
     fig_dir.mkdir(exist_ok=True)
     
     # 1. ROC/PR
-    from sklearn.metrics import RocCurveDisplay, PrecisionRecallDisplay
+    from sklearn.metrics import PrecisionRecallDisplay, RocCurveDisplay
     fig, ax = plt.subplots(1, 2, figsize=(12, 5))
     RocCurveDisplay.from_predictions(y_test, df_test["prob_calib"], name="XGBoost", ax=ax[0])
     RocCurveDisplay.from_predictions(y_test, df_test["prob_lr"], name="LR", ax=ax[0])

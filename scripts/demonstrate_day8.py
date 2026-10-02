@@ -1,16 +1,18 @@
+import json
 import sys
 import time
-import json
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
 from src.twin.loader import TwinRegistry
 from src.twin.replay import StreamReplayer
 from src.twin.timeline import build_timeline
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()
@@ -70,7 +72,7 @@ def main():
     
     fig, ax = plt.subplots(figsize=(8, 6))
     ax.axis("off")
-    text = f"TwinState Snapshot\n====================\n"
+    text = "TwinState Snapshot\n====================\n"
     text += f"Patient: {state.profile.patient_id} | Age: {state.profile.age} | HbA1c: {state.profile.hba1c}\n"
     text += f"Timestamp: {state.timestamp}\n"
     text += f"Glucose: {state.glucose_summary.current_glucose} mg/dL (Trend: {state.glucose_summary.trend_direction})\n"

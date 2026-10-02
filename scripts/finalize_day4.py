@@ -1,4 +1,5 @@
 import json
+
 with open('docs/data_quality.json') as f:
     r = json.load(f)
 

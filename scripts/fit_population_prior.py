@@ -1,13 +1,15 @@
-import sys
 import json
+import sys
 from pathlib import Path
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 from sklearn.linear_model import Ridge
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
 from src.simulator.personalization import estimate_parameters
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()

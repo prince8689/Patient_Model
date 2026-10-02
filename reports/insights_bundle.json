@@ -1,0 +1,224 @@
+{
+  "generated_at": "2026-10-01T15:24:37.314006",
+  "sections": {
+    "dataset": {
+      "source": "docs/data_quality.json",
+      "data": {
+        "rows": 241920,
+        "patients": 40,
+        "date_range": [
+          "2026-01-01 00:00:00",
+          "2026-01-21 23:55:00"
+        ],
+        "missing_pct": {
+          "patient_id": 0.0,
+          "timestamp": 0.0,
+          "glucose_mgdl": 2.5715112433862433,
+          "heart_rate": 0.0,
+          "steps": 0.0,
+          "sleep_state": 0.0,
+          "meal_carbs_g": 0.0,
+          "activity_intensity": 0.0
+        },
+        "glucose": {
+          "mean": 219.31607049669282,
+          "sd": 71.90349654986122,
+          "min": 40.0,
+          "max": 400.0,
+          "pct_below_70": 0.8901183288855702,
+          "pct_70_180": 30.471066911611842,
+          "pct_above_180": 68.63881475950258
+        },
+        "class_balance_overall_pct": 14.008353087255898,
+        "class_balance_splits_pct": {
+          "train": 13.7967695005036,
+          "val": 14.241565799639455,
+          "test": 14.757562599507889
+        },
+        "duplicate_timestamps": 0,
+        "max_glucose_gap_mins": 90
+      }
+    },
+    "classifier": {
+      "source": "reports/metrics_test_day7.json",
+      "data": {
+        "prevalence": 0.1475756259950789,
+        "xgb_metrics": {
+          "roc_auc": {
+            "mean": 0.9247333984510131,
+            "ci_lower": 0.9065895020473881,
+            "ci_upper": 0.943763679327569
+          },
+          "pr_auc": {
+            "mean": 0.6823108454226751,
+            "ci_lower": 0.5646072374658292,
+            "ci_upper": 0.7965854930457846
+          },
+          "brier": {
+            "mean": 0.07368946770443102,
+            "ci_lower": 0.06354270606456382,
+            "ci_upper": 0.08450871039652912
+          },
+          "log_loss": {
+            "mean": 0.23842684159770888,
+            "ci_lower": 0.21371873659618798,
+            "ci_upper": 0.2636765512171521
+          },
+          "ece": {
+            "mean": 0.027497040831618937,
+            "ci_lower": 0.012433972949385702,
+            "ci_upper": 0.056504701416689666
+          }
+        },
+        "lr_metrics": {
+          "roc_auc": {
+            "mean": 0.9003093406092217,
+            "ci_lower": 0.8672807908194804,
+            "ci_upper": 0.9248246051297622
+          },
+          "pr_auc": {
+            "mean": 0.6177356956043609,
+            "ci_lower": 0.4601442522149893,
+            "ci_upper": 0.7430090583937279
+          },
+          "brier": {
+            "mean": 0.08374689800762379,
+            "ci_lower": 0.06798528630625988,
+            "ci_upper": 0.09638644068952225
+          },
+          "log_loss": {
+            "mean": 0.2657761692313792,
+            "ci_lower": 0.22221788164231698,
+            "ci_upper": 0.30041551692753876
+          },
+          "ece": {
+            "mean": 0.029302316148818883,
+            "ci_lower": 0.010124734190749492,
+            "ci_upper": 0.055992640909340294
+          }
+        },
+        "paired_xgb_vs_lr_pr_diff": {
+          "mean": 0.06457514981831411,
+          "ci_lower": -0.0012140764599593012,
+          "ci_upper": 0.12539323619326512
+        },
+        "threshold_metrics": {
+          "medium": {
+            "precision": 0.40970634781079657,
+            "recall": 0.9140839544919577,
+            "f1": 0.565808644973288,
+            "specificity": 0.771997147417394,
+            "confusion_matrix": [
+              [
+                22733,
+                6714
+              ],
+              [
+                438,
+                4660
+              ]
+            ]
+          },
+          "high": {
+            "precision": 0.6101906288972029,
+            "recall": 0.6718320910160848,
+            "f1": 0.639529455699748,
+            "specificity": 0.9256970149760587,
+            "confusion_matrix": [
+              [
+                27259,
+                2188
+              ],
+              [
+                1673,
+                3425
+              ]
+            ]
+          }
+        },
+        "per_patient_summary": {
+          "mean_roc_auc": 0.9293910268798574,
+          "mean_pr_auc": 0.670574915551291
+        }
+      }
+    },
+    "thresholds_bands": {
+      "source": "models/thresholds_v1.json",
+      "data": {
+        "thresholds": {
+          "t_medium": 0.15384615384615385,
+          "t_high": 0.31583629893238435
+        },
+        "bands": {
+          "Low": "< 0.1538",
+          "Medium": "[0.1538, 0.3158)",
+          "High": ">= 0.3158"
+        },
+        "alert_threshold": 0.15384615384615385,
+        "method": "precision-targets",
+        "calibrated": true
+      }
+    },
+    "integrity": {
+      "source": "compiled from manifests",
+      "data": [
+        {
+          "module": "risk",
+          "manifest": "models/FROZEN.json",
+          "freeze_timestamp": "2026-09-30T05:30:04.659796+00:00",
+          "freeze_commit": "e1e5a8166df39ec61d04cda05680b8000e500256",
+          "test_timestamp": "2026-09-30T05:35:05.601379+00:00",
+          "test_commit": "e1e5a8166df39ec61d04cda05680b8000e500256",
+          "freeze_before_test_verified": true,
+          "files": {}
+        },
+        {
+          "module": "forecast",
+          "manifest": "models/FORECAST_FROZEN.json",
+          "freeze_timestamp": "2026-09-30T07:19:13.085179",
+          "freeze_commit": "25273fd63b3f2d27f271a87b774e861333c1b791",
+          "test_timestamp": null,
+          "test_commit": "unknown",
+          "freeze_before_test_verified": false,
+          "files": {
+            "forecaster_v1.joblib": {
+              "status": "match",
+              "recorded": "7ed80fa505692ec2deb5f7e58dadfcaa9e2091ee10cc79ae9659c0a4297c6651",
+              "actual": "7ed80fa505692ec2deb5f7e58dadfcaa9e2091ee10cc79ae9659c0a4297c6651"
+            },
+            "forecaster_v1_meta.json": {
+              "status": "match",
+              "recorded": "61818cccedb09876826b8a8996d4416560128c3bcd5af8a332212c768c997801",
+              "actual": "61818cccedb09876826b8a8996d4416560128c3bcd5af8a332212c768c997801"
+            },
+            "forecast_conformal_v1.json": {
+              "status": "match",
+              "recorded": "ba2d3175bc2744506f20963b9b8ff6b8979a895145817e39d2bfb8383c541c90",
+              "actual": "ba2d3175bc2744506f20963b9b8ff6b8979a895145817e39d2bfb8383c541c90"
+            },
+            "config.yaml": {
+              "status": "not present",
+              "recorded": "8329f2d4308792e66903bd99f4d3fb419508c18f39c74e9accd1f89575131937"
+            }
+          }
+        },
+        {
+          "module": "whatif",
+          "manifest": "models/WHATIF_FROZEN.json",
+          "freeze_timestamp": null,
+          "freeze_commit": "unknown",
+          "test_timestamp": null,
+          "test_commit": "unknown",
+          "freeze_before_test_verified": false,
+          "files": {}
+        }
+      ]
+    }
+  },
+  "missing": {
+    "explainability": "Source file reports/shap_global.json missing",
+    "clinical_utility": "Source file reports/clinical_utility.json missing",
+    "forecast": "Source file reports/forecast_metrics.json missing",
+    "whatif": "Source file reports/whatif_metrics.json missing"
+  }
+}

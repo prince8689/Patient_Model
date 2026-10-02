@@ -1,14 +1,16 @@
-import sys
 import json
+import sys
 from pathlib import Path
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 
 sys.path.append(str(Path(__file__).parent.parent))
-from src.utils.config import load_config
-from src.simulator.whatif import run_whatif, WhatIfRequest
-from src.simulator.scenarios import PlannedMeal, PlannedActivity
 from src.evaluation.oracle import reproduce_true_counterfactual
+from src.simulator.scenarios import PlannedMeal
+from src.simulator.whatif import WhatIfRequest, run_whatif
+from src.utils.config import load_config
+
 
 def main():
     config = load_config()

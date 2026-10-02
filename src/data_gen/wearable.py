@@ -1,8 +1,11 @@
+from datetime import datetime, timedelta
+
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
+
+from .behaviors import generate_behaviors, generate_steps, simulate_heart_rate
 from .glucose_dynamics import simulate_glucose
-from .behaviors import generate_behaviors, simulate_heart_rate, generate_steps
+
 
 def generate_wearable(patients_df: pd.DataFrame, sim_params_df: pd.DataFrame, config: dict) -> pd.DataFrame:
     n_days = config["days_per_patient"]

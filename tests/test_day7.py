@@ -1,14 +1,9 @@
-import pytest
-import os
-import json
 import numpy as np
 import pandas as pd
-from pathlib import Path
 
-from src.models.explain import explain_row
-from src.features.engineering import build_features_for_patient
-from src.utils.config import load_config
 import src.models.calibration as calib
+from src.models.explain import explain_row
+
 
 def test_calibrator_fitting_data():
     # Verify that the test or val sets are not used to fit the calibrator.

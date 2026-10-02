@@ -1,6 +1,6 @@
-from dataclasses import dataclass, field, asdict
-from typing import Optional, List, Dict, Any
-from datetime import datetime
+from dataclasses import asdict, dataclass
+from typing import Any
+
 
 @dataclass
 class PatientProfile:
@@ -26,7 +26,7 @@ class PatientProfile:
 @dataclass
 class Measurement:
     timestamp: str
-    glucose_mgdl: Optional[float]
+    glucose_mgdl: float | None
     heart_rate: float
     steps: float
     sleep_state: str
@@ -45,8 +45,8 @@ class RiskAssessment:
     probability_calibrated: float
     probability_raw: float
     band: str
-    band_thresholds: Dict[str, float]
-    drivers: List[Dict[str, Any]]
+    band_thresholds: dict[str, float]
+    drivers: list[dict[str, Any]]
     model_version: str
 
     def to_dict(self) -> dict:
@@ -62,7 +62,7 @@ class DataQuality:
     minutes_since_last_glucose: float
     completeness_60m: float
     history_hours_available: float
-    warnings: List[str]
+    warnings: list[str]
     confidence: str  # "high", "medium", "low"
 
     def to_dict(self) -> dict:
@@ -89,10 +89,10 @@ class AlertEvent:
 
 @dataclass
 class GlucoseSummary:
-    current_glucose: Optional[float]
-    trend_30m: Optional[float]
+    current_glucose: float | None
+    trend_30m: float | None
     trend_direction: str  # "rising_fast", "rising", "stable", "falling", "falling_fast"
-    time_in_range_24h: Optional[float]
+    time_in_range_24h: float | None
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -118,9 +118,9 @@ class TwinContext:
 @dataclass
 class ForecastResult:
     status: str
-    horizons_minutes: List[int]
-    quantiles: Dict[str, List[float]]
-    trajectory_5min: Dict[str, List[float]]
+    horizons_minutes: list[int]
+    quantiles: dict[str, list[float]]
+    trajectory_5min: dict[str, list[float]]
     predicted_peak: float
     predicted_peak_minutes: int
     predicted_min: float
@@ -143,11 +143,11 @@ class ForecastResult:
 class TwinState:
     profile: PatientProfile
     latest_measurement: Measurement
-    risk: Optional[RiskAssessment]
+    risk: RiskAssessment | None
     data_quality: DataQuality
-    forecast: Optional[ForecastResult]
+    forecast: ForecastResult | None
     forecast_status: str
-    active_alert: Optional[AlertEvent]
+    active_alert: AlertEvent | None
     glucose_summary: GlucoseSummary
     context: TwinContext
     timestamp: str

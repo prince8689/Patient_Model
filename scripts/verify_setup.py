@@ -1,5 +1,6 @@
 import sys
 
+
 def verify_setup():
     print(f"Python version: {sys.version}")
     assert sys.version_info >= (3, 10), "Python version must be >= 3.10"

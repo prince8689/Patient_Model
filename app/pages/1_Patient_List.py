@@ -1,12 +1,18 @@
-import streamlit as st
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 import pandas as pd
+import streamlit as st
+
 from app.components import disclaimer_banner, render_band_badge, render_status_badge
-from src.app_lib.viewmodels import patient_overview
 from src.app_lib.figures import sparkline_figure
+from src.app_lib.viewmodels import patient_overview
 
 st.title("Patient List")
 disclaimer_banner()
 st.write("Demonstration of the DiaTwin engine on a subset of synthetic test patients.")
+st.page_link("pages/5_About.py", label="Learn more about this dataset and prototype", icon="ℹ️")
 
 @st.cache_data(ttl=60)
 def get_overview():

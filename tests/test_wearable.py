@@ -1,11 +1,13 @@
-import pytest
-import pandas as pd
 import numpy as np
-from src.data_gen.wearable import generate_wearable
+import pandas as pd
+import pytest
+
 from src.data_gen.glucose_dynamics import simulate_glucose
-from src.data_gen.validate_wearable import validate_wearable
-from src.utils.config import load_config
 from src.data_gen.patients import generate_patients
+from src.data_gen.validate_wearable import validate_wearable
+from src.data_gen.wearable import generate_wearable
+from src.utils.config import load_config
+
 
 def test_glucose_dynamics():
     rng = np.random.default_rng(42)

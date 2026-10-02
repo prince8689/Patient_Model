@@ -4,6 +4,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 from src.features.registry import FEATURE_REGISTRY
 
+
 def main():
     docs_dir = Path("docs")
     docs_dir.mkdir(exist_ok=True)

@@ -1,6 +1,7 @@
-import numpy as np
 from dataclasses import dataclass
-from typing import Optional
+
+import numpy as np
+
 
 @dataclass
 class GlucoseState:
@@ -26,7 +27,7 @@ def simulate_from_state(
     start_time_of_day: int,
     n_steps: int,
     deterministic: bool = False,
-    rng: Optional[np.random.Generator] = None,
+    rng: np.random.Generator | None = None,
     glucose_min: float = 40.0,
     glucose_max: float = 400.0
 ) -> tuple[np.ndarray, np.ndarray, GlucoseState]:

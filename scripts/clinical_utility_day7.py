@@ -1,12 +1,14 @@
-import sys
 import json
+import sys
 from pathlib import Path
-import pandas as pd
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 sys.path.append(str(Path(__file__).parent.parent))
 from src.utils.config import load_config
+
 
 def get_events(df_pat):
     """Returns list of events (start_idx, end_idx) where spike_next_2h == 1, merging gaps < 6 (30m)."""

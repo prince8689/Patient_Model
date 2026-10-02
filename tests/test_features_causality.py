@@ -1,9 +1,15 @@
-import pytest
 import numpy as np
 import pandas as pd
+import pytest
+
+from src.features.engineering import build_features, build_features_for_patient
+from src.features.registry import (
+    FORBIDDEN_COLUMNS,
+    assert_no_forbidden,
+    get_feature_names,
+)
 from src.utils.config import load_config
-from src.features.engineering import build_features_for_patient, build_features
-from src.features.registry import assert_no_forbidden, get_feature_names, FORBIDDEN_COLUMNS
+
 
 @pytest.fixture
 def sample_patient_data():

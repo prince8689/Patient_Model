@@ -1,8 +1,11 @@
+from dataclasses import dataclass
+
 import numpy as np
 import pandas as pd
 from scipy.optimize import least_squares
-from dataclasses import dataclass
-from src.data_gen.glucose_dynamics import simulate_from_state, GlucoseState
+
+from src.data_gen.glucose_dynamics import GlucoseState, simulate_from_state
+
 
 @dataclass
 class ParameterPosterior:
