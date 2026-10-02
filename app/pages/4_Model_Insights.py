@@ -135,6 +135,13 @@ with tabs[7]: # Where it struggles
 
 with tabs[8]: # Integrity and reproducibility
     st.subheader("Integrity and Reproducibility")
+    st.markdown("""
+To safely allow UI modifications without weakening integrity:
+- The loader bypasses the rigid whole-file hash check exclusively for `config.yaml`.
+- Instead, it verifies via a section-level check that no value present in the first-freeze config (commit 82c36c0) changed, normalising CRLF to LF before comparing.
+- For the forecast and what-if modules, the manifest and the test marker were first committed together (commits 7210b6d and b5f8c07), so freeze-before-test cannot be proven from git for them.
+- For the risk model, the freeze commit precedes the test commit.
+""")
     integ = integrity_report(bundle)
     if not integ:
         st.info("Not available (missing: integrity)")

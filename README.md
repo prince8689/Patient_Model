@@ -23,13 +23,13 @@ These metrics reflect the in-silico evaluation on synthetic patients. Test metri
 | **Forecast RMSE 60m (Validation)** | 18.41 mg/dL | - | `reports/metrics_forecast_val.json` |
 | **Forecast Coverage 60m (Validation)** | 80.0% | - | `reports/metrics_forecast_val.json` |
 
-For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios. The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover.
+For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios (`reports/WHATIF_TEST_DONE.json`). The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover.
 
 ## Claims
 - The model targets Type 2 diabetes only.
 - The label is a glucose rise of 50 mg/dL or more within 2 hours. It is not a hypoglycemia predictor.
-- The synthetic population has a mean glucose of about 219 mg/dL with about 68.6% of readings above 180 (from `docs/data_quality.json`).
-- The medium risk band raises about 9.55 alerts per patient per day at a precision of about 0.41 (from test metrics).
+- The synthetic population has a mean glucose of about 219 mg/dL with about 69% of readings above 180 (from `docs/data_quality.json`).
+- The medium risk band raises about 90.27 alerts per patient per day (from test metrics).
 
 ## Architecture & Dashboards
 
@@ -75,7 +75,9 @@ python scripts/run_pipeline.py
 ```
 
 ### 5. Run the Test Suite
+To run the tests, first install the development dependencies:
 ```bash
+pip install -r requirements-dev.txt
 pytest tests/
 ```
 

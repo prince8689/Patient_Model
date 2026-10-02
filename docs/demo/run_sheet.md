@@ -1,50 +1,39 @@
-# Demo Run Sheet
+# DiaTwin Demo Run Sheet
 
-**Target Length**: Under 3 minutes.
-**Environment**: Local demo bundle mode (`DIATWIN_DEMO_BUNDLE=1`).
+This script is for a 3 to 4 minute screen recording of the DiaTwin application running in demo-bundle mode.
 
-## Preparation
-1. Ensure the app is running: `DIATWIN_DEMO_BUNDLE=1 streamlit run app/main.py`.
-2. Open the app in a browser at 1920x1080 resolution, 100% zoom.
-3. Start recording.
+**Prerequisites:**
+- Run the app with `DIATWIN_DEMO_BUNDLE=1` via `demo_bundle.py` or `.env`.
+- Ensure all demo bundle files are generated.
 
-## Sequence
+## Step 1: Patient List (0:00 - 0:30)
+1. Navigate to the **Patient List** page.
+2. Observe the overview of the 6 demo patients.
+3. Highlight patient **P007**.
+4. Click the link/button to view the **Live Twin** for **P007**.
 
-### 1. Patient List (0:00 - 0:20)
-* **Action**: Navigate to "Patient List" in the sidebar.
-* **Visual**: The cohort of 6 synthetic demo patients is displayed.
-* **Action**: Click "Select" on patient **P040**.
-* **Visual**: The app transitions to the Live Twin page for P040.
+## Step 2: Live Twin and Forecast (0:30 - 1:30)
+1. On the **Live Twin** page, verify the timestamp is **2026-01-03 21:50**.
+2. Point out that the patient currently has a **High** risk band and their glucose is rising after a recent meal.
+3. Scroll down to the **Glucose Forecast** section.
+4. Highlight the predicted peak and the uncertainty bands.
+5. Emphasize the educational disclaimer clearly visible at the bottom or top of the page.
 
-### 2. Live Twin & Drivers (0:20 - 1:00)
-* **Action**: View the Live Twin page for **P040** at the default time (2026-01-03 22:20:00).
-* **Visual**: 
-  * The main KPIs show current glucose is 262.8 mg/dL and rising.
-  * The Risk Band is **High** (Alert visible).
-  * The forecast chart displays the rising trajectory and the 80% conformal uncertainty bands peaking around 348 mg/dL.
-* **Action**: Scroll down to the "Top Risk Drivers" section.
-* **Visual**: Three plain-language drivers are visible, explaining that the risk is driven by a recent large meal (73.3g carbs) that is still being absorbed.
+## Step 3: Drivers and Explanations (1:30 - 2:00)
+1. Scroll to the **Risk Drivers** section on the same page.
+2. Explain the top three drivers contributing to the High risk score: Time since last meal (`meal_min_since_last`), Carbs on board (`meal_cob_estimate`), and HbA1c (`ehr_hba1c`).
+3. Briefly mention how this helps in understanding the underlying causes of the spike.
 
-### 3. What-if Simulator (1:00 - 1:45)
-* **Action**: Navigate to "What-if Simulator" in the sidebar.
-* **Visual**: Simulator interface opens for P040.
-* **Action**: In the preset dropdown, select the **"typical breakfast preset"** (or manually input +15 min, 50g carbs). Check the boxes for three interventions (e.g., "walk_30min_moderate"). Click "Run Simulation".
-* **Visual**: The chart updates to show the counterfactual trajectories. The model demonstrates how the 30-minute walk blunts the glucose peak compared to the baseline. Mention if one scenario shows wide uncertainty (low confidence).
+## Step 4: What-If Simulator (2:00 - 3:15)
+1. Navigate to the **What-If Simulator** page.
+2. Select patient **P007** and ensure the timestamp is still **2026-01-03 21:50**.
+3. In the "Simulate Scenarios" panel, select a scenario like **walk_30min_moderate** or **split_meal_60min**.
+4. Click **Run Simulation**.
+5. Observe the new predicted peak and compare it against the baseline trajectory.
+6. Highlight the clear peak difference and how it could theoretically inform lifestyle adjustments (again pointing out the disclaimer).
 
-### 4. Model Insights (1:45 - 2:20)
-* **Action**: Navigate to "Model Insights" in the sidebar.
-* **Visual**: The performance dashboard loads from the static bundle.
-* **Action**: Click on the **"Integrity"** tab.
-* **Visual**: Shows the cryptographic hashes matching the `FROZEN.json` manifest, proving no look-ahead leakage.
-* **Action**: Click on the **"Limitations"** tab.
-* **Visual**: The explicit limitations of the synthetic model are visible on screen.
-
-### 5. About Page (2:20 - 2:45)
-* **Action**: Navigate to "About" in the sidebar.
-* **Visual**: The project overview and architecture diagram are displayed.
-* **Action**: Scroll to the **"Challenge Mapping"** section.
-* **Visual**: The table showing how the repository fulfills all requirements is visible.
-
-### 6. Outro (2:45 - 3:00)
-* **Action**: Scroll back to the top of the About page, highlighting the medical disclaimer.
-* **End Recording.**
+## Step 5: Model Insights (3:15 - 4:00)
+1. Navigate to the **Model Insights** page.
+2. Briefly scroll through the global metrics and model performance across different archetypes.
+3. Show the limitations tab to highlight the safety constraints and bounds of the model.
+4. Conclude the demo.

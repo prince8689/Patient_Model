@@ -17,9 +17,17 @@
 - **Result**: **PASS**. Coverage meets targets. `test_calibration_and_evaluation.py` and `test_app_smoke.py` were fixed to correctly reference paths for Shap indexing and `AppTest` resolving.
 
 ## 4. Fresh-Clone Portability Check
-- **Methodology**: Cloned the local repo to a temp directory, installed `requirements-dev.txt`, ran `pytest`, and verified `test_app_smoke.py`.
-- **Findings**: Tests requiring frozen artifacts (`xgb_v1.joblib`) fail if the binary is git-ignored, as designed, but the core tests and `AppTest` handle missing assets and start gracefully with missing artifacts bypass. Repo size is small and clean.
-- **Result**: **PASS**.
+- **Methodology**: Cloned the local repo to a temp directory, installed `requirements-dev.txt` and `requirements-demo.txt`, ran `pytest`, and ran `demo_preflight.py`.
+- **Findings (Failures)**:
+  - `demo_preflight.py` crashed due to missing `pyyaml` and `plotly` dependencies.
+  - The integrity check `test_protected_files.py` failed because of CRLF/LF line ending mismatches in `FROZEN.json` and `config.yaml`, and failed to handle gitignored missing files correctly.
+  - Test suite collection failed (8 errors) because fixtures (like `sample_patient`) raised `FileNotFoundError` when `splits.csv` and model binaries were absent in the clone.
+- **Fixes Applied**:
+  - Added `pyyaml` and `plotly` to `requirements-demo.txt`.
+  - Added `-text` rules for all manifest-listed files in `.gitattributes`.
+  - Rewrote `tests/test_protected_files.py` to properly use the section-level check for config and gracefully skip untracked missing files with "not present in this checkout".
+  - Updated fixtures to use `pytest.skip("not present in this checkout")` when `splits.csv` is missing.
+- **Result**: **FAIL** (initially), now mitigated as documented above.
 
 ## 5. Determinism & Pipeline Reproducibility
 - **Data Generation**: Ran `generate_patients` and `generate_wearable` repeatedly with `seed=42`. Output dataframes were identical. Changing `seed=99` produced strictly different outputs.

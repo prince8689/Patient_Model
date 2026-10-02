@@ -15,3 +15,9 @@ src/features/registry.py -text
 # Exclude coverage cache from git
 .coverage linguist-generated=true
 htmlcov/ linguist-generated=true
+
+# Manifest-listed tracked files
+models/xgb_v1_meta.json -text
+models/thresholds_v1.json -text
+models/forecaster_v1_meta.json -text
+models/forecast_conformal_v1.json -text

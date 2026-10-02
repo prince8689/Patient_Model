@@ -14,10 +14,9 @@ When the `DiaTwin` engine loader initializes (`src/twin/loader.py`), it automati
 ## 3. Configuration Auditing
 Adding UI configurations and layout instructions (e.g., the `app:` or `insights:` section in `configs/config.yaml`) causes the whole-file hash to diverge from the freeze manifest. To safely allow UI modifications without weakening integrity:
 - The loader bypasses the rigid whole-file hash check exclusively for `config.yaml`.
-- Instead, it delegates verification to `scripts/qa/config_audit.py`.
-- The audit script pulls the original `config.yaml` from git history at the exact commit of the freeze.
-- It parses both YAML files and verifies that **all frozen-relevant configuration sections** (e.g., `evaluation`, `features`, `forecast`, `paths`, etc.) are deeply identical to their frozen state.
-- Only safe, presentation-only top-level sections (like `app` and `insights`) are permitted to be new or modified.
+- Instead, it verifies via a section-level check that no value present in the first-freeze config (commit 82c36c0) changed, normalising CRLF to LF before comparing.
+- For the forecast and what-if modules, the manifest and the test marker were first committed together (commits 7210b6d and b5f8c07), so freeze-before-test cannot be proven from git for them.
+- For the risk model, the freeze commit precedes the test commit.
 
 ## 4. UI Dashboard Honesty
 The `Model Insights` and `About` pages adhere to a strict "display-only" rule. They do not have access to models or raw data. Instead, they consume a compiled `reports/insights_bundle.json` generated from static report files.

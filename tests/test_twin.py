@@ -10,13 +10,22 @@ from src.twin.loader import TwinRegistry
 from src.utils.config import load_config
 
 
+@pytest.fixture(scope="module", autouse=True)
+def skip_if_models_missing():
+    root = Path(__file__).resolve().parent.parent
+    if not (root / "models" / "xgb_v1.joblib").exists():
+        pytest.skip("Joblib models not present in this checkout")
+
 @pytest.fixture(scope="module")
 def config():
     return load_config()
 
 @pytest.fixture(scope="module")
 def sample_patient(config):
-    splits = pd.read_csv(Path(config["paths"]["data_processed"]) / "splits.csv")
+    splits_path = Path(config["paths"]["data_processed"]) / "splits.csv"
+    if not splits_path.exists():
+        pytest.skip("not present in this checkout")
+    splits = pd.read_csv(splits_path)
     test_pats = splits[splits["split"] == "test"]["patient_id"].unique()
     return test_pats[0] if len(test_pats) > 0 else None
 
@@ -125,7 +134,8 @@ def test_frozen_hash_mismatch(config, tmp_path):
     with open(frozen_path, "r") as f:
         frozen = json.load(f)
         
-    frozen["hashes"][list(frozen["hashes"].keys())[0]] = "deadbeef"
+    # Keep only config.yaml to avoid FileNotFoundError on gitignored binaries in a clone
+    frozen["hashes"] = {"configs/config.yaml": "deadbeef"}
     
     tmp_frozen = tmp_path / "FROZEN.json"
     with open(tmp_frozen, "w") as f:
