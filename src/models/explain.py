@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
+
 from .explain_text import get_explanation_text
+
 
 def _get_shap():
     try:
@@ -18,7 +20,11 @@ def explain_row(explainer, feature_row_df, feature_names, top_k=3):
         return []
         
     X = feature_row_df[feature_names]
-    shap_vals = explainer.shap_values(X)[0] # raw margin
+    shap_vals = explainer.shap_values(X)
+    if isinstance(shap_vals, list):
+        shap_vals = shap_vals[0]
+    if len(np.shape(shap_vals)) == 2 and np.shape(shap_vals)[0] == 1:
+        shap_vals = shap_vals[0]
     
     # Sort by absolute SHAP value
     indices = np.argsort(-np.abs(shap_vals))[:top_k]
