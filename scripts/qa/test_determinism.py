@@ -131,7 +131,7 @@ def test_twin_replay_determinism():
     state2 = t2.get_state()
     
     # compare dicts
-    assert state1.model_dump() == state2.model_dump(), "Replay is NOT deterministic"
+    assert state1.to_dict() == state2.to_dict(), "Replay is NOT deterministic"
     
     # Snapshot / restore
     snap = t2.snapshot()
@@ -141,8 +141,8 @@ def test_twin_replay_determinism():
     state3 = t3.get_state()
     
     # Remove things that aren't strictly restorable (if any)
-    d2 = state2.model_dump()
-    d3 = state3.model_dump()
+    d2 = state2.to_dict()
+    d3 = state3.to_dict()
     
     # The drivers might be slightly different if SHAP randomness exists, but tree explainer is deterministic
     assert d2 == d3, "Snapshot/Restore is NOT deterministic"
