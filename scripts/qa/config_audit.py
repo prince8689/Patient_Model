@@ -1,9 +1,7 @@
 import json
 import subprocess
 from pathlib import Path
-
 import yaml
-
 
 def get_frozen_config_hash():
     root = Path(__file__).resolve().parent.parent.parent
@@ -22,6 +20,15 @@ def get_frozen_config_hash():
                     return h
     return None
 
+def get_config_from_commit(commit_hash):
+    root = Path(__file__).resolve().parent.parent.parent
+    try:
+        out = subprocess.check_output(["git", "show", f"{commit_hash}:configs/config.yaml"], cwd=str(root), stderr=subprocess.DEVNULL)
+        out = out.replace(b'\r\n', b'\n')
+        return yaml.safe_load(out.decode("utf-8")), out
+    except Exception:
+        return None, None
+
 def get_config_matching_hash(expected_hash):
     import hashlib
     root = Path(__file__).resolve().parent.parent.parent
@@ -30,6 +37,7 @@ def get_config_matching_hash(expected_hash):
         for c in commits:
             try:
                 out = subprocess.check_output(["git", "show", f"{c}:configs/config.yaml"], cwd=str(root), stderr=subprocess.DEVNULL)
+                out = out.replace(b'\r\n', b'\n')
                 h = hashlib.sha256(out).hexdigest()
                 if h == expected_hash:
                     return yaml.safe_load(out.decode("utf-8"))
@@ -42,8 +50,9 @@ def get_config_matching_hash(expected_hash):
 def get_current_config():
     root = Path(__file__).resolve().parent.parent.parent
     p = root / "configs" / "config.yaml"
-    with open(p, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    with open(p, "rb") as f:
+        out = f.read().replace(b'\r\n', b'\n')
+    return yaml.safe_load(out.decode("utf-8"))
 
 def audit_config(current=None):
     if current is None:
@@ -51,12 +60,20 @@ def audit_config(current=None):
         
     expected_hash = get_frozen_config_hash()
     if not expected_hash:
-        return True # Can't verify if no freeze
+        return "unverified: no freeze hash found"
     
     frozen_config = get_config_matching_hash(expected_hash)
     if not frozen_config:
-        # If we can't find it in git, we just pass (e.g. running in a clean directory without full history)
-        return True
+        return "unverified: config not verified in this checkout"
+    
+    # Also compare against first freeze commit (82c36c0)
+    first_freeze_config, _ = get_config_from_commit("82c36c0")
+    if first_freeze_config:
+        # Report the key-level diff between the two
+        diff = set(frozen_config.keys()) - set(first_freeze_config.keys())
+        for k in first_freeze_config:
+            if first_freeze_config[k] != frozen_config.get(k):
+                raise ValueError(f"Config audit failed: Existing value changed for '{k}' between first freeze and manifest.")
     
     # Allowed non-frozen sections (UI and presentation only)
     allowed_new_sections = {"app", "insights", "glossary", "guided_demo_steps", "section_order"}
@@ -79,8 +96,11 @@ def audit_config(current=None):
 
 if __name__ == "__main__":
     try:
-        audit_config()
-        print("Config audit passed. All frozen-relevant sections are identical to the freeze commit.")
+        res = audit_config()
+        if res is True:
+            print("Config audit passed. All frozen-relevant sections are identical to the freeze commit.")
+        else:
+            print(res)
     except Exception as e:
         print(e)
         import sys

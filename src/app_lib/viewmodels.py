@@ -226,12 +226,21 @@ def export_state_json(patient_id: str, as_of: pd.Timestamp) -> str:
     # We only need enough history to satisfy the history buffer (36 hours = 432 samples)
     samples = wearable.to_dict(orient="records")
     cutoff_samples = samples[-500:] if len(samples) > 500 else samples
+    
+    # Fast forward loop without full feature generation
     for s in cutoff_samples[:-1]:
-        twin2.ingest(s)
+        row = twin2._validate_sample(s)
+        twin2.buffer.append(row)
+        twin2.last_timestamp = row["timestamp"]
+        twin2._update_cumulative_state(row)
+        
+        # Trim buffer
+        cutoff = row["timestamp"] - pd.Timedelta(minutes=twin2.history_buffer_m)
+        twin2.buffer = [r for r in twin2.buffer if r["timestamp"] >= cutoff]
         
     twin2.explainer = twin.explainer
     twin2.forecast_artifacts = twin.forecast_artifacts
     twin2.whatif_artifacts = twin.whatif_artifacts
     
-    state = twin2.ingest(samples[-1])
+    state = twin2.ingest(cutoff_samples[-1])
     return json.dumps(state.to_dict(), indent=2)

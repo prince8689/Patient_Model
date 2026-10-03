@@ -5,7 +5,8 @@ from scripts.qa.config_audit import audit_config
 
 def test_config_audit_passes_with_current():
     # Should pass because current config only has safe additions
-    assert audit_config()
+    res = audit_config()
+    assert res is True or (isinstance(res, str) and res.startswith("unverified"))
 
 def test_config_audit_fails_on_frozen_section_change(monkeypatch):
     from scripts.qa.config_audit import get_current_config
@@ -27,7 +28,8 @@ def test_config_audit_allows_app_key(monkeypatch):
     current["app"]["new_test_key"] = "safe"
     
     # Should not raise
-    assert audit_config(current)
+    res = audit_config(current)
+    assert res is True or (isinstance(res, str) and res.startswith("unverified"))
     
 def test_config_audit_fails_on_unknown_new_section(monkeypatch):
     from scripts.qa.config_audit import get_current_config

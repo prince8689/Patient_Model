@@ -98,6 +98,9 @@ The project enforces a strict "freeze-before-test" protocol. Model weights, cali
 ## Limitations
 This prototype is built on synthetic physiological approximations designed for research demonstration. It models a simplified representation of Type 1 and Type 2 diabetes dynamics and is not calibrated to true human physiology. The evaluation cohort is small (40 patients) and represents limited demographic diversity. The What-if Simulator uses the same underlying model family for both the baseline risk assessment and the counterfactual projection, which inherently limits the discovery of unmodeled physiological interactions. The prototype does not include medication modeling, insulin dosage simulations, or long-term complication risk factors. There is no clinical validation of the outputs.
 
+## Real Data
+The real dataset used in this project is ShanghaiT2DM (Citation: Zhao et al., Scientific Data 10, 35, 2023, DOI: 10.6084/m9.figshare.c.6310860). It is available under the CC BY 4.0 license.
+
 ## Tools and Acknowledgements
 [TO BE FILLED BY TEAM: tools, libraries, data sources, mentors]
 
@@ -118,3 +121,6 @@ This prototype is built on synthetic physiological approximations designed for r
 
 ## License
 See the [LICENSE](LICENSE) file for details.
+
+## Real Data Attribution
+ShanghaiT2DM dataset (Zhao et al., Scientific Data 10, 35, 2023; figshare DOI 10.6084/m9.figshare.c.6310860) is used for realism comparison. License: CC BY 4.0.

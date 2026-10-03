@@ -3,6 +3,15 @@ import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
+
+import src.utils.config
+_orig_load = src.utils.config.load_config
+def _patched_load(*args, **kwargs):
+    c = _orig_load(*args, **kwargs)
+    c["app"]["use_demo_bundle"] = False
+    return c
+src.utils.config.load_config = _patched_load
+
 from src.app_lib.data_access import (
     get_demo_patients,
     get_patient_timeline,
@@ -13,9 +22,7 @@ from src.app_lib.moments import default_moment
 from src.app_lib.viewmodels import export_state_json
 from src.utils.config import load_config
 
-
 def build_bundle():
-    config = load_config()
     bundle_dir = Path("demo_bundle")
     if bundle_dir.exists():
         shutil.rmtree(bundle_dir)

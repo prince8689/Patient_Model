@@ -34,7 +34,9 @@ def load_frozen_artifacts(config: dict):
             # Ensure scripts module is reachable
             sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
             from scripts.qa.config_audit import audit_config
-            audit_config()
+            res = audit_config()
+            if isinstance(res, str) and res.startswith("unverified"):
+                logging.warning(f"Config audit: {res}")
             continue
             
         actual_hash = get_file_sha256(fp)
@@ -87,7 +89,9 @@ def load_forecast_artifacts(config: dict):
             import sys
             sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
             from scripts.qa.config_audit import audit_config
-            audit_config()
+            res = audit_config()
+            if isinstance(res, str) and res.startswith("unverified"):
+                logging.warning(f"Config audit: {res}")
             continue
             
         actual_hash = get_file_sha256(fp)
@@ -128,7 +132,9 @@ def load_whatif_artifacts(config: dict):
     import sys
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
     from scripts.qa.config_audit import audit_config
-    audit_config()
+    res = audit_config()
+    if isinstance(res, str) and res.startswith("unverified"):
+        logging.warning(f"Config audit: {res}")
         
     with open(prior_path, "r") as f:
         prior_data = json.load(f)

@@ -129,7 +129,8 @@ def test_run_whatif_view_no_future_peeking(monkeypatch):
 
 def test_app_smoke():
     from streamlit.testing.v1 import AppTest
-    at = AppTest.from_file("../app/pages/3_What_If_Simulator.py")
+    root = Path(__file__).resolve().parent.parent
+    at = AppTest.from_file(str(root / "app" / "main.py"))
     # Setting session state to avoid early stop
     at.session_state["patient_id"] = "P007"
     at.session_state["as_of"] = pd.to_datetime("2026-01-03 21:50")

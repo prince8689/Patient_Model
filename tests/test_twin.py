@@ -134,8 +134,9 @@ def test_frozen_hash_mismatch(config, tmp_path):
     with open(frozen_path, "r") as f:
         frozen = json.load(f)
         
-    # Keep only config.yaml to avoid FileNotFoundError on gitignored binaries in a clone
-    frozen["hashes"] = {"configs/config.yaml": "deadbeef"}
+    # Keep only registry.py to avoid FileNotFoundError on gitignored binaries in a clone
+    # and to ensure the hash mismatch branch is executed (config bypasses it)
+    frozen["hashes"] = {"src/features/registry.py": "deadbeef"}
     
     tmp_frozen = tmp_path / "FROZEN.json"
     with open(tmp_frozen, "w") as f:

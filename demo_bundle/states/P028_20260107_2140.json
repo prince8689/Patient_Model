@@ -214,7 +214,13 @@
     "summary": "Glucose is expected to peak near 142 mg/dL in about 90 minutes (likely range 115 to 159)."
   },
   "forecast_status": "ok",
-  "active_alert": null,
+  "active_alert": {
+    "timestamp": "2026-01-07T21:40:00",
+    "band": "High",
+    "probability": 0.9946949602122016,
+    "message": "High risk detected (99%).",
+    "acknowledged": false
+  },
   "glucose_summary": {
     "current_glucose": 74.7,
     "trend_30m": 6.700000000000003,

@@ -36,3 +36,6 @@ Prototyping prediction pipelines, algorithm evaluation, and dashboard building f
 
 ## Not intended for
 Clinical use or real-world physiological diagnosis.
+
+## Real Data Comparison
+See [REAL_DATA.md](REAL_DATA.md) for information on the real dataset used for comparison.

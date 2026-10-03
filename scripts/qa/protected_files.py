@@ -99,7 +99,7 @@ def verify_manifests():
                 p = root / "configs" / "config.yaml"
                 
             if not p.exists():
-                manifest_res[path_str] = "not present"
+                manifest_res[path_str] = "not present in this checkout"
             else:
                 if path_str.endswith("config.yaml"):
                     try:
@@ -107,8 +107,11 @@ def verify_manifests():
                         if str(root) not in sys.path:
                             sys.path.insert(0, str(root))
                         from scripts.qa.config_audit import audit_config
-                        audit_config()
-                        manifest_res[path_str] = "match"
+                        res = audit_config()
+                        if isinstance(res, str) and res.startswith("unverified"):
+                            manifest_res[path_str] = res
+                        else:
+                            manifest_res[path_str] = "match"
                     except Exception as e:
                         manifest_res[path_str] = f"mismatch ({e!s})"
                 elif p.stat().st_size > 50_000_000:

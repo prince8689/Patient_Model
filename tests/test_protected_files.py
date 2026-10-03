@@ -6,7 +6,7 @@ import pytest
 from scripts.qa.config_audit import audit_config
 
 def get_manifests():
-    root = Path(__file__).resolve().parent.parent.parent
+    root = Path(__file__).resolve().parent.parent
     return [
         root / "models" / "FROZEN.json",
         root / "models" / "FORECAST_FROZEN.json",
@@ -21,7 +21,7 @@ def is_tracked(path_str, root):
         return False
 
 def test_manifests_integrity():
-    root = Path(__file__).resolve().parent.parent.parent
+    root = Path(__file__).resolve().parent.parent
     for manifest_path in get_manifests():
         if not manifest_path.exists():
             if manifest_path.name == "WHATIF_FROZEN.json":
