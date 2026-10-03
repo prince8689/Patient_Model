@@ -22,3 +22,5 @@ data/processed/*
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !models/.gitkeep
+
+data/external/shanghai_t2dm/
