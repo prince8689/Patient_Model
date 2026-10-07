@@ -1,0 +1,29 @@
+from pathlib import Path
+
+import yaml
+
+
+def load_config(config_path: str = "configs/config.yaml") -> dict:
+    """
+    Loads the project configuration from a YAML file.
+    
+    Args:
+        config_path (str): Path to the config file.
+        
+    Returns:
+        dict: Configuration dictionary.
+    """
+    config_file = Path(config_path)
+    if not config_file.exists():
+        raise FileNotFoundError(f"Config file not found at {config_path}")
+        
+    with open(config_file, "r") as f:
+        config = yaml.safe_load(f)
+        
+    import os
+    if os.environ.get("DIATWIN_DEMO_BUNDLE") == "1":
+        if "app" not in config:
+            config["app"] = {}
+        config["app"]["use_demo_bundle"] = True
+        
+    return config

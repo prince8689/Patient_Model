@@ -84,24 +84,27 @@ def verify_manifests():
             data = json.load(f)
             
         manifest_res = {}
-        items = data.get("hashes", {})
-        items.update(data.get("files", {}))
-        
+        if manifest_path.name == "WHATIF_FROZEN.json":
+            items = {
+                "models/whatif_prior_v1.json": data.get("whatif_prior_hash"),
+                "configs/config.yaml": data.get("config_hash")
+            }
+        else:
+            items = data.get("hashes", {})
+            items.update(data.get("files", {}))
+            
         for path_str, expected_hash in items.items():
-            if manifest_path.name == "WHATIF_FROZEN.json":
-                p = root / path_str
-            else:
+            p = root / path_str
+            if not p.exists() and (root / "models" / path_str).exists():
                 p = root / "models" / path_str
                 
-            if not p.exists() and (root / path_str).exists():
-                p = root / path_str
             if not p.exists() and path_str == "config.yaml" and (root / "configs" / "config.yaml").exists():
                 p = root / "configs" / "config.yaml"
                 
             if not p.exists():
-                manifest_res[path_str] = "not present in this checkout"
+                manifest_res[path_str] = "NOT PRESENT"
             else:
-                if path_str.endswith("config.yaml"):
+                if "config.yaml" in path_str:
                     try:
                         import sys
                         if str(root) not in sys.path:
@@ -109,20 +112,23 @@ def verify_manifests():
                         from scripts.qa.config_audit import audit_config
                         res = audit_config()
                         if isinstance(res, str) and res.startswith("unverified"):
-                            manifest_res[path_str] = res
+                            manifest_res[path_str] = f"COULD NOT VERIFY: {res}"
                         else:
-                            manifest_res[path_str] = "match"
+                            manifest_res[path_str] = "MATCH"
                     except Exception as e:
-                        manifest_res[path_str] = f"mismatch ({e!s})"
+                        manifest_res[path_str] = f"COULD NOT VERIFY: {e!s}"
                 elif p.stat().st_size > 50_000_000:
-                    manifest_res[path_str] = "match (size > 50M skipped)"
+                    manifest_res[path_str] = "MATCH (size > 50M skipped)"
                 else:
-                    h = hashlib.sha256()
-                    with open(p, "rb") as bf:
-                        while chunk := bf.read(8192):
-                            h.update(chunk)
-                    actual_hash = h.hexdigest()
-                    manifest_res[path_str] = "match" if actual_hash == expected_hash else f"mismatch (expected {expected_hash}, got {actual_hash})"
+                    try:
+                        h = hashlib.sha256()
+                        with open(p, "rb") as bf:
+                            while chunk := bf.read(8192):
+                                h.update(chunk)
+                        actual_hash = h.hexdigest()
+                        manifest_res[path_str] = "MATCH" if actual_hash == expected_hash else f"MISMATCH (expected {expected_hash}, got {actual_hash})"
+                    except Exception as e:
+                        manifest_res[path_str] = f"COULD NOT VERIFY: {e!s}"
         results[manifest_path.name] = manifest_res
     return results
 

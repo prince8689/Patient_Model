@@ -32,7 +32,7 @@ def main():
     
     data_dir = Path(config["paths"]["data_processed"])
     splits = pd.read_csv(data_dir / "splits.csv")
-    test_patients = splits[splits["split"] == "test"]["patient_id"].values
+    test_patients = splits[splits["split"].eq("test")]["patient_id"].values
     
     ehr_df = pd.read_csv(Path(config["paths"]["data_raw"]) / "patients.csv")
     sim_params_df = pd.read_csv(Path(config["paths"]["data_raw"]) / "patient_sim_params.csv")

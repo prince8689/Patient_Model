@@ -495,9 +495,9 @@ class DiaTwin:
         }
 
     @classmethod
-    def restore(cls, data: dict, pipeline, calibrator, thresholds, config, explainer=None) -> "DiaTwin":
+    def restore(cls, data: dict, pipeline, calibrator, thresholds, config, explainer=None, forecast_artifacts=None, whatif_artifacts=None) -> "DiaTwin":
         prof = PatientProfile.from_dict(data["profile"])
-        twin = cls(prof, pipeline, calibrator, thresholds, config, explainer)
+        twin = cls(prof, pipeline, calibrator, thresholds, config, explainer, forecast_artifacts, whatif_artifacts)
         
         twin.buffer = [{"timestamp": pd.to_datetime(r["timestamp"])} | {k: v for k, v in r.items() if k != "timestamp"} for r in data["buffer"]]
         twin.last_timestamp = pd.to_datetime(data["last_timestamp"]) if data["last_timestamp"] else None

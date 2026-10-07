@@ -1,0 +1,25 @@
+{
+    "model": "XGBoost",
+    "dataset": "ShanghaiT2DM_real",
+    "validation_strategy": "GroupKFold (patient-wise)",
+    "folds": 5,
+    "n_samples": 13508,
+    "n_patients": 15,
+    "metrics": {
+        "mean_roc_auc": 0.6607597280422685,
+        "mean_average_precision": 0.25388998323206
+    },
+    "status": "discarded",
+    "reason": "first: computed on an exposed split; second: computed on 15 patients from an incomplete load",
+    "features": [
+        "glucose_mgdl",
+        "glu_lag_15m",
+        "glu_lag_30m",
+        "glu_lag_60m",
+        "glu_delta_15m",
+        "glu_delta_60m",
+        "glu_roll_mean_60m",
+        "glu_roll_std_60m",
+        "glu_roll_max_60m"
+    ]
+}

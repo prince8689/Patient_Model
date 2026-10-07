@@ -156,19 +156,30 @@ def test_twin_replay_determinism():
     # Snapshot / restore
     snap = t2.snapshot()
     registry3 = TwinRegistry(config)
-    from src.twin.loader import load_frozen_artifacts
-    artifacts = load_frozen_artifacts(config)
     
     t3 = registry3.register("P001")
-    t3 = t3.restore(snap, pipeline=artifacts[0], calibrator=artifacts[1], thresholds=artifacts[2], config=config, explainer=None)
+    t3 = t3.restore(
+        snap, 
+        pipeline=registry3.pipeline, 
+        calibrator=registry3.calibrator, 
+        thresholds=registry3.thresholds, 
+        config=config, 
+        explainer=registry3.explainer,
+        forecast_artifacts=registry3.forecast_artifacts,
+        whatif_artifacts=registry3.whatif_artifacts
+    )
     state3 = t3.get_state()
     
     # Remove things that aren't strictly restorable (if any)
     d2 = state2.to_dict()
     d3 = state3.to_dict()
     
-    # The drivers might be slightly different if SHAP randomness exists, but tree explainer is deterministic
-    assert d2 == d3, "Snapshot/Restore is NOT deterministic"
+    import json
+    def clean_dict(d):
+        s = json.dumps(d, allow_nan=True)
+        return s.replace("NaN", "null")
+        
+    assert clean_dict(d2) == clean_dict(d3), "Snapshot/Restore is NOT deterministic"
     print("Twin Streaming Replay Determinism: PASS")
 
 if __name__ == "__main__":

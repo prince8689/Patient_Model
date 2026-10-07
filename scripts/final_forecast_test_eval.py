@@ -67,7 +67,7 @@ def main():
     targets_df = pd.read_parquet(data_dir / "forecast_targets.parquet")
     
     df = df.merge(targets_df, on=["patient_id", "timestamp"])
-    test_df = df[df["split"] == "test"].copy()
+    test_df = df[df["split"].eq("test")].copy()
     
     X_test = test_df[meta["features"]]
     horizons = meta["horizons"]

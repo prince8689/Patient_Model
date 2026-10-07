@@ -1,0 +1,75 @@
+{
+    "age": {
+        "real": 59.96551724137931,
+        "synthetic": 54.25,
+        "distance": 8.004515599343184
+    },
+    "bmi": {
+        "real": 24.26766304335856,
+        "synthetic": 29.76107142857143,
+        "distance": 5.4934083852128675
+    },
+    "hba1c": {
+        "real": 8.94378570323152,
+        "synthetic": 8.774642857142856,
+        "distance": 1.1779362477191653
+    },
+    "use_insulin": {
+        "real": 0.2988505747126437,
+        "synthetic": 0.0,
+        "distance": 0.29885057471264365
+    },
+    "glucose_mean": {
+        "real": 150.02062980328307,
+        "synthetic": 216.30604823904764,
+        "distance": 66.28541843576457
+    },
+    "glucose_std": {
+        "real": 41.38068233847312,
+        "synthetic": 44.531193722993216,
+        "distance": 3.6700529593190785
+    },
+    "glucose_cv": {
+        "real": 0.2757849967032321,
+        "synthetic": 0.2089298547233575,
+        "distance": 0.06685514197987458
+    },
+    "meal_rise_2h": {
+        "real": "not computable on real data (timestamps not provided for meals)",
+        "synthetic": "not computable on real data (timestamps not provided for meals)",
+        "distance": null
+    },
+    "gap_lengths": {
+        "real": 67.5,
+        "synthetic": 5.0,
+        "distance": 62.5
+    },
+    "time_below_70": {
+        "real": 0.007385892166802384,
+        "synthetic": 0.008574263038548751,
+        "distance": 0.0018502103318162222
+    },
+    "time_70_180": {
+        "real": 0.7701421834090713,
+        "synthetic": 0.31253543083900226,
+        "distance": 0.457606752570069
+    },
+    "time_above_180": {
+        "real": 0.22247192442412633,
+        "synthetic": 0.6530080782312925,
+        "distance": 0.43053615380716614
+    },
+    "label_prevalence": {
+        "real": 0.12746553552492046,
+        "synthetic": 0.0,
+        "distance": null
+    },
+    "patient_counts": {
+        "real": 87,
+        "synthetic": 28
+    },
+    "sample_counts": {
+        "real": 14285,
+        "synthetic": 56448
+    }
+}

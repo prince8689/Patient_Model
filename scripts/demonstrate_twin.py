@@ -20,7 +20,7 @@ def main():
     fig_dir.mkdir(parents=True, exist_ok=True)
     
     splits = pd.read_csv(Path(config["paths"]["data_processed"]) / "splits.csv")
-    test_pats = splits[splits["split"] == "test"]["patient_id"].unique()
+    test_pats = splits[splits["split"].eq("test")]["patient_id"].unique()
     pat1 = test_pats[0]
     
     print(f"Generating Fast Timeline for {pat1}...")

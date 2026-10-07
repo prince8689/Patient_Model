@@ -125,7 +125,7 @@ def main():
     feat_path = Path(config["paths"]["data_processed"]) / "features.parquet"
     df = pd.read_parquet(feat_path)
     
-    test_mask = (df["split"] == "test") & (df["valid"] == 1)
+    test_mask = (df["split"].eq("test")) & (df["valid"] == 1)
     train_mask = (df["split"] == "train") & (df["valid"] == 1)
     
     df_test = df[test_mask].copy()

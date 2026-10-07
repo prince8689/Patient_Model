@@ -1,0 +1,23 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Protected frozen files to prevent hash mismatch on checkout
+models/*.json -text
+configs/config.yaml -text
+src/features/registry.py -text
+
+# Data files (binary)
+*.csv -text
+*.parquet -text
+*.joblib -text
+*.pkl -text
+
+# Exclude coverage cache from git
+.coverage linguist-generated=true
+htmlcov/ linguist-generated=true
+
+# Manifest-listed tracked files
+models/xgb_v1_meta.json -text
+models/thresholds_v1.json -text
+models/forecaster_v1_meta.json -text
+models/forecast_conformal_v1.json -text

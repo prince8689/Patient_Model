@@ -1,0 +1,14 @@
+{
+  "meal_earlier_30min": {
+    "peak_err": 0.4721028285658946,
+    "peak_covered": 0.0
+  },
+  "reduce_carbs_30pct": {
+    "peak_err": 13.756191570736819,
+    "peak_covered": 0.0
+  },
+  "walk_30min_moderate": {
+    "peak_err": 18.464155797926036,
+    "peak_covered": 0.0
+  }
+}

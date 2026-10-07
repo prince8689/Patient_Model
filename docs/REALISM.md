@@ -1,47 +1,51 @@
 # Realism Comparison
 
-This document details the realism of the DiaTwin synthetic dataset compared to a real Type 2 Diabetes dataset (ShanghaiT2DM). The comparison uses matching subsets consisting only of TRAIN and VALIDATION patients, ensuring real test rows are never accessed.
+This document compares the synthetic cohort against the real data (Shanghai T2DM dataset).
 
-The previous comparison used 100 real patients (including test rows implicitly) and the full synthetic dataset. This rerun uses exactly 87 real patients (14285 samples) and 28 synthetic patients (56448 samples, resampled to 15-minute grid).
+## Counts
+| Metric | Real | Synthetic |
+|---|---|---|
+| Patients | 100 | 40 |
+| Recordings | 109 | 40 |
+| Observed Samples | 112103 | 78592 |
+| Total Slots | 112448 | 80639 |
 
-## Profile Attributes
-| Metric | Real (ShanghaiT2DM) | Synthetic (DiaTwin) | Wasserstein Distance |
-| :--- | :--- | :--- | :--- |
-| Age | 59.97 | 54.25 | 8.00 |
-| BMI | 24.27 | 29.76 | 5.49 |
-| HbA1c | 8.94 | 8.77 | 1.18 |
-| Insulin Use | 0.30 | 0.00 | 0.30 |
+## Metrics Table
 
-The synthetic population has an age of 54.25 versus 59.97 in the real cohort.
-The BMI is 29.76 synthetic versus 24.27 real.
-HbA1c levels are 8.77 synthetic versus 8.94 real.
-The real dataset shows 0.30 insulin use, whereas the synthetic dataset subset used has 0.00.
+| Metric | Real | Synthetic | Distance |
+|---|---|---|---|
+| Mean Glucose (mg/dL) | 141.10 | 219.30 | 78.20 |
+| Std Glucose (mg/dL) | 40.67 | 43.64 | 2.97 |
+| CV Glucose | 0.2867 | 0.2028 | 0.0838 |
+| Time Below 70 (%) | 0.0231 | 0.0089 | 0.0142 |
+| Time 70-180 (%) | 0.7808 | 0.3050 | 0.4758 |
+| Time Above 180 (%) | 0.1962 | 0.6861 | 0.4900 |
+| Label Prevalence | 0.1386 | 0.1401 | 0.0015 |
+| Age | 60.2 | 54.6 | 5.6 |
+| BMI | 24.1 | 29.7 | 5.6 |
+| HbA1c | 9.10 | 8.76 | 0.33 |
+| Insulin Use | 0.3200 | 0.2250 | 0.0950 |
+| Meal Rise (mg/dL) | not computable on real data: no exact meal timestamp exists. Raw meal fields: ['patient_id', 'recording_id', 'timestamp', 'dietary_intake_text', 'carbs_g'] | 60.77 | N/A |
+| Gap Count (15m grid) | 76 | 1361 | 1285 |
+| Gap Median (15m grid, min) | 30.0 | 15.0 | 15.0 |
+| Gap Mean (15m grid, min) | 68.1 | 22.6 | 45.5 |
+| Gaps per 1000 slots | 0.68 | 16.88 | 16.20 |
+| Gaps per patient-day | 0.06 | 1.62 | 1.56 |
+| Share Missing Slots | 0.0031 | 0.0254 | 0.0223 |
+| Regression Slope (HbA1c to mean glucose) | 5.86 | 42.94 | 37.08 |
+| Regression Intercept | 88.11 | -156.98 | 245.09 |
+| Regression R-squared | 0.2574 | 0.7182 | 0.4608 |
 
-## Glucose Dynamics
-| Metric | Real (ShanghaiT2DM) | Synthetic (DiaTwin) | Wasserstein Distance |
-| :--- | :--- | :--- | :--- |
-| Mean Glucose | 150.02 | 216.31 | 66.29 |
-| Glucose Std | 41.38 | 44.53 | 3.67 |
-| Glucose CV | 0.28 | 0.21 | 0.07 |
-| Time Below 70 | 0.007 | 0.009 | 0.002 |
-| Time 70-180 | 0.770 | 0.313 | 0.458 |
-| Time Above 180 | 0.222 | 0.653 | 0.431 |
-| Label Prevalence | 0.127 | 0.000 | - |
-| Mean Gap Length | 67.50 | 5.00 | 62.50 |
-| Meal Rise (2h) | not computable on real data (timestamps not provided for meals) | not computable on real data (timestamps not provided for meals) | - |
+## Hour of Day Profile
 
-The synthetic dataset has a mean glucose of 216.31 versus 150.02 real.
-Standard deviation is 44.53 synthetic versus 41.38 real.
-Coefficient of variation is 0.21 synthetic versus 0.28 real.
-Time below 70 is 0.009 synthetic versus 0.007 real.
-Time in range (70-180) is 0.313 synthetic versus 0.770 real.
-Time above 180 is 0.653 synthetic versus 0.222 real.
-Mean gap length is 5.00 minutes synthetic versus 67.50 minutes real.
-Label prevalence is 0.000 synthetic versus 0.127 real.
+![Hour of day mean glucose comparison](hour_profile_comparison.png)
 
-## Generator Improvement Recommendations
-To match the real data better, a new synthetic cohort would need to change:
-- Target a lower mean glucose level around 150 (currently 216) for typical T2D patients in this cohort.
-- Increase the time in range (70-180) from 0.31 to 0.77 and reduce the time above 180 from 0.65 to 0.22.
-- Introduce realistic sensor missingness and longer gap lengths (average gap length of 67.5 minutes instead of 5 minutes).
-- Include insulin-using patient phenotypes to match the 0.30 real population prevalence.
+## Required Changes for a New Synthetic Cohort
+
+To improve realism, a new synthetic cohort needs:
+1. Target mean glucose must be closer to 141.1 mg/dL, and time above 180 should be reduced from 68.6% to match the observed 19.6%.
+2. The HbA1c to mean glucose relationship needs flattening. The real slope is 5.86 compared to synthetic 42.94.
+3. The average BMI in the real cohort is 24.1, which is 5.6 different from synthetic.
+4. The average age is 60.2 years.
+5. The insulin usage should be closer to 32.0%.
+6. The gap generation needs fewer but longer sensor outages (real gaps per 1000 slots: 0.68, synthetic: 16.88).

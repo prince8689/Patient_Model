@@ -1,0 +1,18 @@
+exclude = [
+    'models\calibrator_v1.joblib',
+    'reports\TEST_EVAL_DONE.json',
+    'models\xgb_v1_meta.json',
+    'models\FROZEN.json',
+    'src\features\registry.py',
+    'models\forecaster_v1.joblib',
+    'models\forecast_conformal_v1.json',
+    'models\forecaster_v1_meta.json',
+    'models\WHATIF_FROZEN.json',
+    'reports\FORECAST_TEST_DONE.json',
+    'models\thresholds_v1.json',
+    'reports\metrics_test_day7.json',
+    'reports\WHATIF_TEST_DONE.json',
+    'models\FORECAST_FROZEN.json',
+    'configs\config.yaml',
+    'models\xgb_v1.joblib'
+]

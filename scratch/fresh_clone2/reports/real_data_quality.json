@@ -1,0 +1,25 @@
+{
+    "patients": 109,
+    "recordings": 109,
+    "total_days_recorded": 176.15625,
+    "total_glucose_samples": 16917,
+    "impossible_glucose_dropped": 14,
+    "duplicate_timestamps_dropped": 0,
+    "gap_lengths_minutes": [
+        105.0,
+        60.0,
+        75.0,
+        30.0
+    ],
+    "total_meals_recorded": 567,
+    "missing_fields": {
+        "age": 0,
+        "sex": 0,
+        "bmi": 0,
+        "hba1c": 8,
+        "diabetes_duration": 0,
+        "use_insulin": 0,
+        "use_metformin": 0,
+        "hypertension": 0
+    }
+}

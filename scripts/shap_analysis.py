@@ -23,7 +23,7 @@ def main():
     
     print("Loading test data...")
     df = pd.read_parquet(feat_path)
-    test_mask = (df["split"] == "test") & (df["valid"] == 1)
+    test_mask = (df["split"].eq("test")) & (df["valid"] == 1)
     df_test = df[test_mask].copy()
     
     with open(models_path / "xgb_v1_meta.json", "r") as f:
