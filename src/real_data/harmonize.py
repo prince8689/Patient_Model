@@ -295,6 +295,8 @@ def harmonize_shanghai_t2dm():
         "dropped_too_far_from_grid": int(total_dropped_too_far),
         "dropped_duplicate_in_slot": int(total_dropped_slot_dup),
         "total_glucose_samples_final": int(total_glucose_samples),
+        "total_slots_per_grid": int(total_days * 96),
+        "missing_slots": int((total_days * 96) - total_glucose_samples),
         "missing_share": 1.0 - (total_glucose_samples / (total_days * 96)) if total_days > 0 else 0.0,
         "valid_labels": int(valid_labels),
         "label_prevalence": float(prevalence) if valid_labels > 0 else 0.0,

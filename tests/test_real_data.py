@@ -35,6 +35,45 @@ def test_no_recording_ends_with_0_rows_without_reason():
     # In the code, we made sure drop_reasons is collected.
     assert 'missing_fields' in q_report, 'Valid report structure'
     
+def test_patient_group_map():
+    q_file = Path('reports/real_data_quality.json')
+    if not q_file.exists():
+        pytest.skip('real data not present in this checkout')
+        
+    with open(q_file, 'r') as f:
+        q_report = json.load(f)
+        
+    # Get the unique patient identifiers
+    data_dir = Path('data/external/shanghai_t2dm')
+    cgm_files = list((data_dir / 'Shanghai_T2DM').glob('*.xls*'))
+    pats = list(set(f.stem.split('_')[0] for f in cgm_files))
+    
+    from src.real_data.dataset import get_patient_group_map
+    group_map = get_patient_group_map(pats)
+    
+    # 100 distinct patient IDs map to exactly 100 distinct group IDs (no duplicates)
+    assert len(set(group_map.values())) == 100
+    assert len(pats) == 100
+    
+def test_glucose_units():
+    data_dir = Path('data/external/shanghai_t2dm/Shanghai_T2DM')
+    if not data_dir.exists():
+        pytest.skip('real data not present in this checkout')
+        
+    cgm_files = list(data_dir.glob('*.xls*'))
+    import pandas as pd
+    for f in cgm_files:
+        df = pd.read_excel(f)
+        cgm_cols = [c for c in df.columns if isinstance(c, str) and c.startswith('CGM')]
+        if not cgm_cols: continue
+        
+        vals = df[cgm_cols[0]].dropna()
+        if len(vals) == 0: continue
+        
+        median = vals.median()
+        assert median >= 40, f"File {f.name} median {median} is too low, likely mmol/L"
+        assert median <= 400, f"File {f.name} median {median} is abnormally high"
+    
 def test_patient_grouping_by_identifier():
     q_file = Path('reports/real_data_quality.json')
     if not q_file.exists():

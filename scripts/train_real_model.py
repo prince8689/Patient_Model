@@ -110,10 +110,10 @@ def main():
         "features": features
     }
     
-    with open("reports/metrics_real_model.json", "w") as f:
+    with open("reports/real_metrics.json", "w") as f:
         json.dump(report, f, indent=4)
         
-    print("Report saved to reports/metrics_real_model.json")
+    print("Report saved to reports/real_metrics.json")
 
 if __name__ == "__main__":
     main()

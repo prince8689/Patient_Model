@@ -10,7 +10,7 @@ from src.twin.loader import TwinRegistry
 from src.utils.config import load_config
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope="module")
 def skip_if_models_missing():
     root = Path(__file__).resolve().parent.parent
     if not (root / "models" / "xgb_v1.joblib").exists():
@@ -29,7 +29,7 @@ def sample_patient(config):
     test_pats = splits[splits["split"] == "test"]["patient_id"].unique()
     return test_pats[0] if len(test_pats) > 0 else None
 
-def test_twin_snapshot_restore(config, sample_patient):
+def test_twin_snapshot_restore(skip_if_models_missing, config, sample_patient):
     if not sample_patient: pytest.skip("No test patients")
     
     registry = TwinRegistry(config)
@@ -59,7 +59,7 @@ def test_twin_snapshot_restore(config, sample_patient):
         assert s1.risk.probability_calibrated == pytest.approx(s2.risk.probability_calibrated, abs=1e-6) if s1.risk else True
         assert s1.glucose_summary.current_glucose == s2.glucose_summary.current_glucose
         
-def test_fault_duplicate(config, sample_patient):
+def test_fault_duplicate(skip_if_models_missing, config, sample_patient):
     if not sample_patient: pytest.skip("No test patients")
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
@@ -73,7 +73,7 @@ def test_fault_duplicate(config, sample_patient):
     
     assert len(snap1["buffer"]) == len(snap2["buffer"])
     
-def test_fault_corrupted_glucose(config, sample_patient):
+def test_fault_corrupted_glucose(skip_if_models_missing, config, sample_patient):
     if not sample_patient: pytest.skip("No test patients")
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
@@ -84,7 +84,7 @@ def test_fault_corrupted_glucose(config, sample_patient):
     assert state.latest_measurement.glucose_mgdl is None
     assert any("Glucose out of range" in w for w in state.data_quality.warnings)
 
-def test_no_future(config, sample_patient):
+def test_no_future(skip_if_models_missing, config, sample_patient):
     if not sample_patient: pytest.skip()
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
@@ -97,7 +97,7 @@ def test_no_future(config, sample_patient):
     # because s2 hasn't been ingested yet! By construction, ingest() only sees what's passed to it.
     assert state1.timestamp == "2026-01-01T00:00:00"
     
-def test_warmup(config, sample_patient):
+def test_warmup(skip_if_models_missing, config, sample_patient):
     if not sample_patient: pytest.skip()
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
@@ -108,7 +108,7 @@ def test_warmup(config, sample_patient):
     assert state.data_quality.status == "warming_up"
     assert state.risk is None
     
-def test_gap_fill(config, sample_patient):
+def test_gap_fill(skip_if_models_missing, config, sample_patient):
     if not sample_patient: pytest.skip()
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)

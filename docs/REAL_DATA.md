@@ -13,11 +13,13 @@ In the "Shanghai_T2DM" folder, the file "2003_0_20210615" has extended rows from
 In the "Shanghai_T2DM" folder, the file "2029_0_20210526" has extended rows from 742 to 846 with rows from 743 to 846 newly added. From line 743 to 755, the CGM values are missing because the CGM device has been changed to a new one. The readings of the new CGM device started from 2021/6/3 12:46.
 
 
-“Shanghai_T2DM”文件夹中的“2003_0_20210615”文件从586行增加到670行，587~670行为新增数据
-“Shanghai_T2DM”文件夹中的“2029_0_20210526”文件从742行增加到846行，743~846行为新增数据
+?oShanghai_T2DM??-؄  1,-s,?o2003_0_20210615??-؄ Z586OzS^670OO587~670O,-z ?r
+?oShanghai_T2DM??-؄  1,-s,?o2029_0_20210526??-؄ Z742OzS^846OO743~846O,-z ?r
 
 
 2023/10/26
+
+**Clarification on duplicates:** The `note.txt` file does not say anything about patients 2065, 2068, 2071, and 2072 being duplicates. They are unique identifiers among the 100 loaded patient identifiers, meaning the number of distinct people is exactly 100.
 
 ## Limitations
 - **Missing Sensors**: The data lacks auxiliary wearable signals such as heart rate, steps, and sleep states.
