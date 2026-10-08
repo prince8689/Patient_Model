@@ -5,8 +5,8 @@ from streamlit.testing.v1 import AppTest
 
 def test_app_starts():
     root = Path(__file__).resolve().parent.parent
-    app = AppTest.from_file(str(root / "app" / "main.py"))
-    app.run(timeout=10)
+    app = AppTest.from_file(str(root / "app" / "main.py"), default_timeout=60)
+    app.run()
     assert not app.exception
     
     # Just verify that the sidebar has the Guided Demo

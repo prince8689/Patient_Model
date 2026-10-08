@@ -5,32 +5,23 @@ import matplotlib.pyplot as plt
 from scipy.stats import linregress
 
 def gap_statistics(df, grid_minutes, group_col='patient_id'):
-    """Compute gap statistics. A gap is a run of consecutive slots with no observed glucose."""
+    """Compute gap statistics using the unified gaps module."""
+    from src.real_data.gaps import compute_slots_and_gaps
+    
     gaps = []
-    observed_samples = 0
     total_slots = 0
+    observed_samples = 0
     
     for _, group in df.groupby(group_col):
         obs = group.dropna(subset=['glucose_mgdl'])
-        if obs.empty:
-            continue
-            
-        t_min = obs['timestamp'].min()
-        t_max = obs['timestamp'].max()
+        if obs.empty: continue
         
-        grid = pd.date_range(start=t_min, end=t_max, freq=f'{grid_minutes}min')
-        total_slots += len(grid)
-        observed_samples += len(obs)
+        ts = obs['timestamp']
+        slots, missing, g = compute_slots_and_gaps(ts, grid_minutes)
+        total_slots += slots
+        observed_samples += len(ts)
+        gaps.extend(g)
         
-        grid_df = pd.DataFrame({'timestamp': grid})
-        obs_grid = pd.merge(grid_df, obs[['timestamp', 'glucose_mgdl']], on='timestamp', how='left')
-        is_missing = obs_grid['glucose_mgdl'].isna()
-        
-        import itertools
-        missing_runs = [sum(1 for _ in g) for k, g in itertools.groupby(is_missing) if k]
-        for r in missing_runs:
-            gaps.append(r * grid_minutes)
-            
     return {
         "count": len(gaps),
         "median": float(np.median(gaps)) if gaps else 0.0,

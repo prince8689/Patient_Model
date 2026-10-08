@@ -5,3 +5,4 @@ mypy
 vulture
 hypothesis
 hypothesis
+pytest-timeout

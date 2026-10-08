@@ -142,7 +142,7 @@ def harmonize_shanghai_t2dm():
         duplicate_timestamps_total += dup_count
         cgm = cgm[~dups]
         
-        impossible = ((cgm['glucose_mgdl'] < 40) | (cgm['glucose_mgdl'] > 400))
+        impossible = ((cgm['glucose_mgdl'] < 40) | (cgm['glucose_mgdl'] > 500))
         imp_count = impossible.sum()
         if imp_count > 0:
             drop_reasons.append(f"impossible_glu:{imp_count}")
@@ -214,11 +214,6 @@ def harmonize_shanghai_t2dm():
         
         # Print only if drops exist or for testing, but instruction says "Store offset, number moved, collisions and dropped rows with reasons per recording."
         
-        if len(cgm) > 1:
-            diffs = cgm['timestamp'].diff().dt.total_seconds() / 60.0
-            gaps = diffs[diffs > 16].dropna().tolist()
-            gap_lengths.extend(gaps)
-            
         cgm['patient_id'] = pid
         cgm['recording_id'] = rec_id
         glucose_records.append(cgm)
@@ -248,21 +243,31 @@ def harmonize_shanghai_t2dm():
     # Since data is exactly 15 min spaced, we just check rolling windows per recording
     for rec_id, group in gluc_df.groupby('recording_id'):
         group = group.sort_values('timestamp')
+        reversed_group = group.iloc[::-1].copy()
+        reversed_group = reversed_group.set_index('timestamp')
         
+        # Calculate max in future 120 minutes using rolling on reversed data
+        future_max = reversed_group['glucose_mgdl'].rolling(f'{horizon}min', closed='right').max()
+        future_count = reversed_group['glucose_mgdl'].rolling(f'{horizon}min', closed='right').count()
+        
+        # Merge back to group
+        future_max = future_max.iloc[::-1].reset_index(drop=True)
+        future_count = future_count.iloc[::-1].reset_index(drop=True)
+        
+        # Coverage check
+        required_samples = (horizon / 15) * min_cov
+        valid_mask = future_count >= required_samples
+        
+        group_labels = []
         for i in range(len(group)):
-            t_curr = group['timestamp'].iloc[i]
-            val_curr = group['glucose_mgdl'].iloc[i]
-            
-            t_end = t_curr + pd.Timedelta(minutes=horizon)
-            future = group[(group['timestamp'] > t_curr) & (group['timestamp'] <= t_end)]
-            
-            if len(future) >= (horizon / 15) * min_cov:
-                max_future = future['glucose_mgdl'].max()
-                label = 1 if max_future >= (val_curr + threshold) else 0
-                labels.append(label)
+            if valid_mask.iloc[i]:
+                label = 1 if future_max.iloc[i] >= (group['glucose_mgdl'].iloc[i] + threshold) else 0
+                group_labels.append(label)
             else:
-                labels.append(np.nan)
-                
+                group_labels.append(np.nan)
+        labels.extend(group_labels)
+        
+    gluc_df = gluc_df.sort_values(['recording_id', 'timestamp'])
     gluc_df['label'] = labels
     
     valid_labels = gluc_df['label'].notna().sum()
@@ -275,11 +280,13 @@ def harmonize_shanghai_t2dm():
     
     total_days = gluc_df.groupby('recording_id')['timestamp'].apply(lambda x: (x.max() - x.min()).total_seconds() / 86400.0).sum() if len(gluc_df) > 0 else 0
     
-    gap_lengths = np.array(gap_lengths)
+    from src.real_data.gaps import compute_gap_stats_for_dataset
+    gap_stats_full = compute_gap_stats_for_dataset(gluc_df)
+    
     gap_stats = {
-        "count": int(len(gap_lengths)),
-        "median": float(np.median(gap_lengths)) if len(gap_lengths) > 0 else 0.0,
-        "mean": float(np.mean(gap_lengths)) if len(gap_lengths) > 0 else 0.0
+        "count": gap_stats_full["gap_count"],
+        "median": gap_stats_full["gap_median"],
+        "mean": gap_stats_full["gap_mean"]
     }
     
     # Write quality report
@@ -295,9 +302,9 @@ def harmonize_shanghai_t2dm():
         "dropped_too_far_from_grid": int(total_dropped_too_far),
         "dropped_duplicate_in_slot": int(total_dropped_slot_dup),
         "total_glucose_samples_final": int(total_glucose_samples),
-        "total_slots_per_grid": int(total_days * 96),
-        "missing_slots": int((total_days * 96) - total_glucose_samples),
-        "missing_share": 1.0 - (total_glucose_samples / (total_days * 96)) if total_days > 0 else 0.0,
+        "total_slots_per_grid": gap_stats_full["total_slots"],
+        "missing_slots": gap_stats_full["missing_slots"],
+        "missing_share": gap_stats_full["share_missing_slots"],
         "valid_labels": int(valid_labels),
         "label_prevalence": float(prevalence) if valid_labels > 0 else 0.0,
         "gap_length_distribution": gap_stats,

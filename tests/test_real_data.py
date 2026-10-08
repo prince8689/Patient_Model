@@ -191,3 +191,19 @@ def test_median_glucose_valid_range():
                 # but since all files have medians in mg/dL range, conversion isn't needed.
                 assert 40 <= median_val <= 400, f'Median {median_val} for {f.name} out of valid mg/dL range'
 
+
+def test_real_data_bounds():
+    from src.utils.config import load_config
+    import pandas as pd
+    from pathlib import Path
+    import pytest
+    config = load_config('configs/real_data.yaml')
+    lower, upper = config['cgm_device']['valid_range_mgdl']
+    
+    rg_path = Path('data/processed/real_glucose.csv')
+    if not rg_path.exists():
+        pytest.skip('real data not present in this checkout')
+        
+    df = pd.read_csv(rg_path)
+    assert df['glucose_mgdl'].min() >= lower, f'Values found below {lower}'
+    assert df['glucose_mgdl'].max() <= upper, f'Values found above {upper}'
