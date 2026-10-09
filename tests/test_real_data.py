@@ -11,7 +11,8 @@ from scripts.qa.protected_files import verify_manifests
 
 def test_loader_keeps_all_recordings():
     data_dir = Path('data/external/shanghai_t2dm')
-    if not data_dir.exists():
+    cgm_files = list((data_dir / 'Shanghai_T2DM').glob('*.xls*'))
+    if not cgm_files:
         pytest.skip('real data not present in this checkout')
         
     # Read reports/real_data_quality.json
@@ -46,6 +47,8 @@ def test_patient_group_map():
     # Get the unique patient identifiers
     data_dir = Path('data/external/shanghai_t2dm')
     cgm_files = list((data_dir / 'Shanghai_T2DM').glob('*.xls*'))
+    if not cgm_files:
+        pytest.skip('real data not present in this checkout')
     pats = list(set(f.stem.split('_')[0] for f in cgm_files))
     
     from src.real_data.dataset import get_patient_group_map
@@ -57,10 +60,9 @@ def test_patient_group_map():
     
 def test_glucose_units():
     data_dir = Path('data/external/shanghai_t2dm/Shanghai_T2DM')
-    if not data_dir.exists():
-        pytest.skip('real data not present in this checkout')
-        
     cgm_files = list(data_dir.glob('*.xls*'))
+    if not cgm_files:
+        pytest.skip('real data not present in this checkout')
     import pandas as pd
     for f in cgm_files:
         df = pd.read_excel(f)
@@ -174,10 +176,9 @@ def test_attribution():
 
 def test_median_glucose_valid_range():
     data_dir = Path('data/external/shanghai_t2dm')
-    if not data_dir.exists():
-        pytest.skip('real data not present in this checkout')
-        
     cgm_files = list((data_dir / 'Shanghai_T2DM').glob('*.xls*'))
+    if not cgm_files:
+        pytest.skip('real data not present in this checkout')
     
     for f in cgm_files:
         df = pd.read_excel(f)

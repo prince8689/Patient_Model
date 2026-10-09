@@ -87,6 +87,7 @@ def harmonize_shanghai_t2dm():
     total_moved = 0
     total_dropped_too_far = 0
     total_dropped_slot_dup = 0
+    total_censored_readings = 0
     
     recording_stats = []
     skipped_files = []
@@ -142,12 +143,16 @@ def harmonize_shanghai_t2dm():
         duplicate_timestamps_total += dup_count
         cgm = cgm[~dups]
         
-        impossible = ((cgm['glucose_mgdl'] < 40) | (cgm['glucose_mgdl'] > 500))
+        valid_range = config.get('cgm_device', {}).get('valid_range_mgdl', [39.5, 500.5])
+        impossible = ((cgm['glucose_mgdl'] < valid_range[0]) | (cgm['glucose_mgdl'] > valid_range[1]))
         imp_count = impossible.sum()
         if imp_count > 0:
             drop_reasons.append(f"impossible_glu:{imp_count}")
         impossible_glucose_total += imp_count
-        cgm = cgm[~impossible]
+        cgm = cgm[~impossible].copy()
+        
+        cgm['censored'] = (cgm['glucose_mgdl'] <= 39.61) | (cgm['glucose_mgdl'] >= 500.39)
+        total_censored_readings += int(cgm['censored'].sum())
         
         if len(cgm) == 0:
             recording_stats.append({
@@ -240,32 +245,31 @@ def harmonize_shanghai_t2dm():
     min_cov = config['labeling']['min_coverage_ratio']
     
     labels = []
-    # Since data is exactly 15 min spaced, we just check rolling windows per recording
+    
     for rec_id, group in gluc_df.groupby('recording_id'):
-        group = group.sort_values('timestamp')
-        reversed_group = group.iloc[::-1].copy()
-        reversed_group = reversed_group.set_index('timestamp')
+        group_times = group['timestamp'].values
+        group_gl = group['glucose_mgdl'].values
+        n = len(group)
+        group_labels = np.full(n, np.nan)
         
-        # Calculate max in future 120 minutes using rolling on reversed data
-        future_max = reversed_group['glucose_mgdl'].rolling(f'{horizon}min', closed='right').max()
-        future_count = reversed_group['glucose_mgdl'].rolling(f'{horizon}min', closed='right').count()
+        horizon_td = np.timedelta64(horizon, 'm')
+        req_samples = (horizon / 15) * min_cov
         
-        # Merge back to group
-        future_max = future_max.iloc[::-1].reset_index(drop=True)
-        future_count = future_count.iloc[::-1].reset_index(drop=True)
-        
-        # Coverage check
-        required_samples = (horizon / 15) * min_cov
-        valid_mask = future_count >= required_samples
-        
-        group_labels = []
-        for i in range(len(group)):
-            if valid_mask.iloc[i]:
-                label = 1 if future_max.iloc[i] >= (group['glucose_mgdl'].iloc[i] + threshold) else 0
-                group_labels.append(label)
-            else:
-                group_labels.append(np.nan)
-        labels.extend(group_labels)
+        right = 0
+        for left in range(n):
+            t_curr = group_times[left]
+            val_curr = group_gl[left]
+            t_end = t_curr + horizon_td
+            
+            while right < n and group_times[right] <= t_end:
+                right += 1
+                
+            window_len = right - left - 1
+            if window_len >= req_samples:
+                max_future = group_gl[left+1:right].max()
+                group_labels[left] = 1.0 if max_future >= (val_curr + threshold) else 0.0
+                
+        labels.extend(group_labels.tolist())
         
     gluc_df = gluc_df.sort_values(['recording_id', 'timestamp'])
     gluc_df['label'] = labels
@@ -301,6 +305,7 @@ def harmonize_shanghai_t2dm():
         "rows_moved_to_grid": int(total_moved),
         "dropped_too_far_from_grid": int(total_dropped_too_far),
         "dropped_duplicate_in_slot": int(total_dropped_slot_dup),
+        "censored_readings": int(total_censored_readings),
         "total_glucose_samples_final": int(total_glucose_samples),
         "total_slots_per_grid": gap_stats_full["total_slots"],
         "missing_slots": gap_stats_full["missing_slots"],

@@ -2,7 +2,7 @@ data_path: "data/external/shanghai_t2dm"
 processed_path: "data/processed"
 
 cgm_device:
-  valid_range_mgdl: [40, 500]
+  valid_range_mgdl: [39.5, 500.5]
 
 labeling:
   horizon_minutes: 120
