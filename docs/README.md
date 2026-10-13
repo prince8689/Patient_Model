@@ -8,7 +8,7 @@
 - `FORECAST.md`: Details the conformal quantile regression forecasting model and its evaluation.
 - `INTEGRITY.md`: Explains the cryptographic freezing protocol and continuous integrity verification system.
 - `MODEL_CARD.md`: Specifications, hyperparameters, and evaluation metrics for the core risk model.
-- `QA_REPORT.md`: Comprehensive summary of the pre-release quality assurance audits, code coverage, and testing results.
+- `QA_REPORT.md`: Detailed summary of the pre-release quality assurance audits, code coverage, and testing results.
 - `RELEASE_CHECKLIST.md`: Step-by-step actions required for finalizing and deploying the prototype.
 - `SETUP.md`: Developer setup instructions, including virtual environments and testing.
 - `SPEC.md`: The central source of truth for architectural requirements, decisions, and assumptions.

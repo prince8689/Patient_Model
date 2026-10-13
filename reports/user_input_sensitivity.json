@@ -1,0 +1,161 @@
+{
+  "validation_cohort": {
+    "patients": [
+      "P013",
+      "P036",
+      "P034",
+      "P026",
+      "P025"
+    ],
+    "moments_per_patient": 20,
+    "warmup_steps": 288
+  },
+  "best_default_strategy": "schedule_fixed",
+  "current_placeholder_is_worst": false,
+  "comparison_results": {
+    "unknown": {
+      "label": "(b) current placeholders (unknown sleep)",
+      "mad_prob": {
+        "mean": 0.0022,
+        "ci_95": [
+          0.0005,
+          0.0042
+        ]
+      },
+      "band_agreement": {
+        "mean": 1.0,
+        "ci_95": [
+          1.0,
+          1.0
+        ]
+      },
+      "mad_forecast_60m_mgdl": {
+        "mean": 0.09,
+        "ci_95": [
+          0.02,
+          0.16
+        ]
+      }
+    },
+    "awake": {
+      "label": "(c) sleep awake always",
+      "mad_prob": {
+        "mean": 0.0417,
+        "ci_95": [
+          0.0097,
+          0.0738
+        ]
+      },
+      "band_agreement": {
+        "mean": 0.95,
+        "ci_95": [
+          0.89,
+          1.0
+        ]
+      },
+      "mad_forecast_60m_mgdl": {
+        "mean": 0.73,
+        "ci_95": [
+          0.37,
+          1.11
+        ]
+      }
+    },
+    "schedule_fixed": {
+      "label": "(d) assumed schedule 23:00-07:00",
+      "mad_prob": {
+        "mean": 0.0012,
+        "ci_95": [
+          0.0002,
+          0.0023
+        ]
+      },
+      "band_agreement": {
+        "mean": 1.0,
+        "ci_95": [
+          1.0,
+          1.0
+        ]
+      },
+      "mad_forecast_60m_mgdl": {
+        "mean": 0.04,
+        "ci_95": [
+          0.0,
+          0.09
+        ]
+      }
+    },
+    "schedule_personal": {
+      "label": "(e) personal schedule",
+      "mad_prob": {
+        "mean": 0.0012,
+        "ci_95": [
+          0.0002,
+          0.0023
+        ]
+      },
+      "band_agreement": {
+        "mean": 1.0,
+        "ci_95": [
+          1.0,
+          1.0
+        ]
+      },
+      "mad_forecast_60m_mgdl": {
+        "mean": 0.04,
+        "ci_95": [
+          0.0,
+          0.09
+        ]
+      }
+    },
+    "indicative_single": {
+      "label": "indicative single reading tier",
+      "mad_prob": {
+        "mean": 0.0093,
+        "ci_95": [
+          0.0042,
+          0.016
+        ]
+      },
+      "band_agreement": {
+        "mean": 1.0,
+        "ci_95": [
+          1.0,
+          1.0
+        ]
+      },
+      "mad_forecast_60m_mgdl": {
+        "mean": 8.13,
+        "ci_95": [
+          4.68,
+          11.6
+        ]
+      }
+    },
+    "indicative_partial": {
+      "label": "indicative partial history tier",
+      "mad_prob": {
+        "mean": 0.0093,
+        "ci_95": [
+          0.0042,
+          0.016
+        ]
+      },
+      "band_agreement": {
+        "mean": 1.0,
+        "ci_95": [
+          1.0,
+          1.0
+        ]
+      },
+      "mad_forecast_60m_mgdl": {
+        "mean": 8.13,
+        "ci_95": [
+          4.68,
+          11.6
+        ]
+      }
+    }
+  }
+}

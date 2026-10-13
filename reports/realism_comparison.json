@@ -1,169 +1,47 @@
 {
-    "patients": {
-        "real": 100,
-        "synthetic": 40,
-        "real_previous": 87
-    },
-    "recordings": {
-        "real": 109,
-        "synthetic": 40
-    },
-    "observed_samples": {
-        "real": 112462,
-        "synthetic": 78592
-    },
-    "total_slots": {
-        "real": 112489,
-        "synthetic": 80639
-    },
-    "gap_stats_15m": {
-        "real": {
-            "count": 11,
-            "median": 15.0,
-            "mean": 36.81818181818182,
-            "gaps_per_1000_slots": 0.09778733920650019,
-            "gaps_per_patient_day": 0.009387584563824018,
-            "share_missing_slots": 0.00024002346896140957
+    "synthetic_use_insulin": 0.225,
+    "real_use_insulin": 0.32,
+    "synthetic_label_prevalence": 0.14008353087255898,
+    "real_label_prevalence": 0.1385931133300497,
+    "synthetic_meal_rise_mean": 61.06452917070592,
+    "real_meal_rise_mean": "not computable on real data: no quantified exact meal timestamps",
+    "synthetic_gaps": {
+        "5m_grid": {
+            "median_min": 5.0,
+            "mean_min": 8.395411605937921,
+            "count": 3705
         },
-        "synthetic": {
-            "count": 1361,
-            "median": 15.0,
-            "mean": 22.560617193240265,
-            "gaps_per_1000_slots": 16.8776894554744,
-            "gaps_per_patient_day": 1.6202581877255422,
-            "share_missing_slots": 0.02538473939408971
+        "15m_grid": {
+            "median_min": 15.0,
+            "mean_min": 22.555066079295155,
+            "count": 1362
         }
     },
-    "gap_stats_5m": {
-        "synthetic": {
-            "count": 3702,
-            "median": 5.0,
-            "mean": 8.398163155051323,
-            "gaps_per_1000_slots": 15.302769131561652,
-            "gaps_per_patient_day": 4.407197509889755,
-            "share_missing_slots": 0.02570303037818756
-        }
+    "real_gaps": {
+        "median_min": 30.0,
+        "mean_min": 51.81818181818182,
+        "count": 11
     },
-    "meal_rise_mean": {
-        "real": "not computable on real data: no exact meal timestamp exists. Raw meal fields: ['patient_id', 'recording_id', 'timestamp', 'dietary_intake_text', 'carbs_g']",
-        "synthetic": 60.771563981042654
+    "synthetic_counts": {
+        "samples": 80640,
+        "patients": 40,
+        "recordings": 40
     },
-    "mean_glucose": {
-        "real": 141.01089652058573,
-        "synthetic": 219.30020694417027
+    "real_counts": {
+        "samples": 112462,
+        "patients": 100,
+        "recordings": 109
     },
-    "std_glucose": {
-        "real": 40.90553924868968,
-        "synthetic": 43.639988239782625
+    "synthetic_regression": {
+        "patients": 40,
+        "slope": 42.93722727439284,
+        "intercept": -156.9801842749714,
+        "r_squared": 0.71818799061457
     },
-    "cv_glucose": {
-        "real": 0.28888159996328105,
-        "synthetic": 0.20283413758078153
-    },
-    "time_below_70": {
-        "real": 0.025269206174672876,
-        "synthetic": 0.008880128738847456
-    },
-    "time_70_180": {
-        "real": 0.7784133453327299,
-        "synthetic": 0.30499229573434333
-    },
-    "time_above_180": {
-        "real": 0.19631744849259727,
-        "synthetic": 0.6861275755268093
-    },
-    "age": {
-        "real": 60.17,
-        "synthetic": 54.6
-    },
-    "bmi": {
-        "real": 24.12196129478152,
-        "synthetic": 29.726499999999998
-    },
-    "hba1c": {
-        "real": 9.09515489304483,
-        "synthetic": 8.7635
-    },
-    "insulin_use": {
-        "real": 0.32,
-        "synthetic": 0.225
-    },
-    "hour_profile": {
-        "real": {
-            "0": 122.98567504753855,
-            "1": 118.62303797468354,
-            "2": 115.11645569620254,
-            "3": 113.89536060733869,
-            "4": 114.25446880269814,
-            "5": 117.93856871437619,
-            "6": 125.96532599491955,
-            "7": 144.63848620910838,
-            "8": 169.36062267046702,
-            "9": 168.20633303808683,
-            "10": 150.24610303830912,
-            "11": 140.1407278274134,
-            "12": 147.14727272727274,
-            "13": 153.5280104144066,
-            "14": 154.06160869565218,
-            "15": 150.2579909657991,
-            "16": 144.21180968564144,
-            "17": 144.65134566862912,
-            "18": 151.42235294117648,
-            "19": 154.3707255520505,
-            "20": 152.65721508321045,
-            "21": 146.03506329113924,
-            "22": 138.25991133628878,
-            "23": 129.80827702702703
-        },
-        "synthetic": {
-            "0": 240.1012412957917,
-            "1": 230.60338208409507,
-            "2": 222.17545787545788,
-            "3": 214.39244417252982,
-            "4": 208.89146861669715,
-            "5": 205.4943661971831,
-            "6": 204.03216697360344,
-            "7": 207.55178299298996,
-            "8": 220.02690308774075,
-            "9": 225.09193302891933,
-            "10": 227.40727328058432,
-            "11": 220.5481684981685,
-            "12": 209.76882838788623,
-            "13": 210.43780637254903,
-            "14": 220.2235747303544,
-            "15": 229.62892007321537,
-            "16": 233.78124045218453,
-            "17": 224.46367271608736,
-            "18": 210.76738066095473,
-            "19": 199.09884181651938,
-            "20": 201.48864122137405,
-            "21": 216.42817932296433,
-            "22": 233.9014705882353,
-            "23": 246.88848942598187
-        }
-    },
-    "label_prevalence": {
-        "real": 0.1385931133300497,
-        "synthetic": 0.14008353087255898
-    },
-    "regression_hba1c_glucose": {
-        "real": {
-            "patients": 92,
-            "missing_hba1c_handling": "dropped",
-            "slope": 5.9591837718968215,
-            "intercept": 87.10791599533502,
-            "r_squared": 0.2590235637226414,
-            "predicted_mean_formula": 214.33094543038663,
-            "observed_mean": 141.30761543685574
-        },
-        "synthetic": {
-            "patients": 40,
-            "missing_hba1c_handling": "dropped",
-            "slope": 42.937227274392846,
-            "intercept": -156.98018427497146,
-            "r_squared": 0.7181879906145701,
-            "predicted_mean_formula": 204.81245,
-            "observed_mean": 219.30020694417027
-        }
+    "real_regression": {
+        "patients": 92,
+        "slope": 5.959183771896822,
+        "intercept": 87.10791599533502,
+        "r_squared": 0.2590235637226417
     }
 }

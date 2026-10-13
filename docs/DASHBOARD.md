@@ -35,7 +35,7 @@ graph TD
 Instead of running in real-time, this prototype operates on an adjustable "as-of" clock. You can slide time back and forth to see exactly what the Twin would have computed at any moment based strictly on the available history up to that minute. 
 
 ## Honest-State Handling
-- **Warming Up**: Banners explicitly indicate when the Twin is still in its warmup phase and cannot output reliable predictions.
+- **Warming Up**: Banners explicitly indicate when the Twin is still in its warmup period and cannot output reliable predictions.
 - **Stale/No Glucose**: Alerts are surfaced if data drops out.
 - **Confidence Downgrades**: Data completeness directly impacts certainty reporting.
 

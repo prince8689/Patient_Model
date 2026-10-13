@@ -31,7 +31,7 @@ config = get_config()
 
 st.markdown("""
 <div style="background-color: #2c3e50; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-    <strong>About the Simulator:</strong> The twin estimates this patient's own glucose parameters from their recent history and simulates how plans would play out. These are model estimates, not predictions of what will certainly happen.
+    <b>About the Simulator:</b> The twin estimates this patient's own glucose parameters from their recent history and simulates how plans would play out. These are model estimates, not predictions of what will certainly happen.
 </div>
 """, unsafe_allow_html=True)
 
@@ -188,7 +188,7 @@ with col_results:
                 with st.expander(f"{s['name'].replace('_', ' ').capitalize()}"):
                     st.write(s["summary_sentence"])
                     if s["hypo_risk"]:
-                        st.error("⚠️ Hypoglycemia risk detected.")
+                        st.error("Hypoglycemia risk detected.")
                         
         with t3:
             st.write(f"Computation time: {res['metadata']['compute_time_sec']:.2f} seconds")
@@ -209,7 +209,13 @@ with col_results:
                 st.json(val)
             else:
                 st.write("Validation reports not found.")
-            st.page_link("pages/4_Model_Insights.py", label="View full validation report", icon="🔍")
+            try:
+                st.page_link("pages/4_Model_Insights.py", label="View full validation report")
+            except Exception:
+                try:
+                    st.page_link("4_Model_Insights.py", label="View full validation report")
+                except Exception:
+                    pass
                 
         st.download_button("Download what-if report (JSON)", data=export_whatif_json(res), file_name=f"whatif_{pid}.json")
 

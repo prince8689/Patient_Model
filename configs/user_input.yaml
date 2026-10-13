@@ -1,0 +1,21 @@
+data_sufficiency:
+  full_tier:
+    min_history_hours: 24.0
+  partial_tier:
+    min_readings: 3
+    in_last_minutes: 45
+    min_span_minutes: 30
+    allow_medium_confidence: true
+  single_tier:
+    max_age_minutes: 20
+
+sensor_defaults:
+  heart_rate: 70.0
+  steps: 0.0
+  sleep_strategy: "assumed_schedule"
+  schedule:
+    default_bedtime_hour: 23
+    default_wake_hour: 7
+    sleep_state: "light"
+    wake_state: "awake"
+

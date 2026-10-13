@@ -109,7 +109,7 @@ with tabs[5]: # Forecast
         st.info("Not available (missing: forecast)")
     else:
         st.json(fc)
-        st.caption("What this means: Measures expected error in the 2-hour forecast. What it does not mean: It does not perfectly predict unannounced events like meals.")
+        st.caption("What this means: Measures expected error in the 2-hour forecast. What it does not mean: It does not fully predict unannounced events like meals.")
 
 with tabs[6]: # What-if validation
     st.subheader("What-if Validation")
@@ -118,7 +118,7 @@ with tabs[6]: # What-if validation
         st.info("Not available (missing: whatif)")
     else:
         st.json(wi)
-        st.caption("What this means: In-silico validation (synthetic ground truth, not available in real life). What it does not mean: It does not reflect physiological perfection.")
+        st.caption("What this means: In-silico validation (synthetic ground truth, not available in real life). What it does not mean: It does not reflect exact physiological fidelity.")
 
 with tabs[7]: # Where it struggles
     st.subheader("Where it struggles")

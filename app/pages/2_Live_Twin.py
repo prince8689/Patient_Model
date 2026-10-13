@@ -149,10 +149,15 @@ with col_side:
     st.subheader("Why this risk")
     if view["drivers"]:
         for d in view["drivers"]:
-            icon = "🔼" if d["contribution"] > 0 else "🔽"
+            icon = "(+)" if d["contribution"] > 0 else "(-)"
             st.markdown(f"{icon} **{d['name']}**: {d['value']:.1f}")
-            st.progress(min(abs(d["contribution"]), 1.0))
-        st.page_link("pages/4_Model_Insights.py", label="Learn more about drivers", icon="🔍")
+        try:
+            st.page_link("pages/4_Model_Insights.py", label="Learn more about drivers")
+        except Exception:
+            try:
+                st.page_link("4_Model_Insights.py", label="Learn more about drivers")
+            except Exception:
+                pass
     else:
         st.write("No drivers available.")
         

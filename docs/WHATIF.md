@@ -21,7 +21,7 @@ The DiaTwin What-If Simulator enables interactive, personalized scenario testing
 
 ## Evaluation (In-Silico Oracle)
 
-We evaluate the simulator's accuracy using an Oracle: since we know the true hidden generating parameters of the synthetic patients, we can perfectly reconstruct the exact ground-truth effect of a scenario. 
+We evaluate the simulator's accuracy using an Oracle: since we know the true hidden generating parameters of the synthetic patients, we can directly reconstruct the exact ground-truth effect of a scenario. 
 
 **Metrics on TEST:**
 - `peak_err`: The mean absolute error between the simulator's median estimated peak glucose and the Oracle's true peak.

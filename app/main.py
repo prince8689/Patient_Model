@@ -33,11 +33,12 @@ if not config["app"].get("use_demo_bundle"):
 
 # Navigation
 pgs = [
-    st.Page("pages/1_Patient_List.py", title="Patient List", icon="👥"),
-    st.Page("pages/2_Live_Twin.py", title="Live Twin", icon="❤️"),
-    st.Page("pages/3_What_If_Simulator.py", title="What-if Simulator", icon="⚡"),
-    st.Page("pages/4_Model_Insights.py", title="Model Insights", icon="🔍"),
-    st.Page("pages/5_About.py", title="About", icon="ℹ️")
+    st.Page("pages/1_Patient_List.py", title="Patient List"),
+    st.Page("pages/2_Live_Twin.py", title="Live Twin"),
+    st.Page("pages/3_What_If_Simulator.py", title="What-if Simulator"),
+    st.Page("pages/user_data_entry.py", title="Your Data"),
+    st.Page("pages/4_Model_Insights.py", title="Model Insights"),
+    st.Page("pages/5_About.py", title="About")
 ]
 pg = st.navigation(pgs)
 

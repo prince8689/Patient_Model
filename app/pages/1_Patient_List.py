@@ -11,8 +11,13 @@ from src.app_lib.viewmodels import patient_overview
 
 st.title("Patient List")
 disclaimer_banner()
-st.write("Demonstration of the DiaTwin engine on a subset of synthetic test patients.")
-st.page_link("pages/5_About.py", label="Learn more about this dataset and prototype", icon="ℹ️")
+try:
+    st.page_link("pages/5_About.py", label="Learn more about this dataset and prototype")
+except Exception:
+    try:
+        st.page_link("5_About.py", label="Learn more about this dataset and prototype")
+    except Exception:
+        pass
 
 @st.cache_data(ttl=60)
 def get_overview():

@@ -74,7 +74,7 @@ def harmonize_shanghai_t2dm():
                 "hypertension": hypertension
             }
             
-    cgm_files = list(data_folder.glob("*.xls*"))
+    cgm_files = [f for f in raw_dir.rglob("*.xls*") if "__MACOSX" not in str(f) and not f.name.startswith(".")]
     
     glucose_records = []
     meal_records = []
@@ -167,12 +167,12 @@ def harmonize_shanghai_t2dm():
         # Compute grid alignment using circular median of minute-of-day mod 15
         mod_15 = (cgm['timestamp'].dt.hour * 60 + cgm['timestamp'].dt.minute + cgm['timestamp'].dt.second / 60.0) % 15
         mod_15_arr = mod_15.to_numpy()[:, None]
-        phases = np.linspace(0, 15, 150)
-        dists = np.minimum((mod_15_arr - phases) % 15, (phases - mod_15_arr) % 15)
-        phase = phases[np.argmin(dists.sum(axis=0))]
+        grid_offsets = np.linspace(0, 15, 150)
+        dists = np.minimum((mod_15_arr - grid_offsets) % 15, (grid_offsets - mod_15_arr) % 15)
+        offset_val = grid_offsets[np.argmin(dists.sum(axis=0))]
         
-        phase_td = pd.Timedelta(minutes=phase)
-        cgm['slot'] = (cgm['timestamp'] - phase_td).dt.round('15min') + phase_td
+        offset_td = pd.Timedelta(minutes=offset_val)
+        cgm['slot'] = (cgm['timestamp'] - offset_td).dt.round('15min') + offset_td
         cgm['dist'] = (cgm['timestamp'] - cgm['slot']).dt.total_seconds().abs() / 60.0
         
         moved = (cgm['dist'] > 0).sum()
@@ -183,7 +183,7 @@ def harmonize_shanghai_t2dm():
         
         # If >2% of readings outside tolerance, flag and print residual distribution
         if too_far_count > 0.02 * len(cgm):
-            print(f"Warning: {rec_id} has {too_far_count}/{len(cgm)} readings outside 5min tolerance. Phase: {phase:.2f}. Residual dist: {cgm['dist'].describe().to_dict()}")
+            print(f"Warning: {rec_id} has {too_far_count}/{len(cgm)} readings outside 5min tolerance. Offset: {offset_val:.2f}. Residual dist: {cgm['dist'].describe().to_dict()}")
             
         if too_far_count > 0:
             drop_reasons.append(f"dist_too_far:{too_far_count}")
@@ -211,7 +211,7 @@ def harmonize_shanghai_t2dm():
             'raw': raw_len,
             'final': final_len,
             'kept_ratio': final_len / raw_len if raw_len > 0 else 0,
-            'phase': float(phase),
+            'grid_offset': float(offset_val),
             'moved': int(moved),
             'collisions': int(dup_slot_count),
             'drop_reasons': ", ".join(drop_reasons) if drop_reasons else "none"
