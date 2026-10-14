@@ -30,7 +30,7 @@ def sample_patient(config):
     return test_pats[0] if len(test_pats) > 0 else None
 
 def test_twin_snapshot_restore(skip_if_models_missing, config, sample_patient):
-    if not sample_patient: pytest.skip("No test patients")
+    if not sample_patient: pytest.skip("sample_patient not present in this checkout")
     
     registry = TwinRegistry(config)
     twin1 = registry.get(sample_patient)
@@ -60,7 +60,7 @@ def test_twin_snapshot_restore(skip_if_models_missing, config, sample_patient):
         assert s1.glucose_summary.current_glucose == s2.glucose_summary.current_glucose
         
 def test_fault_duplicate(skip_if_models_missing, config, sample_patient):
-    if not sample_patient: pytest.skip("No test patients")
+    if not sample_patient: pytest.skip("sample_patient not present in this checkout")
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
     
@@ -74,7 +74,7 @@ def test_fault_duplicate(skip_if_models_missing, config, sample_patient):
     assert len(snap1["buffer"]) == len(snap2["buffer"])
     
 def test_fault_corrupted_glucose(skip_if_models_missing, config, sample_patient):
-    if not sample_patient: pytest.skip("No test patients")
+    if not sample_patient: pytest.skip("sample_patient not present in this checkout")
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
     
@@ -85,7 +85,7 @@ def test_fault_corrupted_glucose(skip_if_models_missing, config, sample_patient)
     assert any("Glucose out of range" in w for w in state.data_quality.warnings)
 
 def test_no_future(skip_if_models_missing, config, sample_patient):
-    if not sample_patient: pytest.skip()
+    if not sample_patient: pytest.skip("sample_patient not present in this checkout")
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
     
@@ -98,7 +98,7 @@ def test_no_future(skip_if_models_missing, config, sample_patient):
     assert state1.timestamp == "2026-01-01T00:00:00"
     
 def test_warmup(skip_if_models_missing, config, sample_patient):
-    if not sample_patient: pytest.skip()
+    if not sample_patient: pytest.skip("sample_patient not present in this checkout")
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
     
@@ -109,7 +109,7 @@ def test_warmup(skip_if_models_missing, config, sample_patient):
     assert state.risk is None
     
 def test_gap_fill(skip_if_models_missing, config, sample_patient):
-    if not sample_patient: pytest.skip()
+    if not sample_patient: pytest.skip("sample_patient not present in this checkout")
     registry = TwinRegistry(config)
     twin = registry.get(sample_patient)
     

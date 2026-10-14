@@ -55,7 +55,7 @@ def test_real_label_prevalence():
     
     gluc_file = out_dir / "real_glucose.csv"
     if not gluc_file.exists():
-        pytest.skip("Real data not present")
+        pytest.skip("Real data not present in this checkout")
         
     df = pd.read_csv(gluc_file)
     valid_labels = df['label'].notna().sum()

@@ -67,7 +67,7 @@ def test_indicative_fuzz():
     try:
         from src.twin.loader import TwinRegistry
     except ImportError:
-        pytest.skip("Models not available")
+        pytest.skip("Models not present in this checkout")
         
     config = load_config()
     manifest_path = Path("models/FROZEN.json")
@@ -127,7 +127,7 @@ def test_parity_twin_engine():
     try:
         from src.twin.loader import TwinRegistry
     except ImportError:
-        pytest.skip("Models not available")
+        pytest.skip("Models not present in this checkout")
         
     config = load_config()
     manifest_path = Path("models/FROZEN.json")
@@ -137,7 +137,7 @@ def test_parity_twin_engine():
     registry = TwinRegistry(config)
     pids = get_demo_patients()
     if not pids or len(pids) < 3:
-        pytest.skip("At least 3 demo patients required for parity test")
+        pytest.skip("Demo patients not present in this checkout")
         
     prof_df = get_patients_df()
     features_list = list(registry.pipeline.feature_names_in_)
@@ -262,7 +262,7 @@ def test_missing_reading_middle_history():
     try:
         from src.twin.loader import TwinRegistry
     except ImportError:
-        pytest.skip("Models not available")
+        pytest.skip("Models not present in this checkout")
         
     config = load_config()
     manifest_path = Path("models/FROZEN.json")
@@ -339,7 +339,7 @@ def test_drivers_sorting_and_length():
     try:
         from src.twin.loader import TwinRegistry
     except ImportError:
-        pytest.skip("Models not available")
+        pytest.skip("Models not present in this checkout")
         
     config = load_config()
     manifest_path = Path("models/FROZEN.json")

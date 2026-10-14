@@ -19,7 +19,7 @@ def test_data_access():
 def test_patient_overview():
     pids = get_demo_patients()
     if not pids:
-        pytest.skip("No demo patients")
+        pytest.skip("Demo patients not present in this checkout")
     df = patient_overview()
     assert not df.empty
     assert "patient_id" in df.columns
@@ -33,7 +33,7 @@ def test_patient_overview():
 def test_twin_view_and_moments():
     pids = get_demo_patients()
     if not pids:
-        pytest.skip("No demo patients")
+        pytest.skip("Demo patients not present in this checkout")
         
     pid = pids[0]
     moms = available_moments(pid)
@@ -43,7 +43,7 @@ def test_twin_view_and_moments():
     import glob
     state_files = glob.glob(f"demo_bundle/states/{pid}_*.json")
     if not state_files:
-        pytest.skip(f"No state files for {pid}")
+        pytest.skip(f"State files for {pid} not present in this checkout")
     
     # Parse timestamp from filename
     fname = Path(state_files[0]).stem

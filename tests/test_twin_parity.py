@@ -22,18 +22,18 @@ def config():
 def sample_patient(config):
     splits_path = Path(config["paths"]["data_processed"]) / "splits.csv"
     if not splits_path.exists():
-        pytest.skip("splits.csv missing in this checkout")
+        pytest.skip("splits.csv not present in this checkout")
     splits = pd.read_csv(splits_path)
     test_pats = splits[splits["split"] == "test"]["patient_id"].unique()
     if len(test_pats) == 0:
-        pytest.skip("No test patients found")
+        pytest.skip("Test patients not present in this checkout")
     return test_pats[0]
 
 def test_twin_feature_parity(config, sample_patient):
     # Load batch features
     feat_path = Path(config["paths"]["data_processed"]) / "features.parquet"
     if not feat_path.exists():
-        pytest.skip("Batch features missing")
+        pytest.skip("Batch features not present in this checkout")
         
     df_feat = pd.read_parquet(feat_path)
     df_feat = df_feat[df_feat["patient_id"] == sample_patient].copy()
@@ -88,7 +88,7 @@ def test_twin_probability_parity(config, sample_patient):
     # Same concept, check probability_calibrated
     feat_path = Path(config["paths"]["data_processed"]) / "features.parquet"
     if not feat_path.exists():
-        pytest.skip("Batch features missing")
+        pytest.skip("Batch features not present in this checkout")
         
     df_feat = pd.read_parquet(feat_path)
     df_feat = df_feat[df_feat["patient_id"] == sample_patient].copy()
@@ -107,7 +107,7 @@ def test_twin_probability_parity(config, sample_patient):
     # We need batch probabilities. Since Day 7 saved test_predictions_day7.parquet, we can use that!
     pred_path = Path(config["paths"]["reports"]) / "test_predictions_day7.parquet"
     if not pred_path.exists():
-        pytest.skip("Batch predictions missing")
+        pytest.skip("Batch predictions not present in this checkout")
     df_pred = pd.read_parquet(pred_path)
     df_pred = df_pred[df_pred["patient_id"] == sample_patient].copy()
     df_pred["timestamp"] = pd.to_datetime(df_pred["timestamp"])
