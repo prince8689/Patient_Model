@@ -70,9 +70,9 @@ def test_indicative_fuzz():
         pytest.skip("Models not present in this checkout")
         
     config = load_config()
-    manifest_path = Path("models/FROZEN.json")
-    if not manifest_path.exists():
-        pytest.skip("Frozen models not present in this checkout")
+    model_path = Path("models/xgb_v1.joblib")
+    if not model_path.exists():
+        pytest.skip("Joblib models not present in this checkout")
         
     registry = TwinRegistry(config)
     now = datetime(2024, 1, 1, 12, 0)
@@ -130,9 +130,9 @@ def test_parity_twin_engine():
         pytest.skip("Models not present in this checkout")
         
     config = load_config()
-    manifest_path = Path("models/FROZEN.json")
-    if not manifest_path.exists():
-        pytest.skip("Frozen models not present in this checkout")
+    model_path = Path("models/xgb_v1.joblib")
+    if not model_path.exists():
+        pytest.skip("Joblib models not present in this checkout")
         
     registry = TwinRegistry(config)
     pids = get_demo_patients()
@@ -265,9 +265,9 @@ def test_missing_reading_middle_history():
         pytest.skip("Models not present in this checkout")
         
     config = load_config()
-    manifest_path = Path("models/FROZEN.json")
-    if not manifest_path.exists():
-        pytest.skip("Frozen models not present in this checkout")
+    model_path = Path("models/xgb_v1.joblib")
+    if not model_path.exists():
+        pytest.skip("Joblib models not present in this checkout")
         
     registry = TwinRegistry(config)
     now = datetime(2024, 1, 1, 12, 0)
@@ -342,9 +342,9 @@ def test_drivers_sorting_and_length():
         pytest.skip("Models not present in this checkout")
         
     config = load_config()
-    manifest_path = Path("models/FROZEN.json")
-    if not manifest_path.exists():
-        pytest.skip("Frozen models not present in this checkout")
+    model_path = Path("models/xgb_v1.joblib")
+    if not model_path.exists():
+        pytest.skip("Joblib models not present in this checkout")
         
     registry = TwinRegistry(config)
     now = datetime(2024, 1, 1, 12, 0)
