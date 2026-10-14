@@ -74,7 +74,7 @@ def harmonize_shanghai_t2dm():
                 "hypertension": hypertension
             }
             
-    cgm_files = [f for f in raw_dir.rglob("*.xls*") if "__MACOSX" not in str(f) and not f.name.startswith(".")]
+    cgm_files = [f for f in data_folder.glob("*.xls*") if "__MACOSX" not in str(f) and not f.name.startswith(".")]
     
     glucose_records = []
     meal_records = []
