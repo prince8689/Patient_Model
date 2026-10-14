@@ -23,13 +23,12 @@ These metrics reflect the in-silico evaluation on synthetic patients. Test metri
 | **Forecast RMSE 60m (Validation)** | 18.41 mg/dL | - | `reports/metrics_forecast_val.json` |
 | **Forecast Coverage 60m (Validation)** | 80.0% | - | `reports/metrics_forecast_val.json` |
 
-For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios (`reports/WHATIF_TEST_DONE.json`). The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover.
+For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios (`reports/WHATIF_TEST_DONE.json`). The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover. Forecast test metrics were not saved and a new held-out evaluation is planned.
 
-## Claims
-- The model targets Type 2 diabetes only.
-- The label is a glucose rise of 50 mg/dL or more within 2 hours. It is not a hypoglycemia predictor.
-- The synthetic population has a mean glucose of about 219 mg/dL with about 69% of readings above 180 (from `docs/data_quality.json`).
-- The medium risk band raises about 90.27 alerts per patient per day (from test metrics).
+## Scope & Decisions
+- The model is for Type 2 diabetes and predicts a glucose rise of 50 mg/dL or more within 2 hours.
+- The synthetic data differ from the real cohort in glucose level: mean glucose is 219.30 mg/dL in synthetic vs 141.01 mg/dL in the real cohort; time above 180 is 68.6% in synthetic vs 19.6% in the real cohort (from `reports/realism_comparison.json`, verified by `scripts/verify_real_independent.py`).
+- The User Data Entry page provides an experimental, indicative estimate: sleep, heart rate and steps are filled with fixed placeholders when the user gives none (the sleep state "unknown" makes the history look like sleep in the features), history features are replaced by training medians, and the confidence is never "high" unless the full 24 hour history is provided.
 
 ## Architecture & Dashboards
 
@@ -42,7 +41,7 @@ For the What-if Simulator test evaluation (6 test patients), the peak error is 1
 ## Quick Start
 
 ### 1. Prerequisites
-Ensure you have Python 3.10, 3.11, or 3.12 installed.
+Ensure you have a supported Python release (Python 3) installed.
 
 ### 2. Clone and Install
 ```bash
@@ -93,7 +92,7 @@ pytest tests/
 - `tests/`: Unit and integration tests for all modules.
 
 ## Evaluation Integrity
-The project enforces a strict "freeze-before-test" protocol. Model weights, calibration parameters, and critical thresholds were cryptographically hashed and frozen in `models/FROZEN.json` manifests using training and validation data exclusively. The test set was accessed strictly after this freeze. Feature engineering logic explicitly enforces strict causal boundaries, preventing any look-ahead bias in rolling windows. The dashboard relies on a "display-only" model, interacting only with a compiled insights bundle and the simulator engine. See [docs/INTEGRITY.md](docs/INTEGRITY.md) for full details.
+The project enforces a strict "freeze-before-test" protocol. For the risk model, the model freeze precedes its test evaluation in git history. For the forecast and what-if modules, the manifest and the test marker were committed together so freeze-before-test cannot be shown from git. Feature engineering logic explicitly enforces strict causal boundaries, preventing look-ahead bias in rolling windows. The dashboard relies on a display-only model, interacting only with a compiled insights bundle and the simulator engine. See [docs/INTEGRITY.md](docs/INTEGRITY.md) for full details.
 
 ## Limitations
 This prototype is built on synthetic physiological approximations designed for research demonstration. It models a simplified representation of Type 1 and Type 2 diabetes dynamics and is not calibrated to true human physiology. The evaluation cohort is small (40 patients) and represents limited demographic diversity. The What-if Simulator uses the same underlying model family for both the baseline risk assessment and the counterfactual projection, which inherently limits the discovery of unmodeled physiological interactions. The prototype does not include medication modeling, insulin dosage simulations, or long-term complication risk factors. There is no clinical validation of the outputs.

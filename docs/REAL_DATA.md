@@ -13,8 +13,6 @@ In the "Shanghai_T2DM" folder, the file "2003_0_20210615" has extended rows from
 In the "Shanghai_T2DM" folder, the file "2029_0_20210526" has extended rows from 742 to 846 with rows from 743 to 846 newly added. From line 743 to 755, the CGM values are missing because the CGM device has been changed to a new one. The readings of the new CGM device started from 2021/6/3 12:46.
 
 
-?oShanghai_T2DM??-؄  1,-s,?o2003_0_20210615??-؄ Z586OzS^670OO587~670O,-z ?r
-?oShanghai_T2DM??-؄  1,-s,?o2029_0_20210526??-؄ Z742OzS^846OO743~846O,-z ?r
 
 
 2023/10/26

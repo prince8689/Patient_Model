@@ -104,7 +104,7 @@ def test_twin_probability_parity(config, sample_patient):
     warmup_samples = int(config["twin"]["warmup_hours"] * 60 / config["sampling_interval_minutes"])
     test_samples = stream[:warmup_samples + 200]
     
-    # We need batch probabilities. Since Day 7 saved test_predictions_day7.parquet, we can use that!
+    # We need batch probabilities. Since stored test_predictions_day7.parquet exists, we can use that!
     pred_path = Path(config["paths"]["reports"]) / "test_predictions_day7.parquet"
     if not pred_path.exists():
         pytest.skip("Batch predictions not present in this checkout")

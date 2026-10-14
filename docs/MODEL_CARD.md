@@ -44,23 +44,21 @@
   4. meal_min_since_last
 
 ## Clinical-Utility Results
-- **Alert Burden (Medium)**: 9.55 alerts/day
-- **Alert Burden (Rule Baseline)**: 5.31 alerts/day
-- **Event-Level Recall**: 83.51% (Medium), vs 23.37% (Rule Baseline)
-- **Median Lead Time**: 65 minutes
+Clinical utility metrics such as alert burden and event-level recall are detailed in evaluation reports.
 
 ## Subgroup Performance
-- **Sex: Male**: AUC=0.956, Recall=0.929 (n=2)
-- **Sex: Female**: AUC=0.910, Recall=0.899 (n=4)
-- **Age: >= 55**: AUC=0.938, Recall=0.900 (n=3)
-- **Age: < 55**: AUC=0.920, Recall=0.939 (n=3)
-- **Error Types**: Total FN: 438, Total FP: 6714
+Subgroup performance analyses by demographic factors are evaluated in retrospective cohort reports.
+Confusion matrix error counts for the medium risk threshold (from `reports/metrics_test_day7.json`): False Negatives = 438, False Positives = 6714.
 
 ## Limitations
 - Built entirely on synthetic data.
-- Tested on very small sample sizes.
+- The model is for Type 2 diabetes and predicts a glucose rise of 50 mg/dL or more within 2 hours.
+- Tested on very small sample sizes (40 synthetic patients, 6 test patients).
 - No real-world validation; no regulatory clearance.
-- For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios. The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover.
+- For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios (reports/WHATIF_TEST_DONE.json). The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover.
+- Forecast test metrics were not saved and a new held-out evaluation is planned.
+- The synthetic data differ from the real cohort in glucose level: mean glucose is 219.30 mg/dL in synthetic vs 141.01 mg/dL in the real cohort; time above 180 is 68.6% in synthetic vs 19.6% in the real cohort (from reports/realism_comparison.json).
+- Integrity record: the risk model freeze precedes its test evaluation in git history; for the forecast and what-if modules the manifest and the test marker were committed together so freeze-before-test cannot be shown from git.
 
 ## Reproducibility
 - Seed: 42

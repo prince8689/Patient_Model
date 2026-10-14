@@ -580,13 +580,17 @@ def get_provided_summary(
                 f"What was NOT provided: {groups_str}. "
                 f"Fixed placeholders are used for heart rate (70.0 bpm) and steps (0.0). "
                 f"Sleep uses {sleep_default_name} (light state during sleep hours, awake otherwise). "
-                "Features requiring history (personal 24-hour baseline and long lags) use training medians."
+                "The sleep state 'unknown' makes the history look like sleep in the features. "
+                "Features requiring history (personal 24-hour baseline and long lags) use training medians. "
+                "Confidence is never high unless the full 24 hour history is provided."
             )
         else:
             not_provided_text = (
                 f"What was NOT provided: {groups_str}. "
                 "Fixed placeholders are used for heart rate (70.0 bpm), steps (0.0), and sleep state (unknown). "
-                "Features requiring history (personal 24-hour baseline and long lags) use training medians."
+                "The sleep state 'unknown' makes the history look like sleep in the features. "
+                "Features requiring history (personal 24-hour baseline and long lags) use training medians. "
+                "Confidence is never high unless the full 24 hour history is provided."
             )
     else:
         not_provided_text = "What was NOT provided: None. Full historical wearable context was provided."

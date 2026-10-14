@@ -29,7 +29,7 @@ def main():
     
     print(f"Training on {len(X_train)} rows with {len(features)} features...")
     
-    # Day 6 "best hyperparameters" simulation
+    # Tuned hyperparameters simulation
     hyperparams = {
         "n_estimators": 100,
         "max_depth": 5,

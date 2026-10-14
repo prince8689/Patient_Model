@@ -24,4 +24,4 @@ The model outputs discrete horizons (15, 30, 60, 90, 120m). We use monotone Piec
 The twin engine verifies that the forecast trajectory is probabilistically consistent with the frozen classification model. Discrepancies are flagged in the forecast result object.
 
 ## Evaluation
-Test evaluation is guarded by a freeze step (`models/FORECAST_FROZEN.json`). Metrics include MAE, RMSE, Coverage (Calibrated and Uncalibrated), and Clarke Error Grid.
+Forecast test metrics were not saved and a new held-out evaluation is planned. Integrity note: for the forecast module, the manifest and the test marker were committed together so freeze-before-test cannot be shown from git. Validation metrics on the 60m horizon show RMSE of 18.41 mg/dL and calibrated coverage of 80.0% (reports/metrics_forecast_val.json).

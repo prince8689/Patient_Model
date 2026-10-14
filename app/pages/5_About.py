@@ -7,7 +7,7 @@ import streamlit as st
 
 from app.components import disclaimer_banner
 from src.app_lib.data_access import get_config
-from src.app_lib.insights_vm import challenge_mapping, glossary, guided_demo_steps
+from src.app_lib.insights_vm import challenge_mapping, glossary, guided_demo_steps, limitations_list
 
 st.set_page_config(layout="wide")
 disclaimer_banner()
@@ -36,27 +36,31 @@ st.header("4. Data")
 st.write("DiaTwin operates entirely on **synthetic data** generated specifically for this challenge. This ensures patient privacy and provides absolute ground truth for evaluation. We use a **patient-wise split**, meaning a patient's data only exists in one split (train, val, or test).")
 st.markdown("[Read the full Data Card](docs/DATA_CARD.md)")
 
-st.header("5. Rigor and Safety")
+st.header("5. Safety and Integrity")
 st.write("- **Frozen-before-test protocol**: Models and thresholds are locked before any test set evaluation.")
 st.write("- **No leakage guards**: The UI and view-model strictly prevent access to oracle or future data.")
 st.write("- **Patient-level Confidence**: Metrics are evaluated per-patient to highlight variability.")
 st.write("- **Calibration and Conformal Prediction**: Probabilities are calibrated and forecasts include verified uncertainty bands.")
 st.write("- **Safety Scope**: Explicitly excludes insulin and medication modeling.")
 
-st.header("6. Challenge Mapping")
+st.header("6. Limitations")
+for lim in limitations_list():
+    st.write(f"- {lim}")
+
+st.header("7. Challenge Mapping")
 st.table(pd.DataFrame(challenge_mapping()))
 
-st.header("7. Guided Demo")
+st.header("8. Guided Demo")
 for step in guided_demo_steps():
     st.write(f"**Step {step['step']}**: Go to [{step['page']}] - {step['patient_rule']}")
     st.caption(f"Look at: {step['look_at']}")
 
-st.header("8. Glossary")
+st.header("9. Glossary")
 for term in glossary():
     with st.expander(term["term"]):
         st.write(term["definition"])
 
-st.header("9. Team and Links")
+st.header("10. Team and Links")
 team_name = config["app"].get("team_name")
 if not team_name:
     st.write("To be added by the team")
@@ -67,7 +71,7 @@ else:
         st.write(f"- {member.get('name')} ({member.get('role')})")
     st.write(f"**Repo**: {config['app'].get('repo_url', 'N/A')}")
 
-st.header("10. Downloads")
+st.header("11. Downloads")
 col1, col2, col3 = st.columns(3)
 with col1:
     if os.path.exists("docs/MODEL_CARD.md"):

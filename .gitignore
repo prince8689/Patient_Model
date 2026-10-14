@@ -26,4 +26,3 @@ data/processed/*
 data/external/shanghai_t2dm/
 scratch/
 reports/qa/logs/
-verify_real_independent.py

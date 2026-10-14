@@ -253,7 +253,7 @@ def main():
     plt.figure(figsize=(6, 6))
     fop, mpv = calibration_curve(y_test, df_test["prob_calib"], n_bins=10)
     plt.plot(mpv, fop, marker="s", label="XGB Calibrated")
-    plt.plot([0, 1], [0, 1], "k:", label="Perfect")
+    plt.plot([0, 1], [0, 1], "k:", label="Ideal")
     plt.title("Reliability Diagram (TEST)")
     plt.legend()
     plt.savefig(fig_dir / "test_calibration.png", dpi=150)

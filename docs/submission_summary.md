@@ -18,7 +18,7 @@ DiaTwin enforces a strict causal separation between historical state reconstruct
 2. The dataset is small (40 synthetic patients) and lacks meaningful demographic or comorbidity diversity.
 3. The What-if Simulator uses the same model family for generating baseline and counterfactual states, which might mask unmodeled physiological interactions.
 4. The prototype does not currently model medication adherence, insulin absorption dynamics, or long-term complications.
-5. The model relies on an arbitrary "spike" classification threshold that has not been clinically validated against specific patient risk profiles.
+5. The model relies on an arbitrary "spike" classification threshold that has not been evaluated in human clinical studies against specific patient risk profiles.
 
 **Deployment**:
 The Streamlit dashboard runs in an offline demo mode powered by a precomputed artifact bundle, minimizing live computational overhead while ensuring exact reproducibility.

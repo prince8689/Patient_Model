@@ -120,7 +120,7 @@ The simulator allows the provider to test hypothetical interventions:
 
 ## 12. Ethics and Limitations
 - **Data:** All data is entirely synthetic.
-- **Clinical Validity:** This is an educational and technical proof-of-concept, NOT a medical device. It has not been clinically validated.
+- **Clinical Validity:** This is an educational and technical proof-of-concept, NOT a medical device. It has not been clinically evaluated in humans.
 - **Simulations:** Simulator effects are based on heuristic assumptions encoded in the synthetic data generator and learned by the model, not verified physiological models.
 
 ## 13. Assumptions List
@@ -146,7 +146,7 @@ The simulator allows the provider to test hypothetical interventions:
 - **Engine Definition**: A stream processor (`DiaTwin`) that handles sample-by-sample ingestion, filling up to 36 hours of historical state in a buffer.
 - **Explainability Fault Tolerance**: SHAP module may fail to load due to OS-level DLL constraints (e.g. AppLocker blocking `_reachability.pyd`). The Twin Engine handles this gracefully by returning empty driver lists instead of crashing.
 - **Security**: Strict SHA256 freezing of all model artifacts (`models/FROZEN.json`). Modifying configurations requires explicitly acknowledging the updated hash.
-- **Parity Guarantees**: The streaming engine mathematically equals the batch pipeline outputs with 1e-6 tolerance on features and 1e-5 on probability outputs.
+- **Parity Bounds**: The streaming engine mathematically equals the batch pipeline outputs with 1e-6 tolerance on features and 1e-5 on probability outputs.
 
 ## 17. Forecasting Architecture 
 - **Interpolation**: The forecast uses PCHIP interpolation to derive 5-min trajectories between discrete horizons (15, 30, 60, 90, 120m) ensuring monotonicity.

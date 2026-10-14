@@ -14,11 +14,12 @@ from src.app_lib.user_input import (
     get_sensitivity_statement, get_confidence_label
 )
 
-st.set_page_config(page_title="Your Data", layout="wide")
+st.set_page_config(page_title="Your Data (experimental, indicative estimate)", layout="wide")
 
-st.title("Personalized Forecast")
+st.title("Personalized Forecast (experimental, indicative estimate)")
 
 st.warning("Educational prototype trained on synthetic data only. Not validated on real people. Not a medical device. Not for treatment decisions.")
+st.info("**Notice**: This page provides an **experimental, indicative estimate**. Sleep, heart rate and steps are filled with fixed placeholders when the user gives none (the sleep state 'unknown' makes the history look like sleep in the features), history features are replaced by training medians, and the confidence is never 'high' unless the full 24 hour history is provided.")
 st.caption("Your entries are not stored. When this app is hosted, use fictional values only.")
 
 registry = get_registry()
@@ -245,7 +246,7 @@ if st.button("Run Forecast"):
             val = d.get("shap_value", d.get("impact", 0.0))
             st.write(f"- **{f_name}**: {desc} (SHAP value: {val:.3f})")
             
-    st.subheader("Data Summary")
+    st.subheader("What was and was not provided")
     st.info(summary_info["provided"])
     if missing_groups:
         st.warning(summary_info["not_provided"])

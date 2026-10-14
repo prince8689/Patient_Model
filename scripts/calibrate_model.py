@@ -119,7 +119,7 @@ def main():
     p_val_best = val_sig if best_name == "sigmoid" else val_iso
     fop_calib, mpv_calib = calibration_curve(y_val, p_val_best, n_bins=10, strategy='quantile')
     plt.plot(mpv_calib, fop_calib, marker='s', label=f"Calibrated ({best_name})")
-    plt.plot([0, 1], [0, 1], 'k:', label="Perfect")
+    plt.plot([0, 1], [0, 1], 'k:', label="Ideal")
     plt.title("Reliability Diagram (VAL)")
     plt.legend()
     

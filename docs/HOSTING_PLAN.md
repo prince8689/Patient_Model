@@ -1,65 +1,70 @@
-# Hosting Plan for DiaTwin
+# Hosting Plan for Streamlit Community Cloud
 
-This document outlines the architecture, deployment process, and dependency strategy for hosting the DiaTwin Streamlit application.
+This document outlines the deployment strategy, architecture constraints, and step-by-step procedures for hosting DiaTwin on Streamlit Community Cloud.
 
-## 1. Binary Artifact Management without Git LFS
+## Constraints & Architecture
 
-Streamlit Community Cloud does not support Git LFS pointers natively without manual hook configuration, and Git LFS bandwidth limits can cause build interruptions. Because the three serialized model files total approximately 3.2 MB (well below GitHub's 100 MB per-file threshold), Git LFS is unnecessary.
+1. **No Git LFS**:
+   Streamlit Community Cloud does not support Git LFS pointer resolution during automated build steps. Model files must be standard git objects if committed, or loaded from an external artifact store.
+2. **Binary Normalization**:
+   To preserve exact SHA-256 hashes across Windows, Linux, and macOS checkouts, `*.joblib` files are marked as binary (`-text`) in `.gitattributes`.
+3. **Model Artifact Sizes**:
+   The three frozen joblib models require minimal storage:
+   - `models/calibrator_v1.joblib`: 3,623 bytes (3.54 KB)
+   - `models/xgb_v1.joblib`: 274,527 bytes (268.09 KB)
+   - `models/forecaster_v1.joblib`: 2,990,859 bytes (2.85 MB)
+   - Total binary size: 3,269,009 bytes (3.12 MB).
+4. **Measured Resource Footprint**:
+   - Streamlit headless cold startup to responsive health endpoint: 2.59 seconds.
+   - Peak memory consumption of the active process tree: 79.68 MB.
 
-### Model Files and Sizes
-The three model binaries required for local inference and full testing are:
-- `models/calibrator_v1.joblib`: 3.6 KB
-- `models/xgb_v1.joblib`: 268.1 KB
-- `models/forecaster_v1.joblib`: 2.9 MB
+## Option A: Deploying with Precomputed Demo Bundle (No Binaries in Git)
 
-Total size: approximately 3.2 MB.
+In this mode, no model binaries are committed to the repository. The application runs completely from the precompiled insights bundle and demo patient wearable recordings.
 
-### Git Attributes Configuration
-To prevent git line-ending normalization from corrupting binary files across operating systems, `*.joblib` files are marked as binary in `.gitattributes`:
-```text
-*.joblib -text
-```
-This ensures that SHA256 hashes remain identical across Windows, Linux, and macOS checkouts.
+1. Ensure environment variable `DIATWIN_DEMO_BUNDLE=1` is configured in Streamlit Cloud Settings (or left as default in `configs/config.yaml`).
+2. The core exploratory workflows operate without model loading:
+   - Patient List: Displays 40 synthetic patients.
+   - Live Twin: Replays 24-hour wearable histories and visualizes precomputed forecasts.
+   - What-if Simulator: Evaluates lifestyle scenarios using precomputed projections.
+   - Model Insights: Presents static model metrics and evaluation figures.
+   - About: Displays architecture, glossary, and verified limitation statements.
+3. The custom User Data Entry page gracefully displays:
+   `Available when run locally (run python scripts/run_pipeline.py)`
+   ensuring visitors understand local execution is required for arbitrary data inference.
 
-### Git Ignore Exceptions
-By default, `.gitignore` excludes `models/*.joblib`. To track exactly the three verified model binaries, add exact negate patterns:
-```text
-!models/xgb_v1.joblib
+## Option B: Deploying with Committed Model Binaries (Owner Decision)
+
+If the repository owner decides to commit the three joblib models directly to git (under 3.2 MB total), the following procedure must be followed:
+
+### 1. Update .gitignore Exceptions
+In `.gitignore`, add explicit exceptions for the three frozen joblib files:
+```gitignore
+# Keep generic joblib ignored
+models/*.joblib
+
+# Explicit exceptions for the three frozen artifacts
 !models/calibrator_v1.joblib
+!models/xgb_v1.joblib
 !models/forecaster_v1.joblib
 ```
-Decision note: Do not commit the binary files in this session; this decision is left to the repository owner.
 
-## 2. Integrity Verification in Fresh Checkouts
+### 2. Verify .gitattributes Binary Marking
+Ensure `.gitattributes` contains:
+```gitattributes
+*.joblib -text
+```
 
-When model binaries are included in the repository:
-1. Clone the repository into a fresh directory.
-2. Run the manifest verification script:
-   ```bash
-   python scripts/qa/protected_files.py
-   ```
-3. All files listed in `models/FROZEN.json`, `models/FORECAST_FROZEN.json`, and `models/WHATIF_FROZEN.json` must report `MATCH`.
+### 3. Add and Commit Artifacts
+```bash
+git add -f models/calibrator_v1.joblib models/xgb_v1.joblib models/forecaster_v1.joblib
+git add .gitignore .gitattributes
+git commit -m "Include frozen model artifacts for cloud deployment"
+```
 
-## 3. Test Execution with Model Binaries
-
-When the three model binaries are present on disk, tests that normally skip with "Frozen models not present in this checkout" will execute:
-- `tests/test_user_input.py` (indicative fuzz, parity with engine, driver explainers)
-- `tests/test_forecast_model.py`
-- `tests/test_twin_parity.py`
-
-In our test suite run with model binaries present, these tests execute in approximately 165 seconds.
-
-## 4. Hosting Execution Modes
-
-The application supports two operating modes:
-
-### Demo Bundle Mode (`DIATWIN_DEMO_BUNDLE=1`)
-- Runs without model files or simulation dependencies.
-- Serves precomputed trajectories and state snapshots from `demo_bundle/`.
-- Suitable for public demo hosting on Streamlit Community Cloud.
-- Requires only lightweight dependencies from `requirements-demo.txt`.
-
-### Interactive Evaluation Mode (`DIATWIN_DEMO_BUNDLE=0` or default)
-- Loads the frozen pipeline, calibrator, and forecaster models into memory.
-- Enables the Personalized Data Entry page (`user_data_entry.py`) to run live inferences on custom profile and glucose data.
-- Requires `xgboost`, `scikit-learn`, and `joblib`.
+### 4. Verify Hashes in a Fresh Checkout
+After cloning, run the verification script to confirm all hashes match the frozen manifests:
+```bash
+python scripts/qa/protected_files.py
+```
+All manifest entries must report `MATCH`.
