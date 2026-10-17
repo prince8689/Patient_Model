@@ -117,7 +117,7 @@ def limitations_list():
         "The model is for Type 2 diabetes and predicts a glucose rise of 50 mg/dL or more within 2 hours",
         "40 synthetic patients, 6 test patients so wide confidence intervals",
         "Simulator and twin share a model family in what-if evaluation",
-        "No real-world validation; no regulatory clearance",
+        "The synthetic data were compared with a real cohort of 100 patients to check realism; the models were trained and evaluated on synthetic data only and have not been validated on real people.",
         "Unannounced meals and events",
         "No insulin or medication modelling",
         "For the What-if Simulator test evaluation (6 test patients), the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios (reports/WHATIF_TEST_DONE.json). The 80% interval coverage is 0%, 17% and 0%. The uncertainty bands significantly under-cover.",

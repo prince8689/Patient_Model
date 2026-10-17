@@ -91,7 +91,7 @@ with tabs[3]: # Does fusion help?
         st.info("Not available (missing: ablation)")
     else:
         st.json(abl)
-        st.caption("What this means: Shows performance drops when data modalities are removed. What it does not mean: It is not a guarantee of real-world value.")
+        st.caption("What this means: Shows performance drops when data modalities are removed. What it does not mean: It is not a guarantee of practical clinical value.")
 
 with tabs[4]: # Clinical usefulness
     st.subheader("Clinical Usefulness")

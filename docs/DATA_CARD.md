@@ -35,7 +35,7 @@ Patient-wise splitting (no patient overlaps between splits) to prevent data leak
 Prototyping prediction pipelines, algorithm evaluation, and dashboard building for the Digital Twin Challenge.
 
 ## Not intended for
-Clinical use or real-world physiological diagnosis.
+Clinical use or physiological diagnosis in clinical practice.
 
 ## Real Data Comparison
 See [REAL_DATA.md](REAL_DATA.md) for information on the real dataset used for comparison.

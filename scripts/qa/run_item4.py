@@ -1,99 +1,51 @@
-import os
-import re
-import subprocess
+import json
+import sys
 from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent.parent
-
-def run_cmd(cmd):
-    res = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=str(root))
-    return res.stdout.strip() + ("\n" + res.stderr.strip() if res.stderr.strip() else "")
+if str(root) not in sys.path:
+    sys.path.insert(0, str(root))
 
 lines = []
-lines.append("=== Item 4: Pre-push Hygiene Scan ===")
+lines.append("=== Item 4: Demo Video Numbers Verification ===")
 
-lines.append("\n--- 1. git check-ignore for .venv, demo_env, scratch, data/external, reports/qa/logs ---")
-lines.append(run_cmd("git check-ignore .venv demo_env scratch data/external reports/qa/logs"))
+target_file = root / "docs" / "demo" / "numbers_for_video.md"
+content = target_file.read_text(encoding="utf-8")
 
-lines.append("\n--- 2. Ten largest tracked files ---")
-files = subprocess.run("git ls-files", shell=True, capture_output=True, text=True, cwd=str(root)).stdout.splitlines()
-sizes = []
-for f in files:
-    p = root / f
-    if p.exists() and p.is_file():
-        sizes.append((p.stat().st_size, f))
-sizes.sort(reverse=True)
-for s, f in sizes[:10]:
-    lines.append(f"  {s:>10} bytes ({s/1024/1024:.2f} MB)  {f}")
+lines.append("\n--- 1. Verification of Requirements in docs/demo/numbers_for_video.md ---")
 
-lines.append("\n--- 3. Total size from git count-objects -vH ---")
-lines.append(run_cmd("git count-objects -vH"))
-
-lines.append("\n--- 4. Scan of tracked files for personal data and local paths (@gmail, Prince, C:\\Users, D:\\) ---")
-personal_patterns = ["@gmail", "prince", "c:\\users", "d:\\"]
-found_personal = []
-text_exts = {".py", ".md", ".txt", ".yaml", ".yml", ".json", ".toml", ".ini", ".cfg", ".html", ".css", ".js"}
-
-for f in files:
-    p = root / f
-    if not p.exists() or not p.is_file():
-        continue
-    if p.suffix.lower() not in text_exts:
-        continue
-    # Exclude scanner itself or known scan command strings in QA scripts
-    if "final_scans.py" in f or "run_item4.py" in f:
-        continue
-    try:
-        content = p.read_text(encoding="utf-8", errors="ignore").lower()
-        for pat in personal_patterns:
-            if pat in content:
-                found_personal.append((f, pat))
-    except Exception:
-        pass
-
-if found_personal:
-    lines.append(f"Found {len(found_personal)} occurrences:")
-    for f, pat in found_personal:
-        lines.append(f"  {f}: contains '{pat}'")
+# Check 1: row-level label for 41.0% precision and 91.4% recall
+if "row-level precision drops to 41.0% with recall on spike rows 91.4%" in content:
+    lines.append("Check 1 (Medium band row-level precision 41.0% and recall 91.4%): PASS")
 else:
-    lines.append("No personal data or local absolute paths found in project files (PASS).")
+    lines.append("Check 1 (Medium band row-level precision 41.0% and recall 91.4%): FAIL")
 
-lines.append("\n--- 5. List of tracked files/lines naming an AI tool or assistant (listed only for owner decision) ---")
-ai_patterns = [
-    r"\bchatgpt\b", r"\bclaude\b", r"\bcopilot\b", r"\bgemini\b",
-    r"\bantigravity\b", r"\bopenai\b", r"\banthropic\b", r"\bcursor\b",
-    r"\bgpt-[34]\b", r"\bgpt-4o\b"
-]
-ai_regex = re.compile("|".join(ai_patterns), re.IGNORECASE)
-found_ai = []
+# Check 2: 'captures 91.4% of events' replaced by 'recall on spike rows 91.4%'
+if "captures 91.4% of events" not in content and "recall on spike rows 91.4%" in content:
+    lines.append("Check 2 ('recall on spike rows 91.4%' present and old phrasing removed): PASS")
+else:
+    lines.append("Check 2 ('recall on spike rows 91.4%'): FAIL")
 
-for f in files:
-    p = root / f
-    if not p.exists() or not p.is_file():
-        continue
-    if p.suffix.lower() not in text_exts:
-        continue
-    if "run_item4.py" in f:
-        continue
-    try:
-        file_lines = p.read_text(encoding="utf-8", errors="ignore").splitlines()
-        for idx, l in enumerate(file_lines, 1):
-            m = ai_regex.search(l)
-            if m:
-                found_ai.append((f, idx, m.group(0), l.strip()))
-    except Exception:
-        pass
+# Check 3: Event-level recall check in reports (clinical utility)
+clin_reports = list(root.glob("reports/*clinical*.json")) + list(root.glob("reports/*utility*.json"))
+lines.append(f"Check 3 (Event-level clinical utility recall reports): Found {len(clin_reports)} files")
+if not clin_reports:
+    lines.append("  Finding: reports/clinical_utility.json was not saved in repository reports.")
+    lines.append("  Documented in file note: 'event-level recall from clinical utility reports was not saved in reports'.")
 
-lines.append(f"Total AI tool references found: {len(found_ai)}")
-for f, idx, match_word, text in found_ai:
-    lines.append(f"  {f}:{idx} [{match_word}]: {text[:100]}")
+# Check 4: Forecast coverage 80.0% calibration split wording
+expected_forecast_wording = "on the validation split used to calibrate the intervals; held-out forecast test metrics were not saved"
+if expected_forecast_wording in content:
+    lines.append(f"Check 4 (Forecast coverage 80.0% calibration split phrase): PASS")
+else:
+    lines.append(f"Check 4 (Forecast coverage 80.0% calibration split phrase): FAIL")
 
-lines.append("\n--- 6. git ls-files file count (Measure-Object) ---")
-lines.append(run_cmd("powershell -Command \"git ls-files | Measure-Object\""))
+lines.append("\n--- 2. Final Content of docs/demo/numbers_for_video.md ---")
+lines.append(content.strip())
 
 output = "\n".join(lines) + "\n"
-out_path = root / "reports" / "qa" / "logs" / "item4.txt"
-with open(out_path, "w", encoding="utf-8") as f:
-    f.write(output)
 
-print("Item 4 logged successfully.")
+log_file = root / "reports" / "qa" / "logs" / "item4.txt"
+log_file.write_text(output, encoding="utf-8")
+
+print(output)

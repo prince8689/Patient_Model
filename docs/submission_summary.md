@@ -16,7 +16,7 @@ The application can be run locally using `streamlit run app/main.py` or verified
 2. It classifies imminent glycemic spikes of 50 mg/dL within 2 hours using calibrated risk models.
 3. Multi-horizon forecasters provide uncertainty intervals for future glucose trajectories.
 4. The counterfactual engine explores what-if lifestyle adjustments like meal shifts and exercise.
-5. Built with causal state isolation and validated against a real-world diabetic patient cohort.
+5. The synthetic data were compared with a real cohort of 100 patients to check realism; the models were trained and evaluated on synthetic data only and have not been validated on real people.
 
 ## Files to Open First
 

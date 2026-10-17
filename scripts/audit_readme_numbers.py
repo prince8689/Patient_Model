@@ -72,6 +72,8 @@ KNOWN_SOURCES = {
         "35": ("citation", "scientific_data_article_35"),
         "2023": ("citation", "zhao_et_al_publication_year"),
         "10.6084": ("citation", "figshare_doi_prefix"),
+        "39.5": ("configs/real_data.yaml", "cgm_device.valid_range_mgdl[0]"),
+        "500.5": ("configs/real_data.yaml", "cgm_device.valid_range_mgdl[1]"),
     },
     "docs/MODEL_CARD.md": {
         "75": ("models/xgb_v1_meta.json", "feature_count"),
@@ -210,6 +212,10 @@ KNOWN_SOURCES = {
         "8": ("hour_profile", "peak_hour_real"),
         "169.36": ("hour_profile", "peak_value_real"),
         "113.90": ("hour_profile", "trough_value_real"),
+        "39.5": ("configs/real_data.yaml", "cgm_device.valid_range_mgdl[0]"),
+        "500.5": ("configs/real_data.yaml", "cgm_device.valid_range_mgdl[1]"),
+        "39": ("reports/real_range_check.json", "candidate_range_lower"),
+        "501": ("reports/real_range_check.json", "candidate_range_upper"),
     },
     "docs/REAL_DATA.md": {
         "100": ("reports/real_data_quality.json", "patients"),
@@ -253,6 +259,8 @@ KNOWN_SOURCES = {
         "35": ("citation", "scientific_data_article_35"),
         "10.1038": ("citation", "nature_doi_prefix"),
         "10.6084": ("citation", "figshare_doi_prefix"),
+        "39.5": ("configs/real_data.yaml", "cgm_device.valid_range_mgdl[0]"),
+        "500.5": ("configs/real_data.yaml", "cgm_device.valid_range_mgdl[1]"),
     },
     "docs/USER_INPUT.md": {
         "24": ("configs/config.yaml", "twin.history_buffer_hours"),

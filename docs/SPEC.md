@@ -79,7 +79,7 @@ EHR data generation employs a hidden "archetype" system (`well_controlled` 35%, 
 - **Exercise effects:** Moderate to high activity intensity should generally lower glucose levels and elevate heart rate.
 - **Sleep cycles:** Heart rate should naturally dip during deep/REM sleep intervals.
 - **Patient variation:** Curves and baselines should vary across patients, driven primarily by the `baseline_insulin_sensitivity` parameter.
-- **Sensor noise and missingness:** Add Gaussian noise to CGM readings and simulate random data dropouts (small percentage) to reflect real-world hardware imperfections.
+- **Sensor noise and missingness:** Add Gaussian noise to CGM readings and simulate random data dropouts (small percentage) to reflect hardware imperfections in real sensors.
 
 ## 7. Modeling Plan
 - **Baseline Model:** Logistic Regression to establish a performance floor.

@@ -41,7 +41,7 @@ def main():
 - **Target Audience**: Healthcare providers testing interventions in a simulated "what-if" environment.
 
 ## Out-of-Scope Use
-- Not for clinical deployment or real-world diagnostics.
+- Not for clinical deployment or diagnostics in clinical practice.
 - Not for Type 1 Diabetes management or automated insulin delivery.
 
 ## Data
@@ -84,7 +84,7 @@ def main():
 ## Limitations
 - Built entirely on synthetic data.
 - Tested on very small sample sizes.
-- No real-world validation; no regulatory clearance.
+- The synthetic data were compared with a real cohort of 100 patients to check realism; the models were trained and evaluated on synthetic data only and have not been validated on real people.
 
 ## Reproducibility
 - Seed: 42

@@ -14,7 +14,13 @@ FORBIDDEN_WORDS = [
 FORBIDDEN_PHRASES = [
     "you should", "take insulin", "increase your dose",
     "recommend that you", "we recommend", "clinically validated",
-    "proven to", "guarantees"
+    "proven to", "guarantees",
+    "validated against", "real-world", "validated on real"
+]
+
+ALLOWLIST_PATTERNS = [
+    re.compile(r"not (?:been )?validated on real people", re.IGNORECASE),
+    re.compile(r"mimics real-world properties", re.IGNORECASE),
 ]
 
 
@@ -53,6 +59,7 @@ def scan_forbidden_phrases(files):
             or "find_tone.py" in rel
             or "test_app_smoke.py" in rel
             or "test_whatif_page.py" in rel
+            or rel.startswith("scripts/qa/")
         ):
             continue
         try:
@@ -69,6 +76,13 @@ def scan_forbidden_phrases(files):
         for ph in FORBIDDEN_PHRASES:
             matches = list(re.finditer(r"\b" + re.escape(ph) + r"\b", content, re.IGNORECASE))
             for m in matches:
+                line_start = content.rfind("\n", 0, m.start()) + 1
+                line_end = content.find("\n", m.end())
+                if line_end == -1:
+                    line_end = len(content)
+                line_text = content[line_start:line_end]
+                if any(p.search(line_text) for p in ALLOWLIST_PATTERNS):
+                    continue
                 line_no = content[:m.start()].count("\n") + 1
                 issues.append((rel, line_no, f"Forbidden phrase: '{ph}'"))
     return issues

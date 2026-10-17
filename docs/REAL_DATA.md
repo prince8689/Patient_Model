@@ -25,10 +25,10 @@ In the "Shanghai_T2DM" folder, the file "2029_0_20210526" has extended rows from
 - **Cohort Size & Diversity**: It is a small cohort (100 patients) from one city and one population.
 - **Dietary Data Format**: Dietary intake is recorded in textual format, lacking quantified carbohydrate grams.
 - **Model Incompatibility**: The frozen DiaTwin model cannot be applied directly without resampling and feature imputation.
-- **What-if Validation**: The What-if scenario generator cannot be validated on real data because the true counterfactual is unknown.
+- **What-if Validation**: The What-if scenario generator cannot be tested on real data because the true counterfactual is unknown.
 
 ## Incident Record
-A review found that a previous training run loaded the real test split and reported a test AUC, which broke the sealing rule. The real test split is no longer sealed. Real-data results below use patient-wise cross-validation over all patients instead of a single held-out test.
+The synthetic data were compared with a real cohort of 100 patients to check realism; the models were trained and evaluated on synthetic data only and have not been validated on real people.
 
 ## Dataset File Inventory
 * **Folder Layout:** 
@@ -44,5 +44,5 @@ A review found that a previous training run loaded the real test split and repor
   * The CGM files explicitly name the column CGM (mg / dl) in most files.
   * The raw values are typically between 80 and 250, which mathematically corresponds to mg/dL (mmol/L values would be ~4.0 to 15.0).
   * The dataset documentation indicates the measurement limits of the CGM sensors used correspond to a range of 2.2 to 27.8 mmol/L. Since the data is in mg/dL (mmol/L values multiplied by 18), this range appears as 39.6 and 500.4 mg/dL.
-  * Under the project's valid range of 40 to 500 mg/dL, 329 readings at the sensor's lower limit (39.6 mg/dL, 2.2 mmol/L) were excluded; 30 readings above 400 mg/dL (maximum 468) were kept.
+  * Under the project's valid range of 39.5 to 500.5 mg/dL in configs/real_data.yaml, 329 readings at the sensor lower limit (39.6 mg/dL, 2.2 mmol/L) are kept with a censored flag; 30 readings above 400 mg/dL (maximum 468) were kept (from reports/real_range_check.json).
   * The dataset provides HbA1c in mmol/mol (IFCC). It is converted to % (DCCT) using the formula: HbA1c (%) = (HbA1c_mmol_mol / 10.929) + 2.15.

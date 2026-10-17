@@ -29,3 +29,13 @@ data/processed/*
 data/external/
 scratch/
 reports/qa/logs/
+
+# Editor and assistant workspaces
+.agent/
+.agents/
+.gemini/
+.cursor/
+.vscode/
+adapters/
+scripts/validate-agents.ps1
+scripts/validate-agents.sh
