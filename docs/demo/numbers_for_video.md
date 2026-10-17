@@ -20,4 +20,8 @@ When quoting metrics in the video, use the following exact numbers and intervals
 * "For the What-if Simulator test evaluation, the peak error is 1.0, 10.2 and 11.5 mg/dL for the three tested scenarios in this synthetic setting." (from `reports/WHATIF_TEST_DONE.json`, test split). *(Note: The uncertainty bands significantly under-cover).*
 
 ## Patient Moment
-* "At 2026-01-03 21:50, Patient P007's glucose is 191.4 mg/dL. The risk band is High with a calibrated probability of 0.967, and the predicted peak is 302.3 mg/dL in this synthetic setting." (from bundled state `P007_20260103_2150.json`)
+* "At 2026-01-03 21:50, Patient P007's glucose is 191.4 mg/dL. The risk band is High with a calibrated probability of 0.967, and the predicted peak is 302.3 mg/dL in this synthetic setting." (from bundled state `demo_bundle/states/P007_20260103_2150.json`, test patient moment)
+
+## Realism Comparison
+* "Time above 180 mg/dL (patient-level average) is 19.6% in the real cohort vs 68.6% in the synthetic cohort." (from `reports/realism_comparison.json` and `reports/real_range_check.json`, cohort comparison)
+* "In the real dataset, 329 readings at the sensor's lower limit (39.6 mg/dL, 2.2 mmol/L) were excluded; 30 readings above 400 mg/dL (maximum 468) were kept." (from `reports/real_range_check.json`, real data check)

@@ -1,0 +1,78 @@
+{
+  "total_readings": 112462,
+  "valid_range_low": 40,
+  "valid_range_high": 500,
+  "floor_value_mgdl": 39.6,
+  "floor_value_mmol": 2.2,
+  "readings_at_floor": 329,
+  "readings_above_400": 30,
+  "maximum_glucose": 468.0,
+  "prevalence_by_range": {
+    "0 to 10000": 0.1384,
+    "40 to 400": 0.1384,
+    "40 to 500": 0.1386,
+    "39 to 501": 0.1384
+  },
+  "time_below_70_with_floor": {
+    "pooled": 0.0234,
+    "per_patient": 0.0253
+  },
+  "time_below_70_without_floor": {
+    "pooled": 0.0206,
+    "per_patient": 0.0231
+  },
+  "patient_level_mean_glucose": {
+    "with_floor": 141.01,
+    "without_floor": 141.18
+  },
+  "candidate_range_details": {
+    "0 to 10000": {
+      "readings": 112462,
+      "mean_pooled": 140.16,
+      "mean_per_patient": 141.01,
+      "time_below_70_pooled": 0.0234,
+      "time_below_70_per_patient": 0.0253,
+      "time_above_180_pooled": 0.189,
+      "time_above_180_per_patient": 0.1963,
+      "label_rows": 111556,
+      "positives": 15444,
+      "prevalence": 0.1384
+    },
+    "40 to 400": {
+      "readings": 112103,
+      "mean_pooled": 140.38,
+      "mean_per_patient": 141.1,
+      "time_below_70_pooled": 0.0206,
+      "time_below_70_per_patient": 0.0231,
+      "time_above_180_pooled": 0.1893,
+      "time_above_180_per_patient": 0.1962,
+      "label_rows": 110901,
+      "positives": 15354,
+      "prevalence": 0.1384
+    },
+    "40 to 500": {
+      "readings": 112133,
+      "mean_pooled": 140.46,
+      "mean_per_patient": 141.18,
+      "time_below_70_pooled": 0.0206,
+      "time_below_70_per_patient": 0.0231,
+      "time_above_180_pooled": 0.1895,
+      "time_above_180_per_patient": 0.1964,
+      "label_rows": 110968,
+      "positives": 15384,
+      "prevalence": 0.1386
+    },
+    "39 to 501": {
+      "readings": 112462,
+      "mean_pooled": 140.16,
+      "mean_per_patient": 141.01,
+      "time_below_70_pooled": 0.0234,
+      "time_below_70_per_patient": 0.0253,
+      "time_above_180_pooled": 0.189,
+      "time_above_180_per_patient": 0.1963,
+      "label_rows": 111556,
+      "positives": 15444,
+      "prevalence": 0.1384
+    }
+  }
+}

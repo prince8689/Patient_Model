@@ -21,3 +21,10 @@ def test_safety_wording():
         content = fp.read_text(encoding="utf-8").lower()
         for f in forbidden:
             assert f not in content, f"Forbidden phrase '{f}' found in {fp}"
+
+
+def test_requirements_identical():
+    root = Path(__file__).resolve().parent.parent
+    demo_req = (root / "requirements-demo.txt").read_text(encoding="utf-8")
+    app_req = (root / "app" / "requirements.txt").read_text(encoding="utf-8")
+    assert app_req == demo_req, "app/requirements.txt must be identical to requirements-demo.txt"

@@ -3,7 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 .pytest_cache/
+.coverage
+.coverage.*
 .venv/
+demo_env/
 env/
 venv/
 ENV/
@@ -23,6 +26,6 @@ data/processed/*
 !data/processed/.gitkeep
 !models/.gitkeep
 
-data/external/shanghai_t2dm/
+data/external/
 scratch/
 reports/qa/logs/

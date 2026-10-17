@@ -44,5 +44,5 @@ A review found that a previous training run loaded the real test split and repor
   * The CGM files explicitly name the column CGM (mg / dl) in most files.
   * The raw values are typically between 80 and 250, which mathematically corresponds to mg/dL (mmol/L values would be ~4.0 to 15.0).
   * The dataset documentation indicates the measurement limits of the CGM sensors used correspond to a range of 2.2 to 27.8 mmol/L. Since the data is in mg/dL (mmol/L values multiplied by 18), this range appears as 39.6 and 500.4 mg/dL.
-  * Floor and ceiling readings at these boundaries are valid truncated measurements. Specifically, 329 readings strictly at the 39.6 mg/dL floor are kept in the dataset and marked with a boolean censored flag to indicate they hit the sensor physical measurement limit.
+  * Under the project's valid range of 40 to 500 mg/dL, 329 readings at the sensor's lower limit (39.6 mg/dL, 2.2 mmol/L) were excluded; 30 readings above 400 mg/dL (maximum 468) were kept.
   * The dataset provides HbA1c in mmol/mol (IFCC). It is converted to % (DCCT) using the formula: HbA1c (%) = (HbA1c_mmol_mol / 10.929) + 2.15.

@@ -27,7 +27,7 @@ For the What-if Simulator test evaluation (6 test patients), the peak error is 1
 
 ## Scope & Decisions
 - The model is for Type 2 diabetes and predicts a glucose rise of 50 mg/dL or more within 2 hours.
-- The synthetic data differ from the real cohort in glucose level: mean glucose is 219.30 mg/dL in synthetic vs 141.01 mg/dL in the real cohort; time above 180 is 68.6% in synthetic vs 19.6% in the real cohort (from `reports/realism_comparison.json`, verified by `scripts/verify_real_independent.py`).
+- The synthetic data differ from the real cohort in glucose level: mean glucose is 219.30 mg/dL in synthetic vs 141.01 mg/dL in the real cohort; time above 180 (patient-level average) is 68.6% in synthetic vs 19.6% in the real cohort (from `reports/realism_comparison.json`, verified by `scripts/verify_real_independent.py`). In the real dataset under the 40 to 500 mg/dL range, 329 readings at the sensor's lower limit (39.6 mg/dL, 2.2 mmol/L) were excluded; 30 readings above 400 mg/dL (maximum 468) were kept (from `reports/real_range_check.json`).
 - The User Data Entry page provides an experimental, indicative estimate: sleep, heart rate and steps are filled with fixed placeholders when the user gives none (the sleep state "unknown" makes the history look like sleep in the features), history features are replaced by training medians, and the confidence is never "high" unless the full 24 hour history is provided.
 
 ## Architecture & Dashboards

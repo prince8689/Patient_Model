@@ -14,7 +14,7 @@ This document compares the synthetic cohort against the real data (Shanghai T2DM
 | CV Glucose | 0.2889 | 0.2028 |
 | Time Below 70 (%) | 0.0253 | 0.0089 |
 | Time 70-180 (%) | 0.7784 | 0.3050 |
-| Time Above 180 (%) | 0.1963 | 0.6861 |
+| Time Above 180 (% patient-level average) | 0.1963 | 0.6861 |
 | Label Prevalence | 0.1386 | 0.1401 |
 | Age | 60.2 | 54.6 |
 | BMI | 24.1 | 29.7 |
@@ -43,6 +43,9 @@ For both cohorts:
 
 ### Hour-of-Day Glucose Profile
 ![Hour of day mean glucose comparison](hour_profile_comparison.png)
+
+### Sensor Limits and Valid Range
+Under the valid range of 40 to 500 mg/dL, 329 readings at the sensor's lower limit (39.6 mg/dL, 2.2 mmol/L) were excluded; 30 readings above 400 mg/dL (maximum 468) were kept. Time above 180 is defined as the patient-level average (19.63% in real vs 68.61% in synthetic; pooled share is 18.95% in real).
 
 ## Changes a new synthetic cohort needs
 1. **Gap Statistics (15m grid)**: Synthetic gaps per 1000 slots (16.88) are much higher than real (0.10). The generator should produce fewer gaps, but with longer median length (15.0 vs 15.0 mins).
