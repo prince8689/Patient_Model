@@ -14,7 +14,7 @@ This document compares the synthetic cohort against the real data (Shanghai T2DM
 | CV Glucose | 0.2889 | 0.2028 |
 | Time Below 70 (%) | 0.0253 | 0.0089 |
 | Time 70-180 (%) | 0.7784 | 0.3050 |
-| Time Above 180 (% patient-level average) | 0.1963 | 0.6861 |
+| Time Above 180 (%) | 0.1963 | 0.6861 |
 | Label Prevalence | 0.1386 | 0.1401 |
 | Age | 60.2 | 54.6 |
 | BMI | 24.1 | 29.7 |
@@ -43,9 +43,6 @@ For both cohorts:
 
 ### Hour-of-Day Glucose Profile
 ![Hour of day mean glucose comparison](hour_profile_comparison.png)
-
-### Sensor Limits and Valid Range
-Under the valid range of 39.5 to 500.5 mg/dL in configs/real_data.yaml, 329 readings at the sensor lower limit (39.6 mg/dL, 2.2 mmol/L) are kept with a censored flag; 30 readings above 400 mg/dL (maximum 468) were kept. The loader code keeps all 112462 readings (reports/real_data_quality.json, key total_glucose_samples_final: 112462). This matches the kept floor variant in reports/real_range_check.json: patient-level mean glucose is 141.01 mg/dL (key patient_level_mean_glucose.with_floor; 141.18 mg/dL if excluded), patient-level time below 70 is 0.0253 (key time_below_70_with_floor.per_patient; 0.0231 if excluded), and patient-level time above 180 is 0.1963 (19.63%), defined as the patient-level average of the fraction of readings exceeding 180 mg/dL across all 100 patients (pooled share is 0.1890 / 18.90%; candidate_range_details key 39 to 501, time_above_180_per_patient). While reports/realism_comparison.json records real_counts.samples as 112462 (matching the kept floor variant), it does not store mean glucose or time below 70 keys directly; the values cited here come from the matching variant in reports/real_range_check.json.
 
 ## Changes a new synthetic cohort needs
 1. **Gap Statistics (15m grid)**: Synthetic gaps per 1000 slots (16.88) are much higher than real (0.10). The generator should produce fewer gaps, but with longer median length (15.0 vs 15.0 mins).

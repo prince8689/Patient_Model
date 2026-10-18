@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import json
+from pathlib import Path
 import matplotlib.pyplot as plt
 from scipy.stats import linregress
 
@@ -161,8 +162,30 @@ def compare():
     sl = pd.read_csv("data/processed/labels.csv")
     synth_metrics['label_prevalence'] = float(sl['spike_next_2h'].mean())
     
+    # Pooled shares for time ranges
+    real_obs = rg.dropna(subset=['glucose_mgdl'])
+    synth_obs = sg_third.dropna(subset=['glucose_mgdl'])
+    
+    real_pooled_tbr = float((real_obs['glucose_mgdl'] < 70).mean())
+    real_pooled_tir = float(((real_obs['glucose_mgdl'] >= 70) & (real_obs['glucose_mgdl'] <= 180)).mean())
+    real_pooled_tar = float((real_obs['glucose_mgdl'] > 180).mean())
+    
+    synth_pooled_tbr = float((synth_obs['glucose_mgdl'] < 70).mean())
+    synth_pooled_tir = float(((synth_obs['glucose_mgdl'] >= 70) & (synth_obs['glucose_mgdl'] <= 180)).mean())
+    synth_pooled_tar = float((synth_obs['glucose_mgdl'] > 180).mean())
+
     for k in real_metrics:
         metrics[k] = {"real": real_metrics[k], "synthetic": synth_metrics[k]}
+
+    # Add pooled shares next to patient-level averages
+    metrics["time_below_70"]["real_pooled"] = real_pooled_tbr
+    metrics["time_below_70"]["synthetic_pooled"] = synth_pooled_tbr
+
+    metrics["time_70_180"]["real_pooled"] = real_pooled_tir
+    metrics["time_70_180"]["synthetic_pooled"] = synth_pooled_tir
+
+    metrics["time_above_180"]["real_pooled"] = real_pooled_tar
+    metrics["time_above_180"]["synthetic_pooled"] = synth_pooled_tar
     
     # Regression
     real_pat_g = rg.dropna(subset=['glucose_mgdl']).groupby('patient_id')['glucose_mgdl'].mean().reset_index()
@@ -206,7 +229,43 @@ def compare():
     plt.savefig('reports/hba1c_scatter.png')
     plt.close()
 
-    
+    # Validation against reports/real_range_check.json
+    range_check_path = Path("reports/real_range_check.json")
+    if range_check_path.exists():
+        with open(range_check_path, "r", encoding="utf-8") as f:
+            rc = json.load(f)
+
+        expected_mean = float(rc["patient_level_mean_glucose"]["with_floor"])
+        expected_tbr = float(rc["time_below_70_with_floor"]["per_patient"])
+        expected_tar = float(rc["candidate_range_details"]["39 to 501"]["time_above_180_per_patient"])
+        expected_tar_pooled = float(rc["candidate_range_details"]["39 to 501"]["time_above_180_pooled"])
+
+        val_mean = round(metrics["mean_glucose"]["real"], 2)
+        val_tbr = round(metrics["time_below_70"]["real"], 4)
+        val_tar = round(metrics["time_above_180"]["real"], 4)
+        val_tar_pooled = round(metrics["time_above_180"]["real_pooled"], 4)
+
+        print("\n--- Validation against reports/real_range_check.json ---")
+        headers = f"{'Metric':<32} {'Calculated':<12} {'Expected':<12} {'Diff':<12} {'Status'}"
+        print(headers)
+        print("-" * len(headers))
+        checks = [
+            ("Patient Mean Glucose", val_mean, expected_mean, 0.01),
+            ("Patient Time Below 70", val_tbr, expected_tbr, 0.0001),
+            ("Patient Time Above 180", val_tar, expected_tar, 0.0001),
+            ("Pooled Time Above 180", val_tar_pooled, expected_tar_pooled, 0.0001)
+        ]
+        has_diff = False
+        for name, calc, exp, tol in checks:
+            diff = abs(calc - exp)
+            status = "MATCH" if diff <= tol else "MISMATCH"
+            print(f"{name:<32} {calc:<12} {exp:<12} {diff:<12.5f} {status}")
+            if status != "MATCH":
+                has_diff = True
+
+        if has_diff:
+            raise ValueError("Realism comparison real values differ from reports/real_range_check.json! Stopping.")
+
     with open("reports/realism_comparison.json", "w") as f:
         json.dump(metrics, f, indent=4)
         

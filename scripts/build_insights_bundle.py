@@ -92,6 +92,10 @@ def build_bundle():
     whatif = load_json("reports/whatif_metrics.json")
     add_section("whatif", whatif, "reports/whatif_metrics.json")
     
+    # Realism comparison
+    realism = load_json("reports/realism_comparison.json")
+    add_section("realism_comparison", realism, "reports/realism_comparison.json")
+    
     # Integrity
     manifests = [
         ("risk", "models/FROZEN.json", "reports/TEST_EVAL_DONE.json"),
