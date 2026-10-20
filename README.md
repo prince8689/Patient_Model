@@ -1,11 +1,44 @@
-# DiaTwin: Patient-Specific Glucose Digital Twin
+# DiaTwin: a Type 2 diabetes digital twin that fuses EHR and wearable data (Happiest Health Digital Twin Challenge 2026)
 
 DiaTwin is an in-silico physiological simulator that models patient-specific glucose dynamics using a digital twin framework. It enables continuous glucose forecasting and treatment scenario simulation for diabetes management research.
 
 **Disclaimer: This prototype operates exclusively on synthetic data and physiological approximations. It is a research tool, NOT a medical device. It must not be used for actual clinical decision making or patient care.**
 
-**Live Demo**: [LIVE DEMO URL]
-**Demo Video**: [VIDEO URL]
+## Project Title
+DiaTwin: a Type 2 diabetes digital twin that fuses EHR and wearable data (Happiest Health Digital Twin Challenge 2026)
+
+## Team Details
+Prince Maurya (B.Tech, 3rd year). Contact: princemaur7@gmail.com
+
+## College / Incubator Information
+Kashi Institute of Technology, Varanasi
+
+## Problem Statement
+Glucose monitors report a rise after it has happened; a care team would like a warning before a post-meal rise, with reasons, and a way to compare meal and activity options; DiaTwin is a virtual patient that combines health-record and wearable data to estimate the risk of a glucose rise of 50 mg/dL or more in the next 2 hours, forecast the next 2 hours with a range, and estimate the effect of meal and activity changes.
+
+## Healthcare Use Case
+A dashboard for a Type 2 diabetes care team and a learning tool; early warning with plain-language reasons, a 2-hour forecast with ranges, lifestyle what-if scenarios (meals and activity only, no insulin or medication); an educational prototype on synthetic data, not a medical device.
+
+## Technical Stack
+Python, pandas, NumPy, scikit-learn, XGBoost, SHAP, Streamlit, Plotly, PyArrow, pytest, Hypothesis, Git.
+
+## AI/ML Model and Framework Details
+XGBoost risk model with causal features, probability calibration and SHAP explanations; quantile forecast with conformal intervals; mechanistic glucose dynamics what-if simulator with per-patient parameters and an ensemble; patient-wise splits, frozen artifacts with SHA-256 manifests; the models are not validated on real people (the real cohort of 100 patients was used only for the realism comparison, [docs/REALISM.md](docs/REALISM.md)). See [docs/MODEL_CARD.md](docs/MODEL_CARD.md), [docs/FORECAST.md](docs/FORECAST.md), [docs/WHATIF.md](docs/WHATIF.md), and [docs/INTEGRITY.md](docs/INTEGRITY.md).
+
+## Demo Video
+https://youtu.be/h401ih8xMYA (unlisted YouTube video)
+
+## Open-Source License Details
+MIT License (see [LICENSE](LICENSE)); the real-data comparison uses ShanghaiT2DM (Zhao et al., Scientific Data 10, 35, 2023), figshare, CC BY 4.0; see [docs/PROVENANCE.md](docs/PROVENANCE.md).
+
+## Architecture Diagram
+[docs/architecture.pdf](docs/architecture.pdf)
+
+## Presentation
+[docs/DiaTwin_presentation.pdf](docs/DiaTwin_presentation.pdf) ([PPTX version](docs/DiaTwin_presentation.pptx))
+
+## Public Accessibility
+All files and links in this repository are publicly accessible without additional permissions; the repository is public and the demo video is an unlisted YouTube video.
 
 ## Overview
 DiaTwin models patient-specific glucose dynamics using a digital twin framework. It fuses static Electronic Health Record (EHR) profiles with real-time wearable sensor streams (CGM, heart rate, sleep, activity). The engine employs a calibrated risk model to predict hyperglycemic spikes. It features a What-if Simulator to explore the counterfactual impact of lifestyle interventions. A clinician-facing dashboard provides an interface to monitor the twin state, review forecast trajectories, and visualize the probabilistic effects of different scenarios. The architecture relies on an integrity-verified "frozen" model pipeline to ensure separation between retrospective training and prospective simulation.
@@ -45,8 +78,8 @@ Ensure you have a supported Python release (Python 3) installed.
 
 ### 2. Clone and Install
 ```bash
-git clone [REPOSITORY URL]
-cd DiaTwin
+git clone https://github.com/prince8689/Patient_Model.git
+cd Patient_Model
 python -m venv .venv
 # On Windows:
 .\.venv\Scripts\activate
@@ -100,10 +133,7 @@ This prototype is built on synthetic physiological approximations designed for r
 ## Real Data
 The real dataset used in this project is ShanghaiT2DM (Citation: Zhao et al., Scientific Data 10, 35, 2023, DOI: 10.6084/m9.figshare.c.6310860). It is available under the CC BY 4.0 license.
 
-## Tools and Acknowledgements
-[TO BE FILLED BY TEAM: tools, libraries, data sources, mentors]
-
-### Open Source Libraries
+## Open Source Libraries
 | Library | License |
 | :--- | :--- |
 | `streamlit` | Apache 2.0 |
@@ -114,9 +144,6 @@ The real dataset used in this project is ShanghaiT2DM (Citation: Zhao et al., Sc
 | `scikit-learn` | BSD 3-Clause |
 | `pytest` | MIT |
 | `hypothesis` | MPL 2.0 |
-
-## Team and Contact
-[TO BE FILLED BY TEAM: Member Names, Contact Information]
 
 ## License
 See the [LICENSE](LICENSE) file for details.

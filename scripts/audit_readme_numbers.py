@@ -40,6 +40,7 @@ def load_all_json_sources(root: Path):
 KNOWN_SOURCES = {
     # File-specific known claims mapping
     "README.md": {
+        "2026": ("competition", "challenge_year"),
         "6": ("reports/WHATIF_TEST_DONE.json", "test_patients"),
         "34545": ("reports/metrics_test_day7.json", "confusion_matrix_total_samples"),
         "0.925": ("reports/metrics_test_day7.json", "xgb_metrics.roc_auc.mean"),
@@ -317,7 +318,10 @@ FORBIDDEN_README_NUMBERS = ["0.941", "14.5", "81.2", "92.4", "2280"]
 
 
 def audit_file(filepath: Path, root: Path, all_sources: list):
-    rel_path = filepath.relative_to(root).as_posix()
+    try:
+        rel_path = filepath.relative_to(root).as_posix()
+    except ValueError:
+        rel_path = filepath.name
     content = filepath.read_text(encoding="utf-8")
     lines = content.splitlines()
 
@@ -331,7 +335,7 @@ def audit_file(filepath: Path, root: Path, all_sources: list):
         if stripped.startswith("```"):
             in_code = not in_code
             continue
-        if in_code or stripped.startswith("#") or "http" in line or "doi.org" in line:
+        if in_code or stripped.startswith("#") or "doi.org" in line:
             continue
 
         # Check forbidden numbers specifically in README
@@ -346,8 +350,13 @@ def audit_file(filepath: Path, root: Path, all_sources: list):
                         "status": "MISMATCH"
                     })
 
+        # Strip URLs, markdown link targets, and email addresses before extracting number tokens
+        clean_line = re.sub(r"\[([^\]]*)\]\([^)]+\)", r"\1", line)  # keep link text, strip target
+        clean_line = re.sub(r"https?://\S+", "", clean_line)  # strip raw URLs
+        clean_line = re.sub(r"[\w\.-]+@[\w\.-]+", "", clean_line)  # strip email addresses
+
         # Extract number tokens
-        tokens = re.findall(r"(?<![A-Za-z0-9_\-\.])([0-9]+(?:\.[0-9]+)?%?)(?![A-Za-z0-9_\-\.])", line)
+        tokens = re.findall(r"(?<![A-Za-z0-9_\-\.])([0-9]+(?:\.[0-9]+)?%?)(?![A-Za-z0-9_\-\.])", clean_line)
         for tok in tokens:
             # Check known mapping first
             if tok in known_map:

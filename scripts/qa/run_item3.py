@@ -1,6 +1,6 @@
+from pathlib import Path
 import subprocess
 import sys
-from pathlib import Path
 
 root = Path(__file__).resolve().parent.parent.parent
 
@@ -11,34 +11,34 @@ def run_cmd(cmd):
         if out:
             out += "\n"
         out += res.stderr.strip()
-    return out
+    return res.returncode, out
 
 lines = []
-lines.append("=== Item 3: Regenerate Documents & Realism Audit ===")
+lines.append("=== Item 3: README Items Checker Execution and Tests ===")
 
-# 1. Regenerate docs/REALISM.md, README.md, docs/demo/numbers_for_video.md, reports/insights_bundle.json
-lines.append("\n--- 1. Document & Bundle Regeneration from reports/realism_comparison.json ---")
-regen_out = run_cmd(".\\.venv\\Scripts\\python scripts/regenerate_from_realism.py")
-lines.append(regen_out)
+# 1. Run check_readme_items.py on README.md
+lines.append("\n--- 1. Execution of scripts/check_readme_items.py on README.md ---")
+code1, out1 = run_cmd(".\\.venv\\Scripts\\python scripts/check_readme_items.py README.md")
+lines.append(out1)
+lines.append(f"Exit code: {code1}")
 
-# 2. Run new test suite test_realism_comparison.py
-lines.append("\n--- 2. Pytest test_realism_comparison.py (Schema & README Equality) ---")
-test_out = run_cmd(".\\.venv\\Scripts\\python -m pytest tests/test_realism_comparison.py -v")
-lines.append(test_out)
+# 2. Run pytest on tests/test_check_readme_items.py
+lines.append("\n--- 2. Execution of tests/test_check_readme_items.py ---")
+code2, out2 = run_cmd(".\\.venv\\Scripts\\python -m pytest -q -p no:cacheprovider tests/test_check_readme_items.py")
+lines.append(out2)
+lines.append(f"Exit code: {code2}")
 
-# 3. Run audit_readme_numbers.py
-lines.append("\n--- 3. Audit README & Docs Numbers ---")
-audit_out = run_cmd(".\\.venv\\Scripts\\python scripts/audit_readme_numbers.py")
-lines.append(audit_out)
-
-# 4. Result check
-if "failed" in test_out.lower() or "mismatch" not in audit_out.lower() or "0 MISMATCH" not in audit_out:
-    lines.append("\nResult: FAIL")
+lines.append("\n--- Summary ---")
+if code1 == 0 and code2 == 0:
+    lines.append("Item 3 Result: PASS")
 else:
-    lines.append("\nResult: PASS (Regenerations completed, schema test passed, audit shows 0 MISMATCH and 0 NO SOURCE)")
+    lines.append("Item 3 Result: FAIL")
 
 output = "\n".join(lines) + "\n"
 log_path = root / "reports" / "qa" / "logs" / "item3.txt"
 log_path.parent.mkdir(parents=True, exist_ok=True)
 log_path.write_text(output, encoding="utf-8")
 print(output)
+
+if code1 != 0 or code2 != 0:
+    sys.exit(1)
